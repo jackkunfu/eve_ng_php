@@ -1,0 +1,194 @@
+
+
+<div ng-controller="labViewCtrl">
+
+	
+
+	<div style="padding:15px">
+
+	<div class="col-xs-12">
+
+	<h3 style="margin-top:0px">实验内容 <small class="text-muted">{{fullPathToFile}}</small></h3>
+
+		<div style="height:400px; background-color:#eee; overflow: scroll; position:relative;" id="divPreview">
+
+				<h4 class="text-center" style="padding-top: 180px;" data-ng-show="zeroNodes">没有实验节点</h4>
+
+				<div data-ng-show="!zeroNodes">
+
+					<div class="scale-menu-helper">
+
+						<div class="{{(scaleMenu) ? 'scale-menu' : 'scale-menu-collapsed'}}">
+
+							<div class="scale-menu-inside">
+
+								<p class="text-center" style="margin-bottom:0px">比例</p>
+
+								<div class="btn-group-vertical" data-ng-show="scaleMenu">
+
+									<button type="button" class="btn btn-flat {{ (scale == 2) ? 'btn-warning active' : 'btn-default'}}" data-ng-click="schemecontrol(2)">1:2</button>
+
+									<button type="button" class="btn btn-flat {{ (scale == 3) ? 'btn-warning active' : 'btn-default'}}" data-ng-click="schemecontrol(3)">1:3</button>
+
+									<button type="button" class="btn btn-flat {{ (scale == 4) ? 'btn-warning active' : 'btn-default'}}" data-ng-click="schemecontrol(4)">1:4</button>
+
+									<button type="button" class="btn btn-flat {{ (scale == 5) ? 'btn-warning active' : 'btn-default'}}" data-ng-click="schemecontrol(5)">1:5</button>
+
+								</div>
+
+								<h4 class="text-center" style="margin-top:5px;" data-ng-show="scaleMenu" data-ng-click="scaleMenu=!scaleMenu"><a class="pointer"><i class="fa fa-caret-up" aria-hidden="true"></i> </a></h4>
+
+								<h4 class="text-center" style="margin-top:0px;" data-ng-show="!scaleMenu" data-ng-click="scaleMenu=!scaleMenu"><a class="pointer"><i class="fa fa-caret-down" aria-hidden="true"></i> </a></h4>
+
+							</div>
+
+						</div>
+
+					</div>
+
+					<div data-ng-repeat="(x,y) in nodelist" class="pv_element" style="top:{{y.top/scale*2}}px; left:{{y.left/scale*2}}px; position:absolute;" data-toggle="tooltip" title="{{y.name}}">
+
+						<img data-ng-src="/images/icons/{{y.icon}}" class="{{y.icon.replace('.png','').replace(' ','')+'_s'+scale}}">
+
+					</div>
+
+					<div data-ng-repeat="x in networksList" class="pv_element" style="top:{{networksObject[x].top/scale*2}}px; left:{{networksObject[x].left/scale*2}}px; position:absolute;" data-toggle="tooltip" title="{{networksObject[x].name}}">
+
+						<img data-ng-src="/images/icons/{{ (networksObject[x].type == 'bridge') ? 'Switch' : 'Cloud'; }}.png" class="{{ (networksObject[x].type == 'bridge') ? 'Switch_s'+scale : 'Cloud_s'+scale; }}">
+
+					</div>
+
+					<div data-ng-repeat="x in lineList" class="line" style="position:absolute; transform: {{linkLinesAttr(x.x1,x.y1,x.x2,x.y2,scale*2)[1]}};width: {{linkLinesAttr(x.x1,x.y1,x.x2,x.y2,scale*2)[0]}}px; top: {{x.y1}}px; left: {{x.x1}}px;"></div>
+
+				</div>
+
+			</div>
+
+	</div>
+
+	<p></p>
+
+	<div class="col-xs-12" style="padding-top:10px">
+
+		<div class="row">
+
+			<div class="col-xs-6">
+
+			<label>实验名称: </label>
+
+			{{labInfo.name}}
+
+			</div>
+
+			<div class="col-xs-6">
+
+			<label>作者: </label>
+
+			{{labInfo.author}}
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<div class="col-xs-12">	
+
+		<div class="row">
+
+			<div class="col-xs-6">
+
+			<label>版本: </label>
+
+			{{labInfo.version}}
+
+			</div>
+
+			<div class="col-xs-6">
+
+			<label> 配置脚本超时: </label>
+
+			{{labInfo.scripttimeout}}
+
+			</div>
+
+		</div>	
+
+	</div>
+
+	<div class="col-xs-12">
+
+		<div class="row">
+
+			<div class="col-xs-12">
+
+			<label>UUID: </label>
+
+			{{labInfo.id}}
+
+			</div>
+
+	</div>
+
+		</div>
+
+		<div class="col-xs-12">
+
+		<div class="row">
+
+			<div class="col-md-2 col-lg-1">
+
+			<label>描述:</label>
+
+			</div>
+
+			<div class="col-md-10 col-lg-11">
+
+			{{labInfo.description}}
+
+			</div>
+
+		</div>	
+
+		</div>	
+
+		<!--</p>
+
+		<p class="text-muted"> Full path: {{fullPathToFile}} </p>-->
+
+		<div class="col-xs-12">
+
+		<!--<hr style="margin:10px">-->
+
+		<div class="btn-group" style="margin-bottom:15px">
+
+            <button ng-if="!UIlegacy" type="button" class="btn btn-primary btn-flat" data-ng-click="legacylabopen(fullPathToFile)">Open Legacy</button>
+
+            <button ng-if="!UIlegacy" type="button" class="btn btn-primary btn-flat" data-ng-click="labopen(fullPathToFile)">Open</button>
+
+	    	<button ng-if="UIlegacy" type="button" class="btn btn-primary btn-flat" data-ng-click="legacylabopen(fullPathToFile)">打开</button>
+
+            <button type="button" class="btn btn-primary btn-flat" data-ng-click="openModal('editfile',null,'megalg')">编辑</button>
+
+            <button type="button" class="btn btn-danger btn-flat" data-ng-click="deleteElement(fullPathToFile, 'File', 'true')">删除</button>
+
+        </div>
+
+        </div>
+
+	</div>
+
+</div>
+
+
+
+<script>
+
+$('#divPreview').on('scroll', function(e){
+
+	$( ".scale-menu-helper" ).css({'top': $('#divPreview').scrollTop(), 'left': $('#divPreview').scrollLeft()})
+
+})
+
+</script>
+
