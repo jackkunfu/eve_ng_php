@@ -84,63 +84,63 @@ app_main_unl.controller('unlMainController', ['$scope', '$rootScope', '$http', '
 		$rootScope.openLaba=true;
 		console.log($cookies.get('privacy'));
 		$scope.testAUTH = function (path) {
-		$scope.userfolder='none';
-		$http.get('/api/auth').then(
-			function successCallback(response) {
-				if (response.status == '200' && response.statusText == 'OK'){
-				$rootScope.username=response.data.data.username;
-				$rootScope.folder= (response.data.data.folder === null) ? '/' : response.data.data.folder;
-				$rootScope.email=response.data.data.email;
-				$rootScope.role=response.data.data.role;
-				$rootScope.name=response.data.data.name;
-				if (path != "/lab") $rootScope.lab=response.data.data.lab;
-				$rootScope.lang=response.data.data.lang;
-				$rootScope.tenant=response.data.data.tenant;
-				$scope.userfolder = response.data.folder;
-				console.log($rootScope.lab)
-				// Preview need to get back to legacy UI
-				if ( $rootScope.UIlegacy == 1) {
-					if ($rootScope.lab === null ) {$location.path(path)} else {location.href ='/legacy/'};
-					} else {
-					if ($rootScope.lab === null ) {$location.path(path)} else {$location.path('/lab')};
-					}
-				}
-			}, 
-			function errorCallback(response) {
-				if (response.status == '401' && response.statusText == 'Unauthorized'){
-				$location.path("/login");}
-				else {console.log("Unknown Error. Why did API doesn't respond?")}	
-		});
+            $scope.userfolder='none';
+            $http.get('/api/auth').then(
+                function successCallback(response) {
+                    if (response.status == '200' && response.statusText == 'OK'){
+                    $rootScope.username=response.data.data.username;
+                    $rootScope.folder= (response.data.data.folder === null) ? '/' : response.data.data.folder;
+                    $rootScope.email=response.data.data.email;
+                    $rootScope.role=response.data.data.role;
+                    $rootScope.name=response.data.data.name;
+                    if (path != "/lab") $rootScope.lab=response.data.data.lab;
+                    $rootScope.lang=response.data.data.lang;
+                    $rootScope.tenant=response.data.data.tenant;
+                    $scope.userfolder = response.data.folder;
+                    console.log($rootScope.lab)
+                    // Preview need to get back to legacy UI
+                    if ( $rootScope.UIlegacy == 1) {
+                        if ($rootScope.lab === null ) {$location.path(path)} else {location.href ='/legacy/'};
+                        } else {
+                        if ($rootScope.lab === null ) {$location.path(path)} else {$location.path('/lab')};
+                        }
+                    }
+                }, 
+                function errorCallback(response) {
+                    if (response.status == '401' && response.statusText == 'Unauthorized'){
+                        $location.path("/login");
+                    } else {console.log("Unknown Error. Why did API doesn't respond?")}	
+            });
 		}
-		$scope.testAUTH();
+		// $scope.testAUTH();
 }]);
 
 /* Setup Layout Part - Header */
 app_main_unl.controller('HeaderController', ['$scope', '$http', '$location', '$rootScope', function($scope, $http, $location, $rootScope) {
-		$scope.activeClass='active';
-		$scope.emptyClass='';
-		$scope.currentPath=$location.path();
-		$scope.logout = function() {
-			$http.get('/api/auth/logout').then(
-			function successCallback(response) {
-				if (response.status == '200' && response.statusText == 'OK'){
-				$location.path("/login");}
-			}, 
-			function errorCallback(response) {
-				console.log("Unknown Error. Why did API doesn't respond?")	
-				$location.path("/login");
-			});	
-		}
-		$scope.blockui = function(position){
-			if ($location.path() != position) blockUI()
-		}
-		$scope.activeLinks = {
-			'main' : '/main',
-			'usermgmt' : '/usermgmt',
-			'syslog' : '/syslog',
-			'sysstat' : '/main',
-		}
-		console.log($location.path())
+    $scope.activeClass='active';
+    $scope.emptyClass='';
+    $scope.currentPath=$location.path();
+    $scope.logout = function() {
+        $http.get('/api/auth/logout').then(
+        function successCallback(response) {
+            if (response.status == '200' && response.statusText == 'OK'){
+            $location.path("/login");}
+        }, 
+        function errorCallback(response) {
+            console.log("Unknown Error. Why did API doesn't respond?")	
+            $location.path("/login");
+        });	
+    }
+    $scope.blockui = function(position){
+        if ($location.path() != position) blockUI()
+    }
+    $scope.activeLinks = {
+        'main' : '/main',
+        'usermgmt' : '/usermgmt',
+        'syslog' : '/syslog',
+        'sysstat' : '/main',
+    }
+    console.log($location.path())
 }]);
 
 
@@ -150,10 +150,7 @@ app_main_unl.config(['$stateProvider', '$urlRouterProvider', function($stateProv
     // Redirect any unmatched url
     $urlRouterProvider.otherwise("/login"); 
 	
-    //console.log($scope.userfolder)
-	
     $stateProvider
-
         // LOGIN
         .state('login', {
             url: "/login",
@@ -185,12 +182,34 @@ app_main_unl.config(['$stateProvider', '$urlRouterProvider', function($stateProv
                         name: 'app_main_unl',
                         insertBefore: '#load_files_before',
                         files: [
-                             '/themes/adminLTE/unl_data/js/angularjs/controllers/mainCtrl.js',
-                             '/themes/adminLTE/unl_data/js/angularjs/controllers/modalCtrl.js',
-                             '/themes/adminLTE/unl_data/js/angularjs/controllers/labviewCtrl.js',
-                             '/themes/adminLTE/plugins/angularJS/plugins/angular-file-upload/angular-file-upload.min.js',
-							  '/themes/adminLTE/dist/css/skins/skin-blue.min.css',
-                             '/themes/adminLTE/dist/js/app.min.js',
+                            '/themes/adminLTE/unl_data/js/angularjs/controllers/mainCtrl.js',
+                            '/themes/adminLTE/unl_data/js/angularjs/controllers/modalCtrl.js',
+                            '/themes/adminLTE/unl_data/js/angularjs/controllers/labviewCtrl.js',
+                            '/themes/adminLTE/plugins/angularJS/plugins/angular-file-upload/angular-file-upload.min.js',
+                            '/themes/adminLTE/dist/css/skins/skin-blue.min.css',
+                            '/themes/adminLTE/dist/js/app.min.js',
+                        ] 
+                    });
+                }]
+            }
+        })
+        .state('mainnew', {
+            url: "/mainnew",
+            templateUrl: "/themes/adminLTE/unl_data/pages/mainnew.html",
+            data: {pageTitle: 'Main menu'},
+			controller: "mainnewController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'app_main_unl',
+                        insertBefore: '#load_files_before',
+                        files: [
+                            '/themes/adminLTE/unl_data/js/angularjs/controllers/mainnewCtrl.js',
+                            '/themes/adminLTE/unl_data/js/angularjs/controllers/modalCtrl.js',
+                            '/themes/adminLTE/unl_data/js/angularjs/controllers/labviewCtrl.js',
+                            '/themes/adminLTE/plugins/angularJS/plugins/angular-file-upload/angular-file-upload.min.js',
+                            '/themes/adminLTE/dist/css/skins/skin-blue.min.css',
+                            '/themes/adminLTE/dist/js/app.min.js',
                         ] 
                     });
                 }]

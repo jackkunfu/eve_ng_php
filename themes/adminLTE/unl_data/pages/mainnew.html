@@ -1,0 +1,141 @@
+<div data-ng-include="'/themes/adminLTE/unl_data/pages/constant/header.html'" data-ng-controller="HeaderController" style="height: 50px;"></div>
+<style>
+	.main_new_main {
+		position: relative;
+		height: 100%;
+		overflow: hidden;
+		padding: 80px 0;
+	}
+	.main_new_top {
+		position: absolute;
+		top: 50px;
+		left: 50%;
+		transform: translate(-50%);
+		width: 500px;
+
+	}
+	.main_new_scroll {
+
+	}
+	.main_new_ctn {
+		width: 1000px;
+		margin: 0 auto;
+		overflow: hidden;
+		height: 100%;
+	}
+	.main_new_ctn .main_new_left {
+		float: left;
+		width: 200px;
+		margin-right: 30px;
+	}
+	.main_new_left .main_new_nav {
+		width: 100%;
+		height: 100px;
+		line-height: 100px;
+		font-size: 30px;
+		margin: 30px 0;
+		background: #fff;
+		text-align: center;
+		cursor: pointer;
+	}
+	.main_new_nav {}
+	.main_new_ctn .main_new_right {
+		width: 770px;
+		float: left;
+		background: #fff;
+		border-radius: 5px;
+		height: 100%;
+		padding: 20px;
+	}
+	.main_new_right .right_title {
+		text-align: center;
+		font-size: 18px;
+		font-weight: 550;
+		line-height: 50px;
+		border-bottom: 1px solid #e9e9e9;
+	}
+	.main_new_right ul li {
+		line-height: 30px;
+	}
+	.main_new_right ul li .fr {
+		float: right;
+		margin-right: 40px;
+	}
+</style>
+<div class="wrapper" style="height:80%;">
+
+<!-- AdminLTE App -->
+  <!-- Content Wrapper. Contains page content -->
+
+  <div class="content-wrapper" style="margin-left: 0;">
+
+		<div class="main_new_main">
+			<div class="main_new_top">
+				<div class="main_new_scroll">最新消息：{{messageList[0] || ''}}</div>
+			</div>
+			<div class="main_new_ctn">
+				<div class="main_new_left">
+					<div class="main_new_nav" data-ng-repeat="nav in navList track by $index" ng-click="clickTab(nav, $index)">
+						{{nav.name}}
+					</div>
+				</div>
+				<div class="main_new_right">
+					<div data-ng-if="curNav === 0">
+						<div class="right_title">平台介绍</div>
+					</div>
+					<div data-ng-if="curNav === 1">
+						<div class="right_title">平台介绍</div>
+					</div>
+					<div data-ng-if="curNav === 2">
+						<div class="right_title">学生中心</div>
+						<table>
+							<tr><th>课程</th></tr>
+							<tr ng-repeat="stuc in stuCenter track by $index">
+								<td>{{stuc}}</td>
+							</tr>
+						</table>
+						<table data-ng-if="">
+							<tr><th>实验名称</th><th>实验分数</th><th>报告分数</th><th>报告评语</th></tr>
+							<tr ng-repeat="stuc in stuCenter track by $index">
+								<td>{{stuc}}</td>
+								<td>{{stuc}}</td>
+								<td>{{stuc}}</td>
+								<td>{{stuc}}</td>
+							</tr>
+						</table>
+					</div>
+					<div data-ng-if="curNav === 3">
+						<div class="right_title">资料下载</div>
+						<ul>
+							<li ng-repeat="item in stuCenter track by $index">
+								{{item.name}}
+								<div class="fr">{{item.createTime}}</div>
+							</li>
+						</ul>
+					</div>
+					<div data-ng-if="curNav === 4">
+						<div class="right_title">通知中心</div>
+						<ul>
+								<li ng-repeat="item in stuCenter track by $index">
+									{{item.name}}
+									<div class="fr">{{item.createTime}}</div>
+								</li>
+							</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+
+  <!-- Main Footer -->
+  <!--<div data-ng-include="'/themes/adminLTE/unl_data/pages/constant/footer.html'" >-->
+</div>
+
+<script src="/themes/adminLTE/dist/js/app.js"></script>
+
+<link rel="stylesheet" href="/themes/adminLTE/unl_data/css/unl_lab.css">
+
+<!-- <link rel="stylesheet" href="/themes/adminLTE/unl_data/css/custom_unl_lab.css"> -->
+
+<link rel="stylesheet" href="/themes/adminLTE/dist/css/skins/skin-blue.css">
+
