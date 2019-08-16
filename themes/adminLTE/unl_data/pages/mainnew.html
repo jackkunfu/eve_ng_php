@@ -55,11 +55,67 @@
 		border-bottom: 1px solid #e9e9e9;
 	}
 	.main_new_right ul li {
+		height: 30px;
+		margin-top: 10px;
+	}
+	.main_new_right ul li span {
 		line-height: 30px;
+		display: inline-block;
+		width: 480px;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+		word-break: break-all;
+		position: relative;
+		top: 10px;
 	}
 	.main_new_right ul li .fr {
 		float: right;
+		margin-left: 5px;
 		margin-right: 40px;
+		position: relative;
+		top: 10px;
+	}
+	.main_new_right ul li .fr .btn {
+		width: 80px;
+		background: #3c8dbc;
+		color: #fff;
+		padding: 4px 12px;
+	}
+	.tongzhi_ctn {
+		text-align: center;
+		
+	}
+	.tongzhi_ctn .tongzhi_dtl {
+		text-align: left;
+		text-indent: 2em;
+	}
+	.main_new_right table {
+		width: 100%;
+		margin-top: 10px;
+		border-top: 1px solid #eee;
+		border-left: 1px solid #eee;
+	}
+	.main_new_right table td,
+	.main_new_right table th {
+		border-bottom: 1px solid #eee;
+		border-right: 1px solid #eee;
+		line-height: 40px;
+		padding-left: 20px;
+		word-break: break-all;
+	}
+	.main_new_right table th {
+		background: #3c8dbc;
+		color: #fff;
+	}
+	span.a {
+		cursor: pointer;
+		display: inline-block;
+	}
+	.back {
+		display: inline-block;
+		margin: 20px 10px;
+		cursor: pointer;
 	}
 </style>
 <div class="wrapper" style="height:80%;">
@@ -88,39 +144,52 @@
 					</div>
 					<div data-ng-if="curNav === 2">
 						<div class="right_title">学生中心</div>
-						<table>
+						<table data-ng-show="!isShowCourseDtl">
 							<tr><th>课程</th></tr>
-							<tr ng-repeat="stuc in stuCenter track by $index">
-								<td>{{stuc}}</td>
+							<tr data-ng-repeat="course in courseList track by $index">
+								<td><span data-ng-click="showCourse(course)" class="a">{{course.name}}</span></td>
 							</tr>
 						</table>
-						<table data-ng-if="">
-							<tr><th>实验名称</th><th>实验分数</th><th>报告分数</th><th>报告评语</th></tr>
-							<tr ng-repeat="stuc in stuCenter track by $index">
-								<td>{{stuc}}</td>
-								<td>{{stuc}}</td>
-								<td>{{stuc}}</td>
-								<td>{{stuc}}</td>
-							</tr>
-						</table>
+						<div data-ng-if="isShowCourseDtl">
+							<div class="back" data-ng-click="showCourseList()">返回</div>
+							<table>
+								<tr><th>实验名称</th><th>实验分数</th><th>报告分数</th><th>报告评语</th></tr>
+								<tr data-ng-repeat="stuc in stuCenter track by $index">
+									<td>{{stuc}}</td>
+									<td>{{stuc}}</td>
+									<td>{{stuc}}</td>
+									<td>{{stuc}}</td>
+								</tr>
+							</table>
+						</div>
 					</div>
 					<div data-ng-if="curNav === 3">
 						<div class="right_title">资料下载</div>
 						<ul>
-							<li ng-repeat="item in stuCenter track by $index">
-								{{item.name}}
-								<div class="fr">{{item.createTime}}</div>
+							<li data-ng-repeat="item in stuCenter track by $index">
+								<span>{{item.name}}</span>
+								<div class="fr">
+									{{item.createTime}}
+									<div class="btn">下载</div>
+								</div>
 							</li>
 						</ul>
 					</div>
 					<div data-ng-if="curNav === 4">
 						<div class="right_title">通知中心</div>
-						<ul>
-								<li ng-repeat="item in stuCenter track by $index">
-									{{item.name}}
+						<div data-ng-show="!isShowTongzhiDtl">
+							<ul>
+								<li data-ng-repeat="item in stuCenter track by $index" data-ng-click="showTongzhi(item)">
+									<span class="a">{{item.name}}</span>
 									<div class="fr">{{item.createTime}}</div>
 								</li>
 							</ul>
+						</div>
+						<div data-ng-if="isShowTongzhiDtl" class="tongzhi_ctn">
+							<div class="back" data-ng-click="showTongzhiList()" style="float: left;">返回</div>
+							<div class="title">{{curTongzhi.name}}</div>
+							<div><span style="margin-right: 30px;">作者:{{curTongzhi.name}}</span>span><span>日期:{{curTongzhi.createTime}}</span>span></div>
+						</div>
 					</div>
 				</div>
 			</div>
