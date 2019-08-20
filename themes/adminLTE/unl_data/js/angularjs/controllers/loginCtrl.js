@@ -11,8 +11,11 @@ function loginController($scope, $http, $location, $rootScope) {
 				.then(
 				function successCallback(response) {
 					if (response.status == '200' && response.statusText == 'OK'){
-					blockUI();
-					$scope.testAUTH("/main");}
+						localStorage.EVENEWUSERNAME = $scope.username.trim()
+						blockUI();
+						// $scope.testAUTH("/main");
+						$location.path("/mainnew");
+					}
 				}, 
 				function errorCallback(response) {
 					if (response.status == '400' && response.statusText == 'Bad Request'){

@@ -38,7 +38,9 @@
 		text-align: center;
 		cursor: pointer;
 	}
-	.main_new_nav {}
+	.main_new_nav.cur {
+		color: #3c8dbc;
+	}
 	.main_new_ctn .main_new_right {
 		width: 770px;
 		float: left;
@@ -131,7 +133,7 @@
 			</div>
 			<div class="main_new_ctn">
 				<div class="main_new_left">
-					<div class="main_new_nav" data-ng-repeat="nav in navList track by $index" ng-click="clickTab(nav, $index)">
+					<div class="main_new_nav" data-ng-repeat="nav in navList track by $index" ng-click="clickTab(nav, $index)" ng-class="{'cur': curNav == $index}">
 						{{nav.name}}
 					</div>
 				</div>
