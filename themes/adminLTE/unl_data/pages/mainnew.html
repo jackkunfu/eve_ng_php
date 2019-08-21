@@ -48,6 +48,7 @@
 		border-radius: 5px;
 		height: 100%;
 		padding: 20px;
+		overflow: auto;
 	}
 	.main_new_right .right_title {
 		text-align: center;
@@ -86,7 +87,7 @@
 	}
 	.tongzhi_ctn {
 		text-align: center;
-		
+		margin-top: 30px;
 	}
 	.tongzhi_ctn .tongzhi_dtl {
 		text-align: left;
@@ -140,6 +141,9 @@
 				<div class="main_new_right">
 					<div data-ng-if="curNav === 0">
 						<div class="right_title">平台介绍</div>
+						<div class="main_new_nav" data-ng-repeat="item in platFormList track by $index">
+							{{item.category}}
+						</div>
 					</div>
 					<div data-ng-if="curNav === 1">
 						<div class="right_title">平台介绍</div>
@@ -168,7 +172,7 @@
 					<div data-ng-if="curNav === 3">
 						<div class="right_title">资料下载</div>
 						<ul>
-							<li data-ng-repeat="item in stuCenter track by $index">
+							<li data-ng-repeat="item in docList track by $index">
 								<span>{{item.name}}</span>
 								<div class="fr">
 									{{item.createTime}}
@@ -181,16 +185,20 @@
 						<div class="right_title">通知中心</div>
 						<div data-ng-show="!isShowTongzhiDtl">
 							<ul>
-								<li data-ng-repeat="item in stuCenter track by $index" data-ng-click="showTongzhi(item)">
-									<span class="a">{{item.name}}</span>
-									<div class="fr">{{item.createTime}}</div>
+								<li data-ng-repeat="item in tongzhiList track by $index" data-ng-click="showTongzhi(item)">
+									<span class="a">{{item.category}}</span>
+									<div class="fr">{{item.createtime}}</div>
 								</li>
 							</ul>
 						</div>
 						<div data-ng-if="isShowTongzhiDtl" class="tongzhi_ctn">
-							<div class="back" data-ng-click="showTongzhiList()" style="float: left;">返回</div>
-							<div class="title">{{curTongzhi.name}}</div>
-							<div><span style="margin-right: 30px;">作者:{{curTongzhi.name}}</span>span><span>日期:{{curTongzhi.createTime}}</span>span></div>
+							<div class="back" data-ng-click="showTongzhiList()" style="float: left;position: relative;top: -80px;">返回</div>
+							<div class="title">{{curTongzhi.title}}</div>
+							<div style="margin-top: 10px;">
+								<span style="margin-right: 30px;">作者:{{curTongzhi.createBy}}</span>
+								<span>日期:{{curTongzhi.createTime}}</span>
+							</div>
+							<div class="tongzhi_dtl">{{curTongzhi.content}}</div>
 						</div>
 					</div>
 				</div>

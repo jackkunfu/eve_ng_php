@@ -13,10 +13,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 	$scope.fileManagerItem=[];
 	$scope.checkboxArray=[];
 	//Default variables ///END
-
 	$scope.apiBase = 'http://47.99.201.236:9000'
-	$scope.platformList = []
-	$scope.messageList = []
 	$scope.navList = [
 		{ name: '平台介绍' },
 		{ name: '实验项目' },
@@ -24,11 +21,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 		{ name: '资料下载' },
 		{ name: '通知中心' }
 	]
-	$scope.curNav = -1
-	$scope.isShowCourseDtl = false // 展示课程详情
-	$scope.isShowTongzhiDtl = false // 展示通知详情
-	$scope.curTongzhi = {}
-	$scope.curCourse = {}
+	$scope.platformList = []
 	$scope.courseList = [
 		{ name: 'CCNA', id: 1 },
 		{ name: 'CCNP ROUTER', id: 1 },
@@ -44,24 +37,29 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 		{ name: 'bjssbhpishvdvis', createTime: '2019-01-01' },
 		{ name: 'bjssbhpishvdvis', createTime: '2019-01-01' }
 	]
-	$scope.listInfo = [{
-		api: {
-			list: ''
-		}
-	}]
+	$scope.messageList = []
+	$scope.docList = []
+	$scope.tongzhiList = []
+	
+	$scope.curNav = -1
+	$scope.isShowCourseDtl = false // 展示课程详情
+	$scope.isShowTongzhiDtl = false // 展示通知详情
+	$scope.curTongzhi = {}
+	$scope.curCourse = {}
+
 	var EVENEWUSERNAME = localStorage.EVENEWUSERNAME || ''
 	if (!EVENEWUSERNAME) {
 		$location.path("/login");
 	}
 
-	let tabUrl = {
+	var tabUrl = {
 		0: '/api/article/list',
 		2: '/api/lab/list',
 		3: '/api/file/list',
 		4: '/api/article/list'
 	}
 
-	let tabOpts = {
+	var tabOpts = {
 		0: {
 			username: EVENEWUSERNAME,
 			category: 'introduce',
@@ -70,6 +68,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 		2: {
 			username: EVENEWUSERNAME,
 			path: '/'
+			// path: '/opt/unetlab/labs'
 		},
 		3: {
 			username: EVENEWUSERNAME,
@@ -82,29 +81,38 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 		}
 	}
 
+	$scope.listKey = {
+		0: 'platFormList', 2: 'courseList,all', 3: 'docList', 4: 'tongzhiList'
+	}
+
 	$scope.clickTab = function (item, idx) {
-		this.isShowCourseDtl = false
-		this.isShowTongzhiDtl = false
+		$scope.isShowCourseDtl = false
+		$scope.isShowTongzhiDtl = false
 		if ($scope.curNav == idx) return
 		$scope.curNav = idx
 
-		if (idx == 1) $location.path('/main')
+		if (idx == 1) {
+			$location.path('/main')
+			return
+		}
 
-		let urlSplit = tabUrl[idx].split(',')
-		let method = urlSplit[1] || 'get'
-		let obj = {
-			method: urlSplit[1] || 'get',
+		var urlSplit = tabUrl[idx].split(',')
+		var method = urlSplit[1] ? urlSplit[1].trim() : 'get'
+		var obj = {
+			method: method,
 			url: $scope.apiBase + urlSplit[0]
 		}
 		if (method.toLocaleLowerCase() == 'get') obj.params = tabOpts[idx]
 		else obj.data = tabOpts[idx]
-		
-		$http(obj)
-		.then(
+		$http(obj).then(
 			function successcallback(response) {
-				if (response && response.data) {
-					var data = response.data
-					$scope.platformList = data.list || []
+				if (response && response.data && response.data.data) {
+					// console.log(response)
+					var res = response.data.data
+					let dataSplit = $scope.listKey[idx].split(',')
+					var list = dataSplit[1] && dataSplit[1] === 'all' ? res : (res.data || [])
+					console.log(list)
+					$scope[dataSplit[0]] = list
 				}
 			},
 			function errorcallback(response) {
@@ -112,7 +120,6 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 				// $location.path("/login");
 			}
 		)
-		
 	}
 
 	$scope.clickTab({}, 0)
@@ -133,33 +140,4 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 		$scope.isShowTongzhiDtl = false
 		$scope.curTongzhi = {}
 	}
-
-	function reqPlatform () {
-		
-	}
-
-	function reqCourse () {
-		$http({
-			method: 'get',
-			url: $scope.apiBase + '/admin/article/list',
-			params: {
-				username: EVENEWUSERNAME,
-				category: 'introduce',
-				pageNum: 1, pageSize: 10
-			}
-		})
-		.then(
-			function successcallback(response) {
-				if (response && response.data) {
-					var data = response.data
-					$scope.platformList = data.list || []
-				}
-			},
-			function errorcallback(response) {
-				console.log("unknown error. why did api doesn't respond?");
-				// $location.path("/login");
-			}
-		)
-	}
 }
-
