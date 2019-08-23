@@ -68,6 +68,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 		2: {
 			username: EVENEWUSERNAME,
 			path: '/opt/unetlab/labs'
+			// path: '/'
 		},
 		3: {
 			username: EVENEWUSERNAME,
@@ -112,7 +113,6 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 					} else {
 						$scope[$scope.listKey[idx]] = res.list || []
 					}
-					
 				}
 			},
 			function errorcallback(response) {
@@ -132,6 +132,21 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 	$scope.showCourse = function (item) {
 		$scope.curCourse = item
 		$scope.isShowCourseDtl = true
+		// 获取实验指导书
+		$http({
+			method: 'get',
+			url: $scope.apiBase + '/api/labGuide/get',
+			params: { labId: item.path }
+		}).then(
+			function successcallback(response) {
+				if (response && response.data && response.data.data) {
+				
+				}
+			},
+			function errorcallback(response) {
+				console.log("unknown error. why did api doesn't respond?");
+			}
+		)
 	}
 	$scope.showCourseList = function () {
 		$scope.isShowCourseDtl = false
