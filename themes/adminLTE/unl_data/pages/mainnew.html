@@ -130,7 +130,7 @@
 
 		<div class="main_new_main">
 			<div class="main_new_top">
-				<div class="main_new_scroll">最新消息：{{messageList[0] || ''}}</div>
+				<div class="main_new_scroll">最新消息：{{tongzhiList[0] ? tongzhiList[0].content : ''}}</div>
 			</div>
 			<div class="main_new_ctn">
 				<div class="main_new_left">
@@ -196,7 +196,7 @@
 							<div class="title">{{curTongzhi.title}}</div>
 							<div style="margin-top: 10px;">
 								<span style="margin-right: 30px;">作者:{{curTongzhi.createBy}}</span>
-								<span>日期:{{curTongzhi.createTime}}</span>
+								<span>日期:{{curTongzhi.createtime}}</span>
 							</div>
 							<div class="tongzhi_dtl">{{curTongzhi.content}}</div>
 						</div>

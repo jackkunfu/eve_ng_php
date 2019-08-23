@@ -67,8 +67,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 		},
 		2: {
 			username: EVENEWUSERNAME,
-			path: '/'
-			// path: '/opt/unetlab/labs'
+			path: '/opt/unetlab/labs'
 		},
 		3: {
 			username: EVENEWUSERNAME,
@@ -82,7 +81,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 	}
 
 	$scope.listKey = {
-		0: 'platFormList', 2: 'courseList,all', 3: 'docList', 4: 'tongzhiList'
+		0: 'platFormList', 2: 'courseList', 3: 'docList', 4: 'tongzhiList'
 	}
 
 	$scope.clickTab = function (item, idx) {
@@ -107,12 +106,13 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 		$http(obj).then(
 			function successcallback(response) {
 				if (response && response.data && response.data.data) {
-					// console.log(response)
 					var res = response.data.data
-					let dataSplit = $scope.listKey[idx].split(',')
-					var list = dataSplit[1] && dataSplit[1] === 'all' ? res : (res.data || [])
-					console.log(list)
-					$scope[dataSplit[0]] = list
+					if (Object.prototype.toString.call(res) == '[object Array]') {
+						$scope[$scope.listKey[idx]] = res
+					} else {
+						$scope[$scope.listKey[idx]] = res.list || []
+					}
+					
 				}
 			},
 			function errorcallback(response) {
@@ -123,6 +123,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 	}
 
 	$scope.clickTab({}, 0)
+	$scope.clickTab({}, 4)
 
 	$scope.showTongzhi = function (item) {
 		$scope.curTongzhi = item
