@@ -1,6 +1,6 @@
 function loginController($scope, $http, $location, $rootScope) {
-	if ($scope.html5 == null ) { $scope.html5 = -1 ;} 
-	$scope.testAUTH("/main");
+	if ($scope.html5 == null ) { $scope.html5 = -1 ;}
+	$scope.testAUTH("/mainnew");
 	$('body').removeClass().addClass('hold-transition login-page');
 	$scope.tryLogin = function(){
 		$scope.loginMessageInfo="";
@@ -13,8 +13,8 @@ function loginController($scope, $http, $location, $rootScope) {
 					if (response.status == '200' && response.statusText == 'OK'){
 						localStorage.EVENEWUSERNAME = $scope.username.trim()
 						blockUI();
-						// $scope.testAUTH("/main");
-						$location.path("/mainnew");
+						$scope.testAUTH("/mainnew");
+						// $location.path("/mainnew");
 					}
 				}, 
 				function errorCallback(response) {

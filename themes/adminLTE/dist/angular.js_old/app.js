@@ -21,22 +21,21 @@ app_main_unl.config(['$controllerProvider', function($controllerProvider) {
 
 /* Setup App Main Controller */
 app_main_unl.controller('unlMainController', ['$scope', '$rootScope', '$http', '$location', function($scope, $rootScope, $http, $location) {
-		$scope.testAUTH = function () {
-		$scope.userfolder='none';
-		$http.get('/api/auth').then(
-			function successCallback(response) {
-				if (response.status == '200' && response.statusText == 'OK'){
-				$location.path("/main");
-				$scope.userfolder = response.data.folder;
-				}
-			}, 
-			function errorCallback(response) {
-				if (response.status == '401' && response.statusText == 'Unauthorized'){
-				$location.path("/login");}
-				else {console.log("Unknown Error. Why did API doesn't respond?")}	
-		});
-		}
-		$scope.testAUTH();
+    $scope.testAUTH = function () {
+        $scope.userfolder='none';
+        $http.get('/api/auth').then(
+            function successCallback(response) {
+                if (response.status == '200' && response.statusText == 'OK'){
+                    $location.path("/mainnew");
+                    $scope.userfolder = response.data.folder;
+                }
+            }, 
+            function errorCallback(response) {
+                if (response.status == '401' && response.statusText == 'Unauthorized') { $location.path("/login"); }
+                else {console.log("Unknown Error. Why did API doesn't respond?")}	
+        });
+    }
+    $scope.testAUTH();
 }]);
 
 /* Setup Layout Part - Header */

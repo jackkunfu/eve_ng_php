@@ -88,21 +88,29 @@ app_main_unl.controller('unlMainController', ['$scope', '$rootScope', '$http', '
             $http.get('/api/auth').then(
                 function successCallback(response) {
                     if (response.status == '200' && response.statusText == 'OK'){
-                    $rootScope.username=response.data.data.username;
-                    $rootScope.folder= (response.data.data.folder === null) ? '/' : response.data.data.folder;
-                    $rootScope.email=response.data.data.email;
-                    $rootScope.role=response.data.data.role;
-                    $rootScope.name=response.data.data.name;
-                    if (path != "/lab") $rootScope.lab=response.data.data.lab;
-                    $rootScope.lang=response.data.data.lang;
-                    $rootScope.tenant=response.data.data.tenant;
-                    $scope.userfolder = response.data.folder;
-                    console.log($rootScope.lab)
-                    // Preview need to get back to legacy UI
-                    if ( $rootScope.UIlegacy == 1) {
-                        if ($rootScope.lab === null ) {$location.path(path)} else {location.href ='/legacy/'};
+                        $rootScope.username=response.data.data.username;
+                        $rootScope.folder= (response.data.data.folder === null) ? '/' : response.data.data.folder;
+                        $rootScope.email=response.data.data.email;
+                        $rootScope.role=response.data.data.role;
+                        $rootScope.name=response.data.data.name;
+                        if (path != "/lab") $rootScope.lab=response.data.data.lab;
+                        $rootScope.lang=response.data.data.lang;
+                        $rootScope.tenant=response.data.data.tenant;
+                        $scope.userfolder = response.data.folder;
+                        console.log($rootScope.lab)
+                        // Preview need to get back to legacy UI
+                        if ( $rootScope.UIlegacy == 1) {
+                            if ($rootScope.lab === null ) {
+                                $location.path(path)
+                            } else {
+                                location.href ='/legacy/'
+                            };
                         } else {
-                        if ($rootScope.lab === null ) {$location.path(path)} else {$location.path('/lab')};
+                            if ($rootScope.lab === null ) {
+                                $location.path(path)
+                            } else {
+                                $location.path('/lab')
+                            };
                         }
                     }
                 }, 

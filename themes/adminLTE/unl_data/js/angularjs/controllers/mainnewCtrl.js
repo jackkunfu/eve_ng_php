@@ -13,7 +13,8 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 	$scope.fileManagerItem=[];
 	$scope.checkboxArray=[];
 	//Default variables ///END
-	$scope.apiBase = 'http://47.99.201.236:9000'
+	// $scope.apiBase = 'http://47.99.201.236:9000'
+	$scope.apiBase = 'http://127.0.0.1:9000'
 	$scope.navList = [
 		{ name: '平台介绍' },
 		{ name: '实验项目' },
@@ -67,6 +68,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 		},
 		2: {
 			username: EVENEWUSERNAME,
+			// path: '/opt/unetlab/tmp/4/58e76619-4032-4a04-a8b1-eee497071377/2'
 			path: '/opt/unetlab/labs'
 			// path: '/'
 		},
@@ -156,4 +158,16 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 		$scope.isShowTongzhiDtl = false
 		$scope.curTongzhi = {}
 	}
+
+
+	// $http.get('/api/labs/CCNA/configs/' + id)
+	// 	.then(
+	// 		function successCallback(response){
+	// 			$("#nodeconfig").val(response.data.data.data)
+	// 		},
+	// 		function errorCallback(response){
+	// 			console.log('Server Error');
+	// 			console.log(response);
+	// 		}
+	// 	)
 }
