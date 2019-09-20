@@ -527,6 +527,110 @@ $(document).on('click', '.action-labbodyget', function (e) {
     });
 });
 
+function ajax(url, data, type) {
+    var deferred = $.Deferred();
+    $.ajax({
+        timeout: TIMEOUT,
+        type: type || 'get',
+        url: encodeURI(url),
+        dataType: 'json',
+        data: data,
+        success: function (data) {
+            if (data && data.code == 1) {
+                deferred.resolve(data['data']);
+            } else {
+                deferred.reject(data['message']);
+            }
+        },
+        error: function (data) {
+            // Server error
+            var message = getJsonMessage(data.msg);
+            deferred.reject(message);
+        }
+    });
+    return deferred.promise();
+}
+
+// 指导书
+$(document).on('click', '.action-zhidaoshu', function (e) {
+    logger(1, 'DEBUG: action = labbodyget');
+    let labId = location.href.split('/legacy')[0]
+    if (!labId) return
+    $.when(ajax('/api/labGuide/get', { labId: labId })).done(function (info, body) {
+        console.log(info)
+        console.log(body)
+        addModalWide(MESSAGES[64], '<h1>' + info['name'] + '</h1><p>' + info['description'] + '</p><p><code>ID: ' + info['id'] + '</code></p>' + body, '')
+    }).fail(function (message1, message2) {
+        if (message1 != null) {
+            addModalError(message1);
+        } else {
+            addModalError(message2)
+        }
+    });
+});
+
+// 提交配置
+$(document).on('click', '.action-tijiaopeizhi', function (e) {
+    logger(1, 'DEBUG: action = labbodyget');
+    let labId = location.href.split('/legacy')[0]
+    if (!labId) return
+    $.when(ajax('/api/labGuide/get', { labId: labId })).done(function (info, body) {
+        console.log(info)
+        console.log(body)
+        addModalWide(MESSAGES[64], '<h1>' + info['name'] + '</h1><p>' + info['description'] + '</p><p><code>ID: ' + info['id'] + '</code></p>' + body, '')
+    }).fail(function (message1, message2) {
+        if (message1 != null) {
+            addModalError(message1);
+        } else {
+            addModalError(message2)
+        }
+    });
+});
+
+// 提交报告
+$(document).on('click', '.action-tijiaobaogao', function (e) {
+    logger(1, 'DEBUG: action = labbodyget');
+    var file = document.createElement('input')
+    file.type = 'file'
+    file.accept = "application/msword"
+    document.body.appendChild(file)
+    file.addEventListener('change', function () {
+        alert(1)
+    })
+    file.click()
+    // file.onchange = function (e) {
+    //     alert(2)
+    // }
+    // file.onclose = function (){
+    //     alert(1)
+    // }
+    $.when(getLabInfo($('#lab-viewport').attr('data-path')), getLabBody()).done(function (info, body) {
+        addModalWide(MESSAGES[64], '<h1>' + info['name'] + '</h1><p>' + info['description'] + '</p><p><code>ID: ' + info['id'] + '</code></p>' + body, '')
+    }).fail(function (message1, message2) {
+        if (message1 != null) {
+            addModalError(message1);
+        } else {
+            addModalError(message2)
+        }
+        ;
+    });
+});
+
+// 配置答案
+$(document).on('click', '.action-peizhidaan', function (e) {
+    logger(1, 'DEBUG: action = labbodyget');
+    $.when(getLabInfo($('#lab-viewport').attr('data-path')), getLabBody()).done(function (info, body) {
+        addModalWide(MESSAGES[64], '<h1>' + info['name'] + '</h1><p>' + info['description'] + '</p><p><code>ID: ' + info['id'] + '</code></p>' + body, '')
+    }).fail(function (message1, message2) {
+        if (message1 != null) {
+            addModalError(message1);
+        } else {
+            addModalError(message2)
+        }
+        ;
+    });
+});
+
 // Edit/print lab network
 $(document).on('click', '.action-networkedit', function (e) {
 
