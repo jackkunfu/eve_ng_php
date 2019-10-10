@@ -1250,6 +1250,7 @@ function postLogin(param) {
         clearInterval(UPDATEID);
     }
     $('body').removeClass('login');
+    // printPageLabOpen('CCNA'); //-----------------------
     if (LAB == null && param == null) {
 // Code to new UI
 //	window.location.href = "/" ; 
@@ -3144,7 +3145,7 @@ function printListTextobjects(textobjects) {
 
 // Print Authentication Page
 function printPageAuthentication() {
-    location.href = "/" ; 
+    location.href = "/"; // 本地调试须注释
     //var html = new EJS({url: '/themes/default/ejs/login.ejs'}).render()
     //$('#body').html(html);
     //$("#form-login input:eq(0)").focus();
@@ -3306,6 +3307,14 @@ function printPageLabOpen(lab) {
     $('#lab-sidebar ul').append('<li><a class="action-freeselect" href="javascript:void(0)" title="' + MESSAGES[151] + '"><i class="glyphicon glyphicon-check"></i></a></li>');
     $('#lab-sidebar ul').append('<li><a class="action-status" href="javascript:void(0)" title="' + MESSAGES[13] + '"><i class="glyphicon glyphicon-info-sign"></i></a></li>');
     $('#lab-sidebar ul').append('<li><a class="action-labbodyget" href="javascript:void(0)" title="' + MESSAGES[64] + '"><i class="glyphicon glyphicon-list-alt"></i></a></li>');
+
+
+    $('#lab-sidebar ul').append('<li><a class="action-zhidaoshu" href="javascript:void(0)" title="' + '实验指导书' + '"><i class="glyphicon glyphicon-list-alt"></i></a></li>');
+    $('#lab-sidebar ul').append('<li><a class="action-tijiaopeizhi" href="javascript:void(0)" title="' + '提交实验配置' + '"><i class="glyphicon glyphicon-list-alt"></i></a></li>');
+    $('#lab-sidebar ul').append('<li><a class="action-tijiaobaogao" href="javascript:void(0)" title="' + '提交实验报告' + '"><i class="glyphicon glyphicon-list-alt"></i></a></li>');
+    $('#lab-sidebar ul').append('<li><a class="action-peizhidaan" href="javascript:void(0)" title="' + '标准答案' + '"><i class="glyphicon glyphicon-list-alt"></i></a></li>');
+
+
     $('#lab-sidebar ul').append('<div id="action-labclose"><li><a class="action-labclose" href="javascript:void(0)" title="' + MESSAGES[60] + '"><i class="glyphicon glyphicon-off"></i></a></li></div>');
     $('#lab-sidebar ul').append('<li><a class="action-lock-lab" href="javascript:void(0)" title="' + MESSAGES[166] + '"><i class="glyphicon glyphicon-ok-circle"></i></a></li>');
     $('#lab-sidebar ul').append('<li><a class="action-logout" href="javascript:void(0)" title="' + MESSAGES[14] + '"><i class="glyphicon glyphicon-log-out"></i></a></li>');

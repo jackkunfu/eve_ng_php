@@ -521,17 +521,16 @@ $(document).on('click', '.action-labbodyget', function (e) {
         if (message1 != null) {
             addModalError(message1);
         } else {
-            addModalError(message2)
+            addModalError(message2);
         }
-        ;
     });
 });
 
-var api9000Basic = 'http://localhost:9000';
+var api9000Basic = 'http://is7dvp.natappfree.cc';
 function s_ajax(url, data, cb, type, upfile) {
     let options = data || {};
     if (!upfile) options.username = localStorage.EVENEWUSERNAME;
-    $.ajax({
+    let config = {
         timeout: TIMEOUT,
         type: type || 'get',
         // url: encodeURI(url),
@@ -545,7 +544,14 @@ function s_ajax(url, data, cb, type, upfile) {
             // Server error
             var message = getJsonMessage(data.msg);
         }
-    })
+    }
+    if (upfile) {
+        config.contentType = false;
+        // 告诉jQuery不要去设置Content-Type请求头
+        config.processData = false;
+        // 告诉jQuery不要去处理发送的数据
+    }
+    $.ajax(config);
 }
 
 function getConfigById (labId, nodeId, cb) {
@@ -561,19 +567,25 @@ function getConfigById (labId, nodeId, cb) {
     )
 }
 
+var labId = location.href.split('/legacy/')[1]; // 获取链接中实验id
+if (labId) labId = labId.split('.unl')[0] + '.unl';
+
 function getConfigByIdEach (labId, nodeId) {
     // return $http.get('/api/labs' + labId + '/configs/' + nodeId)
     return $.ajax({
-        url: '/api/labs' + labId + '/configs/' + nodeId,
+        url: '/api/labs/' + labId + '/configs/' + nodeId,
         dataType: 'json',
         data: {},
         type: 'get'
     }).done(function (command) {
-        var labId = location.href.split('/legacy')[1];
+        // var labId = location.href.split('/legacy/')[1];
         if (!labId) return
-        labId = labId.split('.unl')[0] + '.unl';
+        var data = '';
+        if (command.data && command.data.data) data = command.data.data;
+        // if (!command.data || !command.data.data) return
+        // labId = labId.split('.unl')[0] + '.unl';
         s_ajax('/api/labSpotReport/add', {
-            username: localStorage.EVENEWUSERNAME, labId: labId, nodeId: nodeId, command: command
+            username: localStorage.EVENEWUSERNAME, labId: labId, nodeId: nodeId, command: data
         }, function () {
             // addModalWide('提交配置', '<h1>提交成功</h1>', '')
             // addModalWide(MESSAGES[64], '<h1>' + info['name'] + '</h1><p>' + info['description'] + '</p><p><code>ID: ' + info['id'] + '</code></p>' + body, '')
@@ -584,24 +596,26 @@ function getConfigByIdEach (labId, nodeId) {
 // 查看指导书
 $(document).on('click', '.action-zhidaoshu', function (e) {
     logger(1, 'DEBUG: action = labbodyget');
-    var labId = location.href.split('/legacy')[1]
+    // var labId = location.href.split('/legacy/')[1]
     if (!labId) return
-    labId = labId.split('.unl')[0] + '.unl';
-    s_ajax('/api/labGuide/get', { labId: labId }, function (data) {
-        console.log(data)
+    // labId = labId.split('.unl')[0] + '.unl';
+    s_ajax('/api/labGuide/get', { labId: '/opt/unetlab/labs/' + labId }, function (data) {
+        var text = ''
+        if (data && data.data && data.data.content) text = data.data.content;
         // addModalWide(MESSAGES[64], '<h1>' + info['name'] + '</h1><p>' + info['description'] + '</p><p><code>ID: ' + info['id'] + '</code></p>' + body, '')
-        addModalWide('查看指导书', '<h1>指导书内容</h1><p>xxxxxx</p>' + body, '')
+        addModalWide('查看指导书', '<h1>指导书内容</h1><p>' + text + '</p>', '')
     })
 });
 
 // 提交配置
 $(document).on('click', '.action-tijiaopeizhi', function (id) {
     logger(1, 'DEBUG: action = labbodyget');
-    var labId = location.href.split('/legacy')[1];
+    // var labId = location.href.split('/legacy/')[1];
     // addModalWide('提交配置', '<h1>提交成功</h1>' + body, '')
     if (!labId) return
-    labId = labId.split('.unl')[0] + '.unl';
-    s_ajax('/api/lab/device/list', { username: localStorage.EVENEWUSERNAME, path: labId }, function (res) {
+    // labId = labId.split('.unl')[0] + '.unl';
+    labId = decodeURI(labId)
+    s_ajax('/api/lab/device/list', { username: localStorage.EVENEWUSERNAME, path: '/opt/unetlab/labs/' + labId }, function (res) {
         if (res.code == 1 && res.data && res.data.topology && res.data.topology.nodes) {
             var list = res.data.topology.nodes.node || []
             $.when.apply($, list.map(function (el) { return getConfigByIdEach(labId, el.id) })).done(function (data) {
@@ -616,9 +630,9 @@ $(document).on('click', '.action-tijiaopeizhi', function (id) {
 
 // 提交报告
 $(document).on('click', '.action-tijiaobaogao', function (e) {
-    var labId = location.href.split('/legacy')[1]
+    // var labId = location.href.split('/legacy/')[1]
     if (!labId) return
-    labId = labId.split('.unl')[0] + '.unl';
+    // labId = labId.split('.unl')[0] + '.unl';
     logger(1, 'DEBUG: action = labbodyget');
     var file = document.createElement('input')
     file.type = 'file'
@@ -630,12 +644,13 @@ $(document).on('click', '.action-tijiaobaogao', function (e) {
         s_ajax('/admin/file/upload', fd, function (res) {
             console.log('上传文件：');
             console.log(res);
-            if (res.code == 1) {
-                s_ajax('/api/labReport/add', {
-                    labId: labId, content: res.data
-                }, function (addData) {
+            if (res && res.code == 1) {
+                var url = ''
+                if (res.data && res.data.url) url = res.data.url
+                s_ajax('/api/labReport/add', { labId: labId, content: url }, function (addData) {
                     if (addData && addData.code == 1) {
-                        addModalWide(MESSAGES[64], '<h1>提交报告</h1><p>提交成功</p>' + body, '')
+                        // addModalWide(MESSAGES[64], '<h1>提交报告</h1><p>提交成功</p>' + body, '')
+                        addModalWide(MESSAGES[64], '<h1>提交报告</h1><p>提交成功</p>', '')
                     } else {
                         alert('文件上传成功，报告添加失败')
                     }
@@ -649,12 +664,15 @@ $(document).on('click', '.action-tijiaobaogao', function (e) {
 // 查看标准答案
 $(document).on('click', '.action-peizhidaan', function (e) {
     logger(1, 'DEBUG: action = labbodyget');
-    var labId = location.href.split('/legacy')[1]
+    // var labId = location.href.split('/legacy/')[1]
     if (!labId) return
-    labId = labId.split('.unl')[0] + '.unl';
-    s_ajax('/api/labGuide/get', { labId: labId }, function (data) {
+    // labId = labId.split('.unl')[0] + '.unl';
+    s_ajax('/api/labAnswer/get', { labId: '/opt/unetlab/labs/' + labId }, function (data) {
         console.log(data)
-        addModalWide(MESSAGES[64], '<h1>' + info['name'] + '</h1><p>' + info['description'] + '</p><p><code>ID: ' + info['id'] + '</code></p>' + body, '')
+        var text = ''
+        if (data && data.data && data.data.content) text = data.data.content;
+        addModalWide(MESSAGES[64], '<h1>标准答案</h1><p>答案：</p><p>' + text + '</p>', '')
+        // addModalWide(MESSAGES[64], '<h1>' + info['name'] + '</h1><p>' + info['description'] + '</p><p><code>ID: ' + info['id'] + '</code></p>' + body, '')
     })
 });
 
