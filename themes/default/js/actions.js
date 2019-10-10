@@ -650,7 +650,7 @@ $(document).on('click', '.action-tijiaobaogao', function (e) {
                 s_ajax('/api/labReport/add', { labId: labId, content: url }, function (addData) {
                     if (addData && addData.code == 1) {
                         // addModalWide(MESSAGES[64], '<h1>提交报告</h1><p>提交成功</p>' + body, '')
-                        addModalWide(MESSAGES[64], '<h1>提交报告</h1><p>提交成功</p>', '')
+                        addModalWide('提交报告', '<h1>提交成功</h1>', '')
                     } else {
                         alert('文件上传成功，报告添加失败')
                     }
