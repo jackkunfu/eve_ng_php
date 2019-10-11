@@ -13,8 +13,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 	$scope.fileManagerItem=[];
 	$scope.checkboxArray=[];
 	//Default variables ///END
-	// $scope.apiBase = 'http://47.99.201.236:9000'
-	$scope.apiBase = 'http://127.0.0.1:9000'
+	$scope.apiBase = 'http://is7dvp.natappfree.cc';
 	$scope.navList = [
 		{ name: '平台介绍' },
 		{ name: '实验项目' },
@@ -124,8 +123,12 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 		)
 	}
 
-	$scope.clickTab({}, 0)
-	$scope.clickTab({}, 4)
+	$scope.clickTab({}, 4);
+	$scope.clickTab({}, 0);
+
+	$scope.downItem = function (item) {
+		window.open(item.url);
+	}
 
 	$scope.showTongzhi = function (item) {
 		$scope.curTongzhi = item

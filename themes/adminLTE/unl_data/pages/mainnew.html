@@ -130,7 +130,9 @@
 
 		<div class="main_new_main">
 			<div class="main_new_top">
-				<div class="main_new_scroll">最新消息：{{tongzhiList[0] ? tongzhiList[0].content : ''}}</div>
+				<div class="main_new_scroll">最新消息：
+					<span ng-bind-html="tongzhiList[0] ? tongzhiList[0].content : ''" style="position: relative;top: -20px;left: 70px;"></span>
+				</div>
 			</div>
 			<div class="main_new_ctn">
 				<div class="main_new_left">
@@ -176,7 +178,7 @@
 								<span>{{item.name}}</span>
 								<div class="fr">
 									{{item.createTime}}
-									<div class="btn">下载</div>
+									<div class="btn" data-ng-click="downItem(item)">下载</div>
 								</div>
 							</li>
 						</ul>
@@ -198,7 +200,7 @@
 								<span style="margin-right: 30px;">作者:{{curTongzhi.createBy}}</span>
 								<span>日期:{{curTongzhi.createtime}}</span>
 							</div>
-							<div class="tongzhi_dtl">{{curTongzhi.content}}</div>
+							<div class="tongzhi_dtl" ng-bind-html="curTongzhi.content"></div>
 						</div>
 					</div>
 				</div>
