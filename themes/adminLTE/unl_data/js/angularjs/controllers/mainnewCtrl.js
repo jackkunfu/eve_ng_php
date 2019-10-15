@@ -13,7 +13,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 	$scope.fileManagerItem=[];
 	$scope.checkboxArray=[];
 	//Default variables ///END
-	$scope.apiBase = 'http://is7dvp.natappfree.cc';
+	$scope.apiBase = 'http://4uxqz8.natappfree.cc';
 	$scope.navList = [
 		{ name: '平台介绍' },
 		{ name: '实验项目' },
@@ -29,13 +29,13 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 		{ name: 'TEST 1', id: 1 }
 	]
 	$scope.stuCenter = [
-		{ name: 'bjssbhpishvdvis', createTime: '2019-01-01' },
-		{ name: 'bjssbhpishvdvis', createTime: '2019-01-01' },
-		{ name: 'bjssbhpishvdvis', createTime: '2019-01-01' },
-		{ name: 'bjssbhpishvdvis', createTime: '2019-01-01' },
-		{ name: 'bjssbhpishvdvis', createTime: '2019-01-01' },
-		{ name: 'bjssbhpishvdvis', createTime: '2019-01-01' },
-		{ name: 'bjssbhpishvdvis', createTime: '2019-01-01' }
+		// { name: 'bjssbhpishvdvis', createTime: '2019-01-01' },
+		// { name: 'bjssbhpishvdvis', createTime: '2019-01-01' },
+		// { name: 'bjssbhpishvdvis', createTime: '2019-01-01' },
+		// { name: 'bjssbhpishvdvis', createTime: '2019-01-01' },
+		// { name: 'bjssbhpishvdvis', createTime: '2019-01-01' },
+		// { name: 'bjssbhpishvdvis', createTime: '2019-01-01' },
+		// { name: 'bjssbhpishvdvis', createTime: '2019-01-01' }
 	]
 	$scope.messageList = []
 	$scope.docList = []
@@ -54,37 +54,34 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 
 	var tabUrl = {
 		0: '/api/article/list',
-		2: '/api/lab/list',
+		2: '/api/student/list', // '/api/lab/list'
 		3: '/api/file/list',
 		4: '/api/article/list'
 	}
 
 	var tabOpts = {
 		0: {
-			username: EVENEWUSERNAME,
-			category: 'introduce',
-			pageNum: 1, pageSize: 10
+			username: EVENEWUSERNAME, category: 'introduce', pageNum: 1, pageSize: 10
 		},
+		// 2: {
+		// 	username: EVENEWUSERNAME,
+		// 	// path: '/opt/unetlab/tmp/4/58e76619-4032-4a04-a8b1-eee497071377/2'
+		// 	path: '/opt/unetlab/labs'
+		// 	// path: '/'
+		// },
 		2: {
-			username: EVENEWUSERNAME,
-			// path: '/opt/unetlab/tmp/4/58e76619-4032-4a04-a8b1-eee497071377/2'
-			path: '/opt/unetlab/labs'
-			// path: '/'
+			username: EVENEWUSERNAME, pageNum: 1, pageSize: 1000
 		},
 		3: {
-			username: EVENEWUSERNAME,
-			pageNum: 1, pageSize: 10
+			username: EVENEWUSERNAME, pageNum: 1, pageSize: 10
 		},
 		4: {
-			username: EVENEWUSERNAME,
-			category: 'notify',
-			pageNum: 1, pageSize: 10
+			username: EVENEWUSERNAME, category: 'notify', pageNum: 1, pageSize: 10
 		}
 	}
 
-	$scope.listKey = {
-		0: 'platFormList', 2: 'courseList', 3: 'docList', 4: 'tongzhiList'
-	}
+	// $scope.listKey = { 0: 'platFormList', 2: 'courseList', 3: 'docList', 4: 'tongzhiList' }
+	$scope.listKey = { 0: 'platFormList', 2: 'stuCenter', 3: 'docList', 4: 'tongzhiList' }
 
 	$scope.clickTab = function (item, idx) {
 		$scope.isShowCourseDtl = false
@@ -137,15 +134,15 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 	$scope.showCourse = function (item) {
 		$scope.curCourse = item
 		$scope.isShowCourseDtl = true
-		// 获取实验指导书
 		$http({
 			method: 'get',
-			url: $scope.apiBase + '/api/labGuide/get',
-			params: { labId: item.path }
+			url: $scope.apiBase + '/api/student/list',
+			params: { username: EVENEWUSERNAME, pageNum: 1, pageSize: 1000 }
 		}).then(
 			function successcallback(response) {
-				if (response && response.data && response.data.data) {
-				
+				if (response && response.data) {
+					$scope.stuCenter = response.data.data || []
+					// console.log($scope.stuCenter)
 				}
 			},
 			function errorcallback(response) {

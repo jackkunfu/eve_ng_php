@@ -120,6 +120,16 @@
 		margin: 20px 10px;
 		cursor: pointer;
 	}
+	.top_news {
+		position: relative;
+		top: -20px;
+		left: 70px;
+		display: inline-block;
+		text-overflow: ellipsis;
+		max-width: 600px;
+		height: 20px;
+		overflow: hidden;
+	}
 </style>
 <div class="wrapper" style="height:80%;">
 
@@ -131,7 +141,7 @@
 		<div class="main_new_main">
 			<div class="main_new_top">
 				<div class="main_new_scroll">最新消息：
-					<span ng-bind-html="tongzhiList[0] ? tongzhiList[0].content : ''" style="position: relative;top: -20px;left: 70px;"></span>
+					<span class="top_news" ng-bind-html="tongzhiList[0] ? tongzhiList[0].content : ''"></span>
 				</div>
 			</div>
 			<div class="main_new_ctn">
@@ -143,8 +153,8 @@
 				<div class="main_new_right">
 					<div data-ng-if="curNav === 0">
 						<div class="right_title">平台介绍</div>
-						<div class="main_new_nav" data-ng-repeat="item in platFormList track by $index">
-							{{item.category}}
+						<div style="padding: 20px 0;">
+							<div class="main_new_nav" data-ng-repeat="item in platFormList track by $index" ng-bind-html="item.content || ''"></div>
 						</div>
 					</div>
 					<div data-ng-if="curNav === 1">
@@ -152,7 +162,16 @@
 					</div>
 					<div data-ng-if="curNav === 2">
 						<div class="right_title">学生中心</div>
-						<table data-ng-show="!isShowCourseDtl">
+						<table>
+							<tr><th>实验名称</th><th>实验分数</th><th>报告分数</th><th>报告评语</th></tr>
+							<tr data-ng-repeat="stuc in stuCenter track by $index">
+								<td>{{stuc.lab}}1</td>
+								<td>{{stuc.labScore}}</td>
+								<td>{{stuc.reportScore}}</td>
+								<td>{{stuc.content}}</td>
+							</tr>
+						</table>
+						<!-- <table data-ng-show="!isShowCourseDtl">
 							<tr><th>课程</th></tr>
 							<tr data-ng-repeat="course in courseList track by $index">
 								<td><span data-ng-click="showCourse(course)" class="a">{{course.name}}</span></td>
@@ -163,13 +182,13 @@
 							<table>
 								<tr><th>实验名称</th><th>实验分数</th><th>报告分数</th><th>报告评语</th></tr>
 								<tr data-ng-repeat="stuc in stuCenter track by $index">
-									<td>{{stuc}}</td>
-									<td>{{stuc}}</td>
-									<td>{{stuc}}</td>
-									<td>{{stuc}}</td>
+									<td>{{stuc.lab}}1</td>
+									<td>{{stuc.labScore}}</td>
+									<td>{{stuc.reportScore}}</td>
+									<td>{{stuc.content}}</td>
 								</tr>
 							</table>
-						</div>
+						</div> -->
 					</div>
 					<div data-ng-if="curNav === 3">
 						<div class="right_title">资料下载</div>
