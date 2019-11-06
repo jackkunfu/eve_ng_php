@@ -1,4 +1,5 @@
 function mainnewController($scope, $http, $location, $window, $uibModal, $log, $rootScope, FileUploader, focus) {
+	$.unblockUI();
 	$rootScope.openLaba=false;
 	// $scope.testAUTH("/main"); //TEST AUTH
 	//Default variables ///START
@@ -12,8 +13,9 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 	$scope.blockButtonsClass='';
 	$scope.fileManagerItem=[];
 	$scope.checkboxArray=[];
+	
 	//Default variables ///END
-	$scope.apiBase = 'http://4uxqz8.natappfree.cc';
+	$scope.apiBase = 'http://hdd5gw.natappfree.cc';
 	$scope.navList = [
 		{ name: '平台介绍' },
 		{ name: '实验项目' },

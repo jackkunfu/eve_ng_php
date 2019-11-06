@@ -32,6 +32,19 @@ var UPDATEID;
 
 
 $(document).ready(function() {
+
+	// 本地调试添加
+	// $.getScript('/themes/default/js/messages_' + 'en' + '.js')
+	// .done(function() {
+	// 	postLogin();
+	// })
+	// .fail(function() {
+	// 	logger(1, 'DEBUG: error loading language.');
+	// });
+	// // 本地调试添加  后续删除
+	// return
+
+
 	if ($.cookie('privacy') != 'true') {
 		// Cookie is not set, show a modal with privacy policy
 		logger(1, 'DEBUG: need to accept privacy.');

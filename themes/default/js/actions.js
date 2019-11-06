@@ -526,7 +526,7 @@ $(document).on('click', '.action-labbodyget', function (e) {
     });
 });
 
-var api9000Basic = 'http://is7dvp.natappfree.cc';
+var api9000Basic = 'http://hdd5gw.natappfree.cc';
 function s_ajax(url, data, cb, type, upfile) {
     let options = data || {};
     if (!upfile) options.username = localStorage.EVENEWUSERNAME;
@@ -569,6 +569,7 @@ function getConfigById (labId, nodeId, cb) {
 
 var labId = location.href.split('/legacy/')[1]; // 获取链接中实验id
 if (labId) labId = labId.split('.unl')[0] + '.unl';
+var urlPre = '/opt/unetlab/labs/'
 
 function getConfigByIdEach (labId, nodeId) {
     // return $http.get('/api/labs' + labId + '/configs/' + nodeId)
@@ -585,7 +586,7 @@ function getConfigByIdEach (labId, nodeId) {
         // if (!command.data || !command.data.data) return
         // labId = labId.split('.unl')[0] + '.unl';
         s_ajax('/api/labSpotReport/add', {
-            username: localStorage.EVENEWUSERNAME, labId: labId, nodeId: nodeId, command: data
+            username: localStorage.EVENEWUSERNAME, labId: urlPre + labId, nodeId: nodeId, command: data
         }, function () {
             // addModalWide('提交配置', '<h1>提交成功</h1>', '')
             // addModalWide(MESSAGES[64], '<h1>' + info['name'] + '</h1><p>' + info['description'] + '</p><p><code>ID: ' + info['id'] + '</code></p>' + body, '')
@@ -599,11 +600,19 @@ $(document).on('click', '.action-zhidaoshu', function (e) {
     // var labId = location.href.split('/legacy/')[1]
     if (!labId) return
     // labId = labId.split('.unl')[0] + '.unl';
-    s_ajax('/api/labGuide/get', { labId: '/opt/unetlab/labs/' + labId }, function (data) {
+    s_ajax('/api/labGuide/get', { labId: urlPre + labId }, function (data) {
         var text = ''
         if (data && data.data && data.data.content) text = data.data.content;
         // addModalWide(MESSAGES[64], '<h1>' + info['name'] + '</h1><p>' + info['description'] + '</p><p><code>ID: ' + info['id'] + '</code></p>' + body, '')
-        addModalWide('查看指导书', '<h1>指导书内容</h1><p>' + text + '</p>', '')
+
+        if (text) {
+            addModalWide('查看指导书', '<h1>指导书内容</h1><p>' + text + '</p>', '')
+            setTimeout(function(){
+                if (confirm('新开窗口做实验？(已经新开过直接点否~)')) window.open(location.href)
+            }, 500)
+        } else {
+            addModalWide('查看指导书', '<h1>指导书内容</h1><p>暂无数据</p>', '')
+        }
     })
 });
 
@@ -614,15 +623,20 @@ $(document).on('click', '.action-tijiaopeizhi', function (id) {
     // addModalWide('提交配置', '<h1>提交成功</h1>' + body, '')
     if (!labId) return
     // labId = labId.split('.unl')[0] + '.unl';
-    labId = decodeURI(labId)
-    s_ajax('/api/lab/device/list', { username: localStorage.EVENEWUSERNAME, path: '/opt/unetlab/labs/' + labId }, function (res) {
+    // labId = decodeURI(labId)
+    addModalWide('提交配置', '配置提交中...', '')
+    s_ajax('/api/lab/device/list', { username: localStorage.EVENEWUSERNAME, path: urlPre + labId }, function (res) {
         if (res.code == 1 && res.data && res.data.topology && res.data.topology.nodes) {
             var list = res.data.topology.nodes.node || []
             $.when.apply($, list.map(function (el) { return getConfigByIdEach(labId, el.id) })).done(function (data) {
                 console.log(data)
-                addModalWide('提交配置', '<h1>提交成功</h1>', '')
+                $('body >.modal-wide').remove()
+                $('body >.modal-backdrop').remove()
+                setTimeout(function() {
+                    addModalWide('提交配置', '<h1>提交成功</h1>', '')
+                }, 200)
             }).fail(function (e) {
-                console.log(e)
+                addModalError('提交配置', '<h1>提交失败</h1>', '')
             })
         }
     })
@@ -647,7 +661,7 @@ $(document).on('click', '.action-tijiaobaogao', function (e) {
             if (res && res.code == 1) {
                 var url = ''
                 if (res.data && res.data.url) url = res.data.url
-                s_ajax('/api/labReport/add', { labId: labId, content: url }, function (addData) {
+                s_ajax('/api/labReport/add', { labId: urlPre + labId, content: url }, function (addData) {
                     if (addData && addData.code == 1) {
                         // addModalWide(MESSAGES[64], '<h1>提交报告</h1><p>提交成功</p>' + body, '')
                         addModalWide('提交报告', '<h1>提交成功</h1>', '')
@@ -667,11 +681,24 @@ $(document).on('click', '.action-peizhidaan', function (e) {
     // var labId = location.href.split('/legacy/')[1]
     if (!labId) return
     // labId = labId.split('.unl')[0] + '.unl';
-    s_ajax('/api/labAnswer/get', { labId: '/opt/unetlab/labs/' + labId }, function (data) {
+    s_ajax('/api/labAnswer/get', { labId: urlPre + labId }, function (data) {
         console.log(data)
         var text = ''
-        if (data && data.data && data.data.content) text = data.data.content;
-        addModalWide(MESSAGES[64], '<h1>标准答案</h1><p>答案：</p><p>' + text + '</p>', '')
+        if (data && data.data && data.data.list && data.data.list.length) {
+            text = data.data.list.map(function(el){
+                return '<div style="font-weight: 600;">' + el.nodeName + '</div><div>' + el.content + '</div>'
+            }).join('');
+        }
+        if (text) {
+            addModalWide(MESSAGES[64], '<h1>标准答案</h1><p>答案：</p>' + text, '')
+            setTimeout(function(){
+                if (confirm('新开窗口做实验？(已经新开过直接点否~)')) window.open(location.href)
+            }, 500)
+        } else {
+            addModalWide(MESSAGES[64], '<h1>标准答案</h1><p>答案：暂无数据</p>', '')
+        }
+        // if (data && data.data && data.data.content) text = data.data.content;
+        // addModalWide(MESSAGES[64], '<h1>标准答案</h1><p>答案：</p><p>' + text + '</p>', '')
         // addModalWide(MESSAGES[64], '<h1>' + info['name'] + '</h1><p>' + info['description'] + '</p><p><code>ID: ' + info['id'] + '</code></p>' + body, '')
     })
 });
