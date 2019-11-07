@@ -594,6 +594,17 @@ function getConfigByIdEach (labId, nodeId) {
     })
 }
 
+var winObj = null
+let pageUrl = location.href
+
+function openNewPage () {
+    if (!winObj || winObj.closed) {
+        winObj = window.open(pageUrl)
+    } else {
+        // winObj.focus()
+    }
+}
+
 // 查看指导书
 $(document).on('click', '.action-zhidaoshu', function (e) {
     logger(1, 'DEBUG: action = labbodyget');
@@ -608,7 +619,8 @@ $(document).on('click', '.action-zhidaoshu', function (e) {
         if (text) {
             addModalWide('查看指导书', '<h1>指导书内容</h1><p>' + text + '</p>', '')
             setTimeout(function(){
-                if (confirm('新开窗口做实验？(已经新开过直接点否~)')) window.open(location.href)
+                openNewPage()
+                // if (confirm('新开窗口做实验？(已经新开过直接点否~)')) window.open(location.href)
             }, 500)
         } else {
             addModalWide('查看指导书', '<h1>指导书内容</h1><p>暂无数据</p>', '')
@@ -692,7 +704,8 @@ $(document).on('click', '.action-peizhidaan', function (e) {
         if (text) {
             addModalWide(MESSAGES[64], '<h1>标准答案</h1><p>答案：</p>' + text, '')
             setTimeout(function(){
-                if (confirm('新开窗口做实验？(已经新开过直接点否~)')) window.open(location.href)
+                openNewPage();
+                // if (confirm('新开窗口做实验？(已经新开过直接点否~)')) window.open(location.href)
             }, 500)
         } else {
             addModalWide(MESSAGES[64], '<h1>标准答案</h1><p>答案：暂无数据</p>', '')
