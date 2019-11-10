@@ -667,7 +667,8 @@ $(document).on('click', '.action-tijiaobaogao', function (e) {
     file.addEventListener('change', function (e) {
         var fd = new FormData()
         fd.append('file', file.files[0])
-        s_ajax('/admin/file/upload', fd, function (res) {
+        // s_ajax('/admin/file/upload', fd, function (res) {
+        s_ajax('/api/file/upload', fd, function (res) {
             console.log('上传文件：');
             console.log(res);
             if (res && res.code == 1) {
