@@ -526,7 +526,7 @@ $(document).on('click', '.action-labbodyget', function (e) {
     });
 });
 
-var api9000Basic = 'http://hdd5gw.natappfree.cc';
+var api9000Basic = 'http://x64ixm.natappfree.cc';
 function s_ajax(url, data, cb, type, upfile) {
     let options = data || {};
     if (!upfile) options.username = localStorage.EVENEWUSERNAME;
@@ -617,13 +617,13 @@ $(document).on('click', '.action-zhidaoshu', function (e) {
         // addModalWide(MESSAGES[64], '<h1>' + info['name'] + '</h1><p>' + info['description'] + '</p><p><code>ID: ' + info['id'] + '</code></p>' + body, '')
 
         if (text) {
-            addModalWide('查看指导书', '<h1>指导书内容</h1><p>' + text + '</p>', '')
+            addModalWide('实验指导书', '<div>' + text + '</div>', '')
             setTimeout(function(){
                 openNewPage()
                 // if (confirm('新开窗口做实验？(已经新开过直接点否~)')) window.open(location.href)
             }, 500)
         } else {
-            addModalWide('查看指导书', '<h1>指导书内容</h1><p>暂无数据</p>', '')
+            addModalWide('实验指导书', '<p>暂无数据</p>', '')
         }
     })
 });

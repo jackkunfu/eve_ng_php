@@ -15,7 +15,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 	$scope.checkboxArray=[];
 	
 	//Default variables ///END
-	$scope.apiBase = 'http://hdd5gw.natappfree.cc';
+	$scope.apiBase = 'http://x64ixm.natappfree.cc';
 	$scope.navList = [
 		{ name: '平台介绍' },
 		{ name: '实验项目' },
