@@ -542,6 +542,7 @@ function s_ajax(url, data, cb, type, upfile) {
         },
         error: function (data) {
             // Server error
+            cb(data, true)
             var message = getJsonMessage(data.msg);
         }
     }
@@ -662,13 +663,24 @@ $(document).on('click', '.action-tijiaobaogao', function (e) {
     logger(1, 'DEBUG: action = labbodyget');
     var file = document.createElement('input')
     file.type = 'file'
-    file.accept = "application/msword"
+    file.width = 0
+    file.height = 0
+    // file.accept = "application/msword"
+    file.accept = '.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
     document.body.appendChild(file)
     file.addEventListener('change', function (e) {
         var fd = new FormData()
         fd.append('file', file.files[0])
         // s_ajax('/admin/file/upload', fd, function (res) {
-        s_ajax('/api/file/upload', fd, function (res) {
+        addModalWide('提交实验报告', '实验报告提交中...', '')
+        s_ajax('/api/file/upload', fd, function (res, isError) {
+            if (isError) {
+                document.body.removeChild(file)
+                $('body >.modal-wide').remove()
+                $('body >.modal-backdrop').remove()
+                alert('文件上传失败,请稍后重试')
+                return
+            }
             console.log('上传文件：');
             console.log(res);
             if (res && res.code == 1) {
@@ -677,12 +689,17 @@ $(document).on('click', '.action-tijiaobaogao', function (e) {
                 s_ajax('/api/labReport/add', { labId: urlPre + labId, content: url }, function (addData) {
                     if (addData && addData.code == 1) {
                         // addModalWide(MESSAGES[64], '<h1>提交报告</h1><p>提交成功</p>' + body, '')
-                        addModalWide('提交报告', '<h1>提交成功</h1>', '')
+                        $('body >.modal-wide').remove()
+                        $('body >.modal-backdrop').remove()
+                        setTimeout(() => {
+                            addModalWide('提交报告', '<h1>提交成功</h1>', '')
+                        }, 200)
                     } else {
                         alert('文件上传成功，报告添加失败')
                     }
                 }, 'post')
             } else alert('文件上传失败, 请稍后重试')
+            document.body.removeChild(file)
         }, 'post', true)
     })
     file.click()
