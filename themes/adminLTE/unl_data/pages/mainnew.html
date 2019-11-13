@@ -66,12 +66,11 @@
 	}
 	.main_new_right #page ul,
 	.main_new_right #page li {
+		display: inline-block;
 		list-style: none;
 		width: 50px;
 		cursor: pointer;
-	}
-	.main_new_right #page li {
-		display: inline-block;
+		text-align: center;
 	}
 	.main_new_right .right_title {
 		text-align: center;
@@ -198,7 +197,7 @@
 								</tr>
 							</table>
 						</div>
-						<div ng-else>
+						<div ng-if="!isShowStu">
 							<table>
 								<tr><th>实验名称</th></tr>
 								<tr data-ng-repeat="course in labList track by $index">
