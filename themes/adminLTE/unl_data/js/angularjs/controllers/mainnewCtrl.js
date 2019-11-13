@@ -93,23 +93,34 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 	// $scope.listKey = { 0: 'platFormList', 2: 'courseList', 3: 'docList', 4: 'tongzhiList' }
 	$scope.listKey = { 0: 'platFormList', 2: 'labList', 3: 'docList', 4: 'tongzhiList' }
 
-	$scope.clickTab = function (item, idx) {
-		$scope.isShowStu = false
-		$scope.isShowTongzhiDtl = false
-		if ($scope.curNav == idx) return
-		$scope.curNav = idx
+	$scope.clickTab = function (item, idx, isPageClick) {
+		if (!isPageClick) {
+			$scope.isShowStu = false
+			$scope.isShowTongzhiDtl = false
+			if ($scope.curNav == idx) return
+			$scope.curNav = idx
 
-		if (idx == 1) {
-			$location.path('/main')
-			return
+			if (idx == 1) {
+				$location.path('/main')
+				return
+			}
+		}
+
+		if (isPageClick) {
+			if ($scope.isShowStu) {
+				$scope.showCourse($scope.curCourse);
+				return
+			}
 		}
 
 		var urlSplit = tabUrl[idx].split(',')
 		var method = urlSplit[1] ? urlSplit[1].trim() : 'get'
 		var obj = {
 			method: method,
-			url: $scope.apiBase + urlSplit[0]
+			url: $scope.apiBase + urlSplit[0],
+			pageNum: $scope.curPage
 		}
+		
 		if (method.toLocaleLowerCase() == 'get') obj.params = tabOpts[idx]
 		else obj.data = tabOpts[idx]
 		$http(obj).then(
@@ -126,9 +137,9 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 						currentPage: 1,//当前的请求页面。
 						totalPages: res.total || 1,//一共多少页。
 						size: "normal",//应该是页眉的大小。
-						bootstrapMajorVersion: 3,//bootstrap的版本要求。
+						// bootstrapMajorVersion: 3,//bootstrap的版本要求。
 				    alignment:"right",
-				    numberOfPages: 15,//一页列出多少数据。
+				    numberOfPages: 8,//一页列出多少数据。
 				    itemTexts: function (type, page, current) {//如下的代码是将页眉显示的中文显示我们自定义的中文。
 							switch (type) {
 								case "first": return "首页";
@@ -137,6 +148,11 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 								case "last": return "末页";
 								case "page": return page;
 							}
+						},
+						onPageClicked: function (event, originalEvent, type, page) {
+							console.log(page)
+							$scope.curPage = page;
+							$scope.clickTab({}, $scope.curNav, true);
 						}
 					});
 				}
@@ -186,7 +202,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 		$http({
 			method: 'get',
 			url: $scope.apiBase + '/api/student/list',
-			params: { username: EVENEWUSERNAME, pageNum: 1, pageSize: 1000 }
+			params: { username: EVENEWUSERNAME, pageNum: $scope.curPage, pageSize: 1000 }
 		}).then(
 			function successcallback(response) {
 				if (response && response.data) {
