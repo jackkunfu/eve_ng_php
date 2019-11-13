@@ -3309,10 +3309,10 @@ function printPageLabOpen(lab) {
     $('#lab-sidebar ul').append('<li><a class="action-labbodyget" href="javascript:void(0)" title="' + MESSAGES[64] + '"><i class="glyphicon glyphicon-list-alt"></i></a></li>');
 
 
-    $('#lab-sidebar ul').append('<li><a class="action-zhidaoshu" href="javascript:void(0)" title="' + '实验指导书' + '"><i class="glyphicon glyphicon-list-alt"></i></a></li>');
-    $('#lab-sidebar ul').append('<li><a class="action-tijiaopeizhi" href="javascript:void(0)" title="' + '提交实验配置' + '"><i class="glyphicon glyphicon-list-alt"></i></a></li>');
-    $('#lab-sidebar ul').append('<li><a class="action-tijiaobaogao" href="javascript:void(0)" title="' + '提交实验报告' + '"><i class="glyphicon glyphicon-list-alt"></i></a></li>');
-    $('#lab-sidebar ul').append('<li><a class="action-peizhidaan" href="javascript:void(0)" title="' + '标准答案' + '"><i class="glyphicon glyphicon-list-alt"></i></a></li>');
+    $('#lab-sidebar ul').append('<li><a class="action-zhidaoshu" href="javascript:void(0)" title="' + '实验指导书' + '"><i class="glyphicon glyphicon-book"></i></a></li>');
+    $('#lab-sidebar ul').append('<li><a class="action-tijiaopeizhi" href="javascript:void(0)" title="' + '提交实验配置' + '"><i class="glyphicon glyphicon-cog"></i></a></li>');
+    $('#lab-sidebar ul').append('<li><a class="action-tijiaobaogao" href="javascript:void(0)" title="' + '提交实验报告' + '"><i class="glyphicon glyphicon-list"></i></a></li>');
+    $('#lab-sidebar ul').append('<li><a class="action-peizhidaan" href="javascript:void(0)" title="' + '标准答案' + '"><i class="glyphicon glyphicon-eye-open"></i></a></li>');
 
 
     $('#lab-sidebar ul').append('<div id="action-labclose"><li><a class="action-labclose" href="javascript:void(0)" title="' + MESSAGES[60] + '"><i class="glyphicon glyphicon-off"></i></a></li></div>');

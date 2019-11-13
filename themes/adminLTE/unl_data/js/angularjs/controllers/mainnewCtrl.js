@@ -13,6 +13,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 	$scope.blockButtonsClass='';
 	$scope.fileManagerItem=[];
 	$scope.checkboxArray=[];
+	$scope.isShowStu = false
 	
 	//Default variables ///END
 	$scope.apiBase = 'http://x64ixm.natappfree.cc';
@@ -24,6 +25,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 		{ name: '通知中心' }
 	]
 	$scope.platformList = []
+	$scope.labList = []
 	$scope.courseList = [
 		{ name: 'CCNA', id: 1 },
 		{ name: 'CCNP ROUTER', id: 1 },
@@ -48,6 +50,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 	$scope.isShowTongzhiDtl = false // 展示通知详情
 	$scope.curTongzhi = {}
 	$scope.curCourse = {}
+	$scope.curLabId = null
 
 	var EVENEWUSERNAME = localStorage.EVENEWUSERNAME || ''
 	if (!EVENEWUSERNAME) {
@@ -56,14 +59,18 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 
 	var tabUrl = {
 		0: '/api/article/list',
-		2: '/api/student/list', // '/api/lab/list'
+		// 2: '/api/student/list', // '/api/lab/list'
+		2: '/api/lab/list', // '/api/lab/list'
 		3: '/api/file/list',
 		4: '/api/article/list'
 	}
 
+	$scope.curPage = 1
+	$scope.pSize = 15
+
 	var tabOpts = {
 		0: {
-			username: EVENEWUSERNAME, category: 'introduce', pageNum: 1, pageSize: 10
+			username: EVENEWUSERNAME, category: 'introduce', pageNum: $scope.curPage, pageSize: $scope.pSize
 		},
 		// 2: {
 		// 	username: EVENEWUSERNAME,
@@ -72,21 +79,22 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 		// 	// path: '/'
 		// },
 		2: {
-			username: EVENEWUSERNAME, pageNum: 1, pageSize: 1000
+			// pageNum: 1, pageSize: 1000, labId: $scope.curLabId
+			username: EVENEWUSERNAME, path: '/opt/unetlab/labs', pageNum: $scope.curPage, pageSize: $scope.pSize
 		},
 		3: {
-			username: EVENEWUSERNAME, pageNum: 1, pageSize: 10
+			username: EVENEWUSERNAME, pageNum: $scope.curPage, pageSize: $scope.pSize
 		},
 		4: {
-			username: EVENEWUSERNAME, category: 'notify', pageNum: 1, pageSize: 10
+			username: EVENEWUSERNAME, category: 'notify', pageNum: $scope.curPage, pageSize: $scope.pSize
 		}
 	}
 
 	// $scope.listKey = { 0: 'platFormList', 2: 'courseList', 3: 'docList', 4: 'tongzhiList' }
-	$scope.listKey = { 0: 'platFormList', 2: 'stuCenter', 3: 'docList', 4: 'tongzhiList' }
+	$scope.listKey = { 0: 'platFormList', 2: 'labList', 3: 'docList', 4: 'tongzhiList' }
 
 	$scope.clickTab = function (item, idx) {
-		$scope.isShowCourseDtl = false
+		$scope.isShowStu = false
 		$scope.isShowTongzhiDtl = false
 		if ($scope.curNav == idx) return
 		$scope.curNav = idx
@@ -113,6 +121,24 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 					} else {
 						$scope[$scope.listKey[idx]] = res.list || []
 					}
+
+					$('#page').bootstrapPaginator({
+						currentPage: 1,//当前的请求页面。
+						totalPages: res.total || 1,//一共多少页。
+						size: "normal",//应该是页眉的大小。
+						bootstrapMajorVersion: 3,//bootstrap的版本要求。
+				    alignment:"right",
+				    numberOfPages: 15,//一页列出多少数据。
+				    itemTexts: function (type, page, current) {//如下的代码是将页眉显示的中文显示我们自定义的中文。
+							switch (type) {
+								case "first": return "首页";
+								case "prev": return "上一页";
+								case "next": return "下一页";
+								case "last": return "末页";
+								case "page": return page;
+							}
+						}
+					});
 				}
 			},
 			function errorcallback(response) {
@@ -127,6 +153,27 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 
 	$scope.downItem = function (item) {
 		window.open(item.url);
+	}
+
+	$scope.chooseCourse = function (item) {
+		$scope.curCourse = item;
+		$scope.isShowStu = true
+
+		$http({
+			method: 'get',
+			url: $scope.apiBase + '/api/student/list',
+			params: { username: EVENEWUSERNAME, pageNum: 1, pageSize: 15, labId: $scope.curCourse.path }
+		}).then(
+			function successcallback(response) {
+				if (response && response.data) {
+					$scope.stuCenter = response.data.data || []
+					// console.log($scope.stuCenter)
+				}
+			},
+			function errorcallback(response) {
+				console.log("unknown error. why did api doesn't respond?");
+			}
+		)
 	}
 
 	$scope.showTongzhi = function (item) {
@@ -153,7 +200,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 		)
 	}
 	$scope.showCourseList = function () {
-		$scope.isShowCourseDtl = false
+		$scope.isShowStu = false
 		$scope.curCourse = {}
 	}
 	$scope.showTongzhiList = function () {
