@@ -66,7 +66,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 	}
 
 	$scope.curPage = 1
-	$scope.pSize = 15
+	$scope.pSize = 5
 
 	var tabOpts = {
 		0: {
@@ -99,6 +99,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 			$scope.isShowTongzhiDtl = false
 			if ($scope.curNav == idx) return
 			$scope.curNav = idx
+			$scope.curPage = 1
 
 			if (idx == 1) {
 				$location.path('/main')
@@ -134,7 +135,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 					}
 
 					$('#page').bootstrapPaginator({
-						currentPage: 1,//当前的请求页面。
+						currentPage: $scope.curPage,//当前的请求页面。
 						totalPages: res.total || 1,//一共多少页。
 						size: "normal",//应该是页眉的大小。
 						// bootstrapMajorVersion: 3,//bootstrap的版本要求。
@@ -174,6 +175,57 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 	$scope.chooseCourse = function (item) {
 		$scope.curCourse = item;
 		$scope.isShowStu = true
+
+		if (item.directory) { // 请求子集目录
+			$scope.curPage = 1;
+			$http({
+				method: 'get',
+				url: $scope.apiBase + '/api/lab/list',
+				params: {
+					pageSize: 15, pageNum: $scope.curPage, labId: item.path, username: EVENEWUSERNAME
+				}
+			}).then(
+				function successcallback(response) {
+					if (response && response.data && response.data.data) {
+						var res = response.data.data
+						if (Object.prototype.toString.call(res) == '[object Array]') {
+							$scope.labList = res
+						} else {
+							$scope.labList = res.list || []
+						}
+	
+						$('#page').bootstrapPaginator({
+							currentPage: $scope.curPage,//当前的请求页面。
+							totalPages: res.total || 1,//一共多少页。
+							size: "normal",//应该是页眉的大小。
+							// bootstrapMajorVersion: 3,//bootstrap的版本要求。
+							alignment: "right",
+							numberOfPages: 8,//一页列出多少数据。
+							itemTexts: function (type, page, current) {//如下的代码是将页眉显示的中文显示我们自定义的中文。
+								switch (type) {
+									case "first": return "首页";
+									case "prev": return "上一页";
+									case "next": return "下一页";
+									case "last": return "末页";
+									case "page": return page;
+								}
+							},
+							onPageClicked: function (event, originalEvent, type, page) {
+								console.log(page)
+								$scope.curPage = page;
+								$scope.clickTab({}, $scope.curNav, true);
+							}
+						});
+					}
+				},
+				function errorcallback(response) {
+					console.log("unknown error. why did api doesn't respond?");
+					// $location.path("/login");
+				}
+			)
+
+			return
+		}
 
 		$http({
 			method: 'get',
