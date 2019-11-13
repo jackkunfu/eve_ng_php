@@ -173,9 +173,6 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 	}
 
 	$scope.chooseCourse = function (item) {
-		$scope.curCourse = item;
-		$scope.isShowStu = true
-
 		if (item.directory) { // 请求子集目录
 			$scope.curPage = 1;
 			$http({
@@ -223,9 +220,11 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 					// $location.path("/login");
 				}
 			)
-
 			return
 		}
+
+		$scope.curCourse = item;
+		$scope.isShowStu = true
 
 		$http({
 			method: 'get',

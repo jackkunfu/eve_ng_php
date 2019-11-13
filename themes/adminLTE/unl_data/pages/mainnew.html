@@ -56,10 +56,14 @@
 		overflow: auto;
 		position: relative;
 	}
+	.main_new_ctn .right_main {
+		height: 100%;
+		overflow: auto;
+	}
 	.main_new_right #page {
 		position: absolute;
-		width: 700px;
-		left: 20px;
+		width: 100%;
+		padding: 0 20px;
 		bottom: 0;
 		height: 50px;
 		overflow: hidden;
@@ -174,89 +178,90 @@
 					</div>
 				</div>
 				<div class="main_new_right">
+					<div class="right_main">
 					<div data-ng-if="curNav === 0">
-						<div class="right_title">平台介绍</div>
-						<div style="padding: 20px 0;">
-							<div data-ng-repeat="item in platFormList track by $index" ng-bind-html="item.content || ''"></div>
+							<div class="right_title">平台介绍</div>
+							<div style="padding: 20px 0;">
+								<div data-ng-repeat="item in platFormList track by $index" ng-bind-html="item.content || ''"></div>
+							</div>
 						</div>
-					</div>
-					<div data-ng-if="curNav === 1">
-						<div class="right_title">平台介绍</div>
-					</div>
-					<div data-ng-if="curNav === 2">
-						<div ng-if="isShowStu">
-							<div class="back" data-ng-click="showCourseList()">返回</div>
-							<div class="right_title">学生中心</div>
-							<table>
-								<tr><th>实验名称</th><th>实验分数</th><th>报告分数</th><th>报告评语</th></tr>
-								<tr data-ng-repeat="stuc in stuCenter track by $index">
-									<td>{{stuc.lab}}</td>
-									<td>{{stuc.labScore}}</td>
-									<td>{{stuc.reportScore}}</td>
-									<td>{{stuc.content}}</td>
+						<div data-ng-if="curNav === 1">
+							<div class="right_title">平台介绍</div>
+						</div>
+						<div data-ng-if="curNav === 2">
+							<div data-ng-if="isShowStu">
+								<div class="back" data-ng-click="showCourseList()">返回</div>
+								<div class="right_title">学生中心</div>
+								<table>
+									<tr><th>实验名称</th><th>实验分数</th><th>报告分数</th><th>报告评语</th></tr>
+									<tr data-ng-repeat="stuc in stuCenter track by $index">
+										<td>{{stuc.lab}}</td>
+										<td>{{stuc.labScore}}</td>
+										<td>{{stuc.reportScore}}</td>
+										<td>{{stuc.content}}</td>
+									</tr>
+								</table>
+							</div>
+							<div data-ng-if="!isShowStu">
+								<table>
+									<tr><th>实验名称</th></tr>
+									<tr data-ng-repeat="course in labList track by $index">
+										<td style="cursor: pointer;" data-ng-click="chooseCourse(course)">{{course.name}}</td>
+									</tr>
+								</table>
+							</div>
+							<!-- <table data-ng-show="!isShowCourseDtl">
+								<tr><th>课程</th></tr>
+								<tr data-ng-repeat="course in courseList track by $index">
+									<td><span data-ng-click="showCourse(course)" class="a">{{course.name}}</span></td>
 								</tr>
 							</table>
+							<div data-ng-if="isShowCourseDtl">
+								<div class="back" data-ng-click="showCourseList()">返回</div>
+								<table>
+									<tr><th>实验名称</th><th>实验分数</th><th>报告分数</th><th>报告评语</th></tr>
+									<tr data-ng-repeat="stuc in stuCenter track by $index">
+										<td>{{stuc.lab}}1</td>
+										<td>{{stuc.labScore}}</td>
+										<td>{{stuc.reportScore}}</td>
+										<td>{{stuc.content}}</td>
+									</tr>
+								</table>
+							</div> -->
 						</div>
-						<div ng-if="!isShowStu">
-							<table>
-								<tr><th>实验名称</th></tr>
-								<tr data-ng-repeat="course in labList track by $index">
-									<td style="cursor: pointer;" data-ng-click="chooseCourse(course)">{{course.name}}</td>
-								</tr>
-							</table>
-						</div>
-						<!-- <table data-ng-show="!isShowCourseDtl">
-							<tr><th>课程</th></tr>
-							<tr data-ng-repeat="course in courseList track by $index">
-								<td><span data-ng-click="showCourse(course)" class="a">{{course.name}}</span></td>
-							</tr>
-						</table>
-						<div data-ng-if="isShowCourseDtl">
-							<div class="back" data-ng-click="showCourseList()">返回</div>
-							<table>
-								<tr><th>实验名称</th><th>实验分数</th><th>报告分数</th><th>报告评语</th></tr>
-								<tr data-ng-repeat="stuc in stuCenter track by $index">
-									<td>{{stuc.lab}}1</td>
-									<td>{{stuc.labScore}}</td>
-									<td>{{stuc.reportScore}}</td>
-									<td>{{stuc.content}}</td>
-								</tr>
-							</table>
-						</div> -->
-					</div>
-					<div data-ng-if="curNav === 3">
-						<div class="right_title">资料下载</div>
-						<ul>
-							<li data-ng-repeat="item in docList track by $index">
-								<span>{{item.name}}</span>
-								<div class="fr">
-									{{item.createTime}}
-									<div class="btn" data-ng-click="downItem(item)">下载</div>
-								</div>
-							</li>
-						</ul>
-					</div>
-					<div data-ng-if="curNav === 4">
-						<div class="right_title">通知中心</div>
-						<div data-ng-show="!isShowTongzhiDtl">
+						<div data-ng-if="curNav === 3">
+							<div class="right_title">资料下载</div>
 							<ul>
-								<li data-ng-repeat="item in tongzhiList track by $index" data-ng-click="showTongzhi(item)">
-									<span class="a">{{item.category}}</span>
-									<div class="fr">{{item.createtime}}</div>
+								<li data-ng-repeat="item in docList track by $index">
+									<span>{{item.name}}</span>
+									<div class="fr">
+										{{item.createTime}}
+										<div class="btn" data-ng-click="downItem(item)">下载</div>
+									</div>
 								</li>
 							</ul>
 						</div>
-						<div data-ng-if="isShowTongzhiDtl" class="tongzhi_ctn">
-							<div class="back" data-ng-click="showTongzhiList()" style="float: left;position: relative;top: -80px;">返回</div>
-							<div class="title">{{curTongzhi.title}}</div>
-							<div style="margin-top: 10px;">
-								<span style="margin-right: 30px;">作者:{{curTongzhi.createBy}}</span>
-								<span>日期:{{curTongzhi.createtime}}</span>
+						<div data-ng-if="curNav === 4">
+							<div class="right_title">通知中心</div>
+							<div data-ng-show="!isShowTongzhiDtl">
+								<ul>
+									<li data-ng-repeat="item in tongzhiList track by $index" data-ng-click="showTongzhi(item)">
+										<span class="a">{{item.category}}</span>
+										<div class="fr">{{item.createtime}}</div>
+									</li>
+								</ul>
 							</div>
-							<div class="tongzhi_dtl" ng-bind-html="curTongzhi.content"></div>
+							<div data-ng-if="isShowTongzhiDtl" class="tongzhi_ctn">
+								<div class="back" data-ng-click="showTongzhiList()" style="float: left;position: relative;top: -80px;">返回</div>
+								<div class="title">{{curTongzhi.title}}</div>
+								<div style="margin-top: 10px;">
+									<span style="margin-right: 30px;">作者:{{curTongzhi.createBy}}</span>
+									<span>日期:{{curTongzhi.createtime}}</span>
+								</div>
+								<div class="tongzhi_dtl" ng-bind-html="curTongzhi.content"></div>
+							</div>
 						</div>
 					</div>
-
 					<div id="page"></div>
 				</div>
 			</div>
