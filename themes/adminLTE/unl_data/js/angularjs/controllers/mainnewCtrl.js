@@ -16,7 +16,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 	$scope.isShowStu = false
 	
 	//Default variables ///END
-	$scope.apiBase = 'http://x64ixm.natappfree.cc';
+	$scope.apiBase = 'http://df3xs8.natappfree.cc';
 	$scope.navList = [
 		{ name: '平台介绍' },
 		{ name: '实验项目' },
@@ -95,9 +95,9 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 
 	$scope.clickTab = function (item, idx, isPageClick) {
 		if (!isPageClick) {
-			$scope.isShowStu = false
 			$scope.isShowTongzhiDtl = false
-			if ($scope.curNav == idx) return
+			if ($scope.curNav == idx && !$scope.isShowStu) return
+			$scope.isShowStu = false
 			$scope.curNav = idx
 			$scope.curPage = 1
 
@@ -173,13 +173,13 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 	}
 
 	$scope.chooseCourse = function (item) {
+		$scope.curPage = 1;
 		if (item.directory) { // 请求子集目录
-			$scope.curPage = 1;
 			$http({
 				method: 'get',
 				url: $scope.apiBase + '/api/lab/list',
 				params: {
-					pageSize: 15, pageNum: $scope.curPage, labId: item.path, username: EVENEWUSERNAME
+					pageSize: 15, pageNum: $scope.curPage, path: item.path, username: EVENEWUSERNAME
 				}
 			}).then(
 				function successcallback(response) {
@@ -226,15 +226,43 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 		$scope.curCourse = item;
 		$scope.isShowStu = true
 
+		getStuList($scope.curCourse.path);
+	}
+
+	function getStuList (labId) {
 		$http({
 			method: 'get',
 			url: $scope.apiBase + '/api/student/list',
-			params: { username: EVENEWUSERNAME, pageNum: 1, pageSize: 15, labId: $scope.curCourse.path }
+			params: { username: EVENEWUSERNAME, pageNum: $scope.curPage, pageSize: 15, labId: labId }
 		}).then(
 			function successcallback(response) {
 				if (response && response.data) {
-					$scope.stuCenter = response.data.data || []
+					var res = response.data
+					console.log(res)
+					$scope.stuCenter = res.list || []
 					// console.log($scope.stuCenter)
+					$('#page').bootstrapPaginator({
+						currentPage: $scope.curPage,//当前的请求页面。
+						totalPages: res.total || 1,//一共多少页。
+						size: "normal",//应该是页眉的大小。
+						// bootstrapMajorVersion: 3,//bootstrap的版本要求。
+						alignment: "right",
+						numberOfPages: 8,//一页列出多少数据。
+						itemTexts: function (type, page, current) {//如下的代码是将页眉显示的中文显示我们自定义的中文。
+							switch (type) {
+								case "first": return "首页";
+								case "prev": return "上一页";
+								case "next": return "下一页";
+								case "last": return "末页";
+								case "page": return page;
+							}
+						},
+						onPageClicked: function (event, originalEvent, type, page) {
+							console.log(page)
+							$scope.curPage = page;
+							getStuList()
+						}
+					});
 				}
 			},
 			function errorcallback(response) {
