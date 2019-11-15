@@ -14,9 +14,10 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 	$scope.fileManagerItem=[];
 	$scope.checkboxArray=[];
 	$scope.isShowStu = false
+	$scope.isShowPage = true
 	
 	//Default variables ///END
-	$scope.apiBase = 'http://df3xs8.natappfree.cc';
+	$scope.apiBase = 'http://cbt5er.natappfree.cc';
 	$scope.navList = [
 		{ name: '平台介绍' },
 		{ name: '实验项目' },
@@ -95,8 +96,13 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 
 	$scope.clickTab = function (item, idx, isPageClick) {
 		if (!isPageClick) {
+			if (idx == 0) {
+				$scope.isShowPage = false
+			} else {
+				$scope.isShowPage = true
+			}
 			$scope.isShowTongzhiDtl = false
-			if ($scope.curNav == idx && !$scope.isShowStu) return
+			if ($scope.curNav == idx && $scope.curNav != 2) return
 			$scope.isShowStu = false
 			$scope.curNav = idx
 			$scope.curPage = 1
