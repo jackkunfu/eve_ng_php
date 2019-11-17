@@ -664,8 +664,8 @@ $(document).on('click', '.action-tijiaopeizhi', function (id) {
             var listHtml = '<div class="tj_ctn"><div class="tj_list">'
             for (var i = 0; i < list.length; i++) {
                 var item = list[i]
-                listHtml += '<div class=""tj_name>' + item.name + '</div>' +
-                    '<div><textarea class="device_textarea" data-id="' + item.id + '" style="resize: none;width: 100%;height: 200px;"></textarea></div>'
+                listHtml += '<div class="tj_name">' + item.name + '</div>' +
+                    '<div><textarea class="device_textarea" data-name="' + item.name + '" data-id="' + item.id + '" style="resize: none;width: 100%;height: 200px;"></textarea></div>'
             }
             listHtml += '</div>' + '<div class="tj_btn"><button id="tj_btn">确定提交</button></div>' + '</div>'
             addModalWide('提交配置', listHtml, '')
@@ -673,28 +673,43 @@ $(document).on('click', '.action-tijiaopeizhi', function (id) {
     })
 });
 
+
+
 $(document).on('click', '#tj_btn', function () {
     var list = [], datares = []
+    function upOnePeizhi (textarea) {
+        var deferred = $.Deferred();
+        s_ajax('/api/labSpotReport/add', {
+            username: localStorage.EVENEWUSERNAME, labId: urlPre + labId, nodeId: textarea.data('id'), command: textarea.val()
+        }, function (res) {
+            console.log(res)
+            if (res) {
+                deferred.resolve(res);
+            } else {
+                deferred.reject(res);
+            }
+            if (res) res.name = textarea.data('name')
+            datares[i] = res
+            // addModalWide('提交配置', '<h1>提交成功</h1>', '')
+            // addModalWide(MESSAGES[64], '<h1>' + info['name'] + '</h1><p>' + info['description'] + '</p><p><code>ID: ' + info['id'] + '</code></p>' + body, '')
+        }, 'post')
+        return deferred.promise()
+    }
     for(var i = 0; i< $('.device_textarea').length; i++) {
         var textarea = $('.device_textarea').eq(i)
-        list.push(
-            s_ajax('/api/labSpotReport/add', {
-                username: localStorage.EVENEWUSERNAME, labId: urlPre + labId, nodeId: textarea.data('id'), command: textarea.val()
-            }, function (res) {
-                datares[i] = res
-                // addModalWide('提交配置', '<h1>提交成功</h1>', '')
-                // addModalWide(MESSAGES[64], '<h1>' + info['name'] + '</h1><p>' + info['description'] + '</p><p><code>ID: ' + info['id'] + '</code></p>' + body, '')
-            }, 'post')
-        )
+        list.push(upOnePeizhi(textarea))
     }
     $.when.apply($, list).done(function (data) {
-        var wrong = data.filter(function (el) { return el.code != 1 })
-        console.log(data)
+        console.log('datares')
+        console.log(datares)
+        var wrong = datares.filter(function (el) { return el.code != 1 })
         if (wrong.length > 0) {
-            return addModalWide('提交配置', '<h1>提交失败，请重试</h1>', '')
+            let wrongFirst = wrong[0]
+            addModalWide('提交配置', '<h1>' + wrongFirst.name + '</h1>提交失败，请重试', '')
+            return
         }
-        // $('body >.modal-wide').remove()
-        // $('body >.modal-backdrop').remove()
+        $('body >.modal-wide').remove()
+        $('body >.modal-backdrop').remove()
         setTimeout(function() {
             addModalWide('提交配置', '<h1>提交成功</h1>', '')
         }, 200)
