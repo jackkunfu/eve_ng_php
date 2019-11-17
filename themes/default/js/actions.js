@@ -526,7 +526,7 @@ $(document).on('click', '.action-labbodyget', function (e) {
     });
 });
 
-var api9000Basic = 'http://cbt5er.natappfree.cc';
+var api9000Basic = 'http://myu4mq.natappfree.cc';
 function s_ajax(url, data, cb, type, upfile) {
     let options = data || {};
     if (!upfile) options.username = localStorage.EVENEWUSERNAME;
@@ -630,30 +630,78 @@ $(document).on('click', '.action-zhidaoshu', function (e) {
 });
 
 // 提交配置
+// $(document).on('click', '.action-tijiaopeizhi', function (id) {
+//     logger(1, 'DEBUG: action = labbodyget');
+//     // var labId = location.href.split('/legacy/')[1];
+//     // addModalWide('提交配置', '<h1>提交成功</h1>' + body, '')
+//     if (!labId) return
+//     // labId = labId.split('.unl')[0] + '.unl';
+//     // labId = decodeURI(labId)
+//     addModalWide('提交配置', '配置提交中...', '')
+//     s_ajax('/api/lab/device/list', { username: localStorage.EVENEWUSERNAME, path: urlPre + labId }, function (res) {
+//         if (res.code == 1 && res.data && res.data.topology && res.data.topology.nodes) {
+//             var list = res.data.topology.nodes.node || []
+//             $.when.apply($, list.map(function (el) { return getConfigByIdEach(labId, el.id) })).done(function (data) {
+//                 console.log(data)
+//                 $('body >.modal-wide').remove()
+//                 $('body >.modal-backdrop').remove()
+//                 setTimeout(function() {
+//                     addModalWide('提交配置', '<h1>提交成功</h1>', '')
+//                 }, 200)
+//             }).fail(function (e) {
+//                 addModalError('提交配置', '<h1>提交失败</h1>', '')
+//             })
+//         }
+//     })
+// });
+
+// 提交配置
 $(document).on('click', '.action-tijiaopeizhi', function (id) {
-    logger(1, 'DEBUG: action = labbodyget');
-    // var labId = location.href.split('/legacy/')[1];
-    // addModalWide('提交配置', '<h1>提交成功</h1>' + body, '')
     if (!labId) return
-    // labId = labId.split('.unl')[0] + '.unl';
-    // labId = decodeURI(labId)
-    addModalWide('提交配置', '配置提交中...', '')
     s_ajax('/api/lab/device/list', { username: localStorage.EVENEWUSERNAME, path: urlPre + labId }, function (res) {
         if (res.code == 1 && res.data && res.data.topology && res.data.topology.nodes) {
             var list = res.data.topology.nodes.node || []
-            $.when.apply($, list.map(function (el) { return getConfigByIdEach(labId, el.id) })).done(function (data) {
-                console.log(data)
-                $('body >.modal-wide').remove()
-                $('body >.modal-backdrop').remove()
-                setTimeout(function() {
-                    addModalWide('提交配置', '<h1>提交成功</h1>', '')
-                }, 200)
-            }).fail(function (e) {
-                addModalError('提交配置', '<h1>提交失败</h1>', '')
-            })
+            var listHtml = '<div class="tj_ctn"><div class="tj_list">'
+            for (var i = 0; i < list.length; i++) {
+                var item = list[i]
+                listHtml += '<div class=""tj_name>' + item.name + '</div>' +
+                    '<div><textarea class="device_textarea" data-id="' + item.id + '" style="resize: none;width: 100%;height: 200px;"></textarea></div>'
+            }
+            listHtml += '</div>' + '<div class="tj_btn"><button id="tj_btn">确定提交</button></div>' + '</div>'
+            addModalWide('提交配置', listHtml, '')
         }
     })
 });
+
+$(document).on('click', '#tj_btn', function () {
+    var list = [], datares = []
+    for(var i = 0; i< $('.device_textarea').length; i++) {
+        var textarea = $('.device_textarea').eq(i)
+        list.push(
+            s_ajax('/api/labSpotReport/add', {
+                username: localStorage.EVENEWUSERNAME, labId: urlPre + labId, nodeId: textarea.data('id'), command: textarea.val()
+            }, function (res) {
+                datares[i] = res
+                // addModalWide('提交配置', '<h1>提交成功</h1>', '')
+                // addModalWide(MESSAGES[64], '<h1>' + info['name'] + '</h1><p>' + info['description'] + '</p><p><code>ID: ' + info['id'] + '</code></p>' + body, '')
+            }, 'post')
+        )
+    }
+    $.when.apply($, list).done(function (data) {
+        var wrong = data.filter(function (el) { return el.code != 1 })
+        console.log(data)
+        if (wrong.length > 0) {
+            return addModalWide('提交配置', '<h1>提交失败，请重试</h1>', '')
+        }
+        // $('body >.modal-wide').remove()
+        // $('body >.modal-backdrop').remove()
+        setTimeout(function() {
+            addModalWide('提交配置', '<h1>提交成功</h1>', '')
+        }, 200)
+    }).fail(function (e) {
+        addModalError('提交配置', '<h1>提交失败</h1>', '')
+    })
+})
 
 // 提交报告
 $(document).on('click', '.action-tijiaobaogao', function (e) {
