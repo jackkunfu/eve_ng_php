@@ -154,7 +154,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 						size: "normal",//应该是页眉的大小。
 						// bootstrapMajorVersion: 3,//bootstrap的版本要求。
 				    alignment:"right",
-				    numberOfPages: 8,//一页列出多少数据。
+				    // numberOfPages: 8,//一页列出多少数据。
 				    itemTexts: function (type, page, current) {//如下的代码是将页眉显示的中文显示我们自定义的中文。
 							switch (type) {
 								case "first": return "首页";
@@ -214,7 +214,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 							size: "normal",//应该是页眉的大小。
 							// bootstrapMajorVersion: 3,//bootstrap的版本要求。
 							alignment: "right",
-							numberOfPages: 8,//一页列出多少数据。
+							// numberOfPages: 8,//一页列出多少数据。
 							itemTexts: function (type, page, current) {//如下的代码是将页眉显示的中文显示我们自定义的中文。
 								switch (type) {
 									case "first": return "首页";
@@ -254,7 +254,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 		}).then(
 			function successcallback(response) {
 				if (response && response.data) {
-					var res = response.data
+					var res = response.data.data || {}
 					console.log(res)
 					$scope.stuCenter = res.list || []
 					console.log('res.total')
@@ -266,7 +266,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 						size: "normal",//应该是页眉的大小。
 						// bootstrapMajorVersion: 3,//bootstrap的版本要求。
 						alignment: "right",
-						numberOfPages: 8,//一页列出多少数据。
+						// numberOfPages: 8,//一页列出多少数据。
 						itemTexts: function (type, page, current) {//如下的代码是将页眉显示的中文显示我们自定义的中文。
 							switch (type) {
 								case "first": return "首页";
