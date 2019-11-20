@@ -71,11 +71,17 @@
 	}
 	.main_new_right #page ul,
 	.main_new_right #page li {
-		display: inline-block;
 		list-style: none;
+	}
+	.main_new_right #page li {
+		display: inline-block;
 		width: 50px;
 		cursor: pointer;
 		text-align: center;
+		line-height: 26px;
+	}
+	.main_new_right #page li.active {
+		border: 1px solid #3c8dbc;
 	}
 	.main_new_right .right_title {
 		text-align: center;
@@ -247,7 +253,7 @@
 							<div data-ng-show="!isShowTongzhiDtl">
 								<ul>
 									<li data-ng-repeat="item in tongzhiList track by $index" data-ng-click="showTongzhi(item)">
-										<span class="a">{{item.category}}</span>
+										<span class="a">{{item.title}}</span>
 										<div class="fr">{{item.createtime}}</div>
 									</li>
 								</ul>

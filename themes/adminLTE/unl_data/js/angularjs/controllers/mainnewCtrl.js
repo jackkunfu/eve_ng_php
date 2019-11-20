@@ -17,7 +17,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 	$scope.isShowPage = true
 	
 	//Default variables ///END
-	$scope.apiBase = 'http://myu4mq.natappfree.cc';
+	$scope.apiBase = 'http://u627fn.natappfree.cc';
 	$scope.navList = [
 		{ name: '平台介绍' },
 		{ name: '实验项目' },
@@ -67,7 +67,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 	}
 
 	$scope.curPage = 1
-	$scope.pSize = 5
+	$scope.pSize = 15
 
 	var tabOpts = {
 		0: {
@@ -128,8 +128,13 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 			pageNum: $scope.curPage
 		}
 		
-		if (method.toLocaleLowerCase() == 'get') obj.params = tabOpts[idx]
-		else obj.data = tabOpts[idx]
+		if (method.toLocaleLowerCase() == 'get') {
+			obj.params = tabOpts[idx]
+			obj.params.pageNum = $scope.curPage
+		} else {
+			obj.data = tabOpts[idx]
+			obj.data.pageNum = $scope.curPage
+		}
 		$http(obj).then(
 			function successcallback(response) {
 				if (response && response.data && response.data.data) {
@@ -139,6 +144,9 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 					} else {
 						$scope[$scope.listKey[idx]] = res.list || []
 					}
+
+					console.log('res.total')
+					console.log(res.total)
 
 					$('#page').bootstrapPaginator({
 						currentPage: $scope.curPage,//当前的请求页面。
@@ -196,6 +204,9 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 						} else {
 							$scope.labList = res.list || []
 						}
+
+						console.log('res.total')
+						console.log(res.total)
 	
 						$('#page').bootstrapPaginator({
 							currentPage: $scope.curPage,//当前的请求页面。
@@ -246,6 +257,8 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 					var res = response.data
 					console.log(res)
 					$scope.stuCenter = res.list || []
+					console.log('res.total')
+					console.log(res.total)
 					// console.log($scope.stuCenter)
 					$('#page').bootstrapPaginator({
 						currentPage: $scope.curPage,//当前的请求页面。
@@ -266,7 +279,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 						onPageClicked: function (event, originalEvent, type, page) {
 							console.log(page)
 							$scope.curPage = page;
-							getStuList()
+							getStuList(labId)
 						}
 					});
 				}

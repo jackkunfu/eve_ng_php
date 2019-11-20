@@ -526,7 +526,7 @@ $(document).on('click', '.action-labbodyget', function (e) {
     });
 });
 
-var api9000Basic = 'http://myu4mq.natappfree.cc';
+var api9000Basic = 'http://u627fn.natappfree.cc';
 function s_ajax(url, data, cb, type, upfile) {
     let options = data || {};
     if (!upfile) options.username = localStorage.EVENEWUSERNAME;
