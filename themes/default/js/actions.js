@@ -619,10 +619,10 @@ $(document).on('click', '.action-zhidaoshu', function (e) {
 
         if (text) {
             addModalWide('实验指导书', '<div>' + text + '</div>', '')
-            setTimeout(function(){
-                openNewPage()
-                // if (confirm('新开窗口做实验？(已经新开过直接点否~)')) window.open(location.href)
-            }, 500)
+            // setTimeout(function(){
+            //     openNewPage()
+            //     // if (confirm('新开窗口做实验？(已经新开过直接点否~)')) window.open(location.href)
+            // }, 500)
         } else {
             addModalWide('实验指导书', '<p>暂无数据</p>', '')
         }
@@ -784,10 +784,10 @@ $(document).on('click', '.action-peizhidaan', function (e) {
         }
         if (text) {
             addModalWide(MESSAGES[64], '<h1>标准答案</h1><p>答案：</p>' + text, '')
-            setTimeout(function(){
-                openNewPage();
-                // if (confirm('新开窗口做实验？(已经新开过直接点否~)')) window.open(location.href)
-            }, 500)
+            // setTimeout(function(){
+            //     openNewPage();
+            //     // if (confirm('新开窗口做实验？(已经新开过直接点否~)')) window.open(location.href)
+            // }, 500)
         } else {
             addModalWide(MESSAGES[64], '<h1>标准答案</h1><p>答案：暂无数据</p>', '')
         }
