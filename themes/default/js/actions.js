@@ -618,7 +618,8 @@ $(document).on('click', '.action-zhidaoshu', function (e) {
         // addModalWide(MESSAGES[64], '<h1>' + info['name'] + '</h1><p>' + info['description'] + '</p><p><code>ID: ' + info['id'] + '</code></p>' + body, '')
 
         if (text) {
-            addModalWide('实验指导书', '<div>' + text + '</div>', '')
+            window.open(text)
+            // addModalWide('实验指导书', '<div>' + text + '</div>', '')
             // setTimeout(function(){
             //     openNewPage()
             //     // if (confirm('新开窗口做实验？(已经新开过直接点否~)')) window.open(location.href)
