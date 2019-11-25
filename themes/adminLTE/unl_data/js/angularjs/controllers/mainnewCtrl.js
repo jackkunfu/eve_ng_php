@@ -17,7 +17,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 	$scope.isShowPage = true
 	
 	//Default variables ///END
-	$scope.apiBase = 'http://u627fn.natappfree.cc';
+	$scope.apiBase = 'http://56djax.natappfree.cc';
 	$scope.navList = [
 		{ name: '平台介绍' },
 		{ name: '实验项目' },
