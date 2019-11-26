@@ -96,7 +96,7 @@ function addModalWide(title, body, footer, property) {
         title.toUpperCase() == "STATUS" || title.toUpperCase() == "PICTURES") {
         addittionalHeaderBtns = '<i title="Make transparent" class="glyphicon glyphicon-certificate pull-right action-changeopacity"></i>'
     }
-    var html = '<div aria-hidden="false" style="display: block;" class="modal modal-wide ' + prop + ' fade in" tabindex="-1" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"></i><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' + addittionalHeaderBtns + '<h4 class="modal-title">' + title + '</h4></div><div class="modal-body">' + body + '</div><div class="modal-footer">' + footer + '</div></div></div></div>';
+    var html = '<div aria-hidden="false" data-backdrop="static" data-keyboard="false" style="display: block;" class="modal modal-wide ' + prop + ' fade in" tabindex="-1" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"></i><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' + addittionalHeaderBtns + '<h4 class="modal-title">' + title + '</h4></div><div class="modal-body">' + body + '</div><div class="modal-footer">' + footer + '</div></div></div></div>';
     $('body').append(html);
     $('body > .modal').modal('show');
 }
@@ -1261,8 +1261,12 @@ function postLogin(param) {
         LAB = LAB || param;
         logger(1, 'DEBUG: loading lab "' + LAB + '".');
 
-
         printPageLabOpen(LAB);
+
+        setTimeout(() => {
+            var labId = location.href.split('/legacy/')[1]; // 获取链接中实验id
+            if (!labId) { $('.action-labclose').click() }
+        }, 300)
 
         // Update node status
         UPDATEID = setInterval('printLabStatus("' + LAB + '")', STATUSINTERVAL);
@@ -1279,7 +1283,7 @@ function newUIreturn(param) {
         clearInterval(UPDATEID);
     }
     $('body').removeClass('login');
-        window.location.href = "/#/main" ;
+        window.location.href = "/#/mainnew" ;
 }
 
 //set Network

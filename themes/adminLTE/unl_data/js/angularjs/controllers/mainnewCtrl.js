@@ -60,8 +60,8 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 
 	var tabUrl = {
 		0: '/api/article/list',
-		// 2: '/api/student/list', // '/api/lab/list'
-		2: '/api/lab/list', // '/api/lab/list'
+		2: '/api/student/list', // '/api/lab/list'
+		// 2: '/api/lab/list', // '/api/lab/list'
 		3: '/api/file/list',
 		4: '/api/article/list'
 	}
@@ -73,16 +73,13 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 		0: {
 			username: EVENEWUSERNAME, category: 'introduce', pageNum: $scope.curPage, pageSize: $scope.pSize
 		},
-		// 2: {
-		// 	username: EVENEWUSERNAME,
-		// 	// path: '/opt/unetlab/tmp/4/58e76619-4032-4a04-a8b1-eee497071377/2'
-		// 	path: '/opt/unetlab/labs'
-		// 	// path: '/'
-		// },
 		2: {
-			// pageNum: 1, pageSize: 1000, labId: $scope.curLabId
-			username: EVENEWUSERNAME, path: '/opt/unetlab/labs', pageNum: $scope.curPage, pageSize: $scope.pSize
+			username: EVENEWUSERNAME, pageSize: $scope.pSize
 		},
+		// 2: {
+		// 	// pageNum: 1, pageSize: 1000, labId: $scope.curLabId
+		// 	username: EVENEWUSERNAME, path: '/opt/unetlab/labs', pageNum: $scope.curPage, pageSize: $scope.pSize
+		// },
 		3: {
 			username: EVENEWUSERNAME, pageNum: $scope.curPage, pageSize: $scope.pSize
 		},
@@ -102,8 +99,8 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 				$scope.isShowPage = true
 			}
 			$scope.isShowTongzhiDtl = false
-			if ($scope.curNav == idx && $scope.curNav != 2) return
-			$scope.isShowStu = false
+			// if ($scope.curNav == idx && $scope.curNav != 2) return
+			// $scope.isShowStu = false
 			$scope.curNav = idx
 			$scope.curPage = 1
 
@@ -113,12 +110,12 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 			}
 		}
 
-		if (isPageClick) {
-			if ($scope.isShowStu) {
-				$scope.showCourse($scope.curCourse);
-				return
-			}
-		}
+		// if (isPageClick) {
+		// 	if ($scope.isShowStu) {
+		// 		$scope.showCourse($scope.curCourse);
+		// 		return
+		// 	}
+		// }
 
 		var urlSplit = tabUrl[idx].split(',')
 		var method = urlSplit[1] ? urlSplit[1].trim() : 'get'

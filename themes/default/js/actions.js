@@ -526,7 +526,7 @@ $(document).on('click', '.action-labbodyget', function (e) {
     });
 });
 
-var api9000Basic = 'http://u627fn.natappfree.cc';
+var api9000Basic = 'http://56djax.natappfree.cc';
 function s_ajax(url, data, cb, type, upfile) {
     let options = data || {};
     if (!upfile) options.username = localStorage.EVENEWUSERNAME;
@@ -570,6 +570,12 @@ function getConfigById (labId, nodeId, cb) {
 
 var labId = location.href.split('/legacy/')[1]; // 获取链接中实验id
 if (labId) labId = labId.split('.unl')[0] + '.unl';
+else {
+    console.log('自动关闭实验')
+    $('.action-labclose').click()
+    // localStorage.setItem('action-nodelink',false);
+    // location.href = '/'
+}
 var urlPre = '/opt/unetlab/labs/'
 
 function getConfigByIdEach (labId, nodeId) {
@@ -598,11 +604,11 @@ function getConfigByIdEach (labId, nodeId) {
 var winObj = null
 let pageUrl = location.href
 
-function openNewPage () {
+function openNewPage (url) {
     if (!winObj || winObj.closed) {
-        winObj = window.open(pageUrl)
+        winObj = window.open(url || pageUrl)
     } else {
-        // winObj.focus()
+        winObj.focus()
     }
 }
 
@@ -618,7 +624,8 @@ $(document).on('click', '.action-zhidaoshu', function (e) {
         // addModalWide(MESSAGES[64], '<h1>' + info['name'] + '</h1><p>' + info['description'] + '</p><p><code>ID: ' + info['id'] + '</code></p>' + body, '')
 
         if (text) {
-            window.open(text)
+            // window.open(text)
+            openNewPage(text)
             // addModalWide('实验指导书', '<div>' + text + '</div>', '')
             // setTimeout(function(){
             //     openNewPage()
@@ -780,17 +787,17 @@ $(document).on('click', '.action-peizhidaan', function (e) {
         var text = ''
         if (data && data.data && data.data.list && data.data.list.length) {
             text = data.data.list.map(function(el){
-                return '<div style="font-weight: 600;">' + el.nodeName + '</div><div>' + el.content + '</div>'
+                return '<div style="font-weight: 600;margin-top: 15px;">' + el.nodeName + '</div><div>' + el.content + '</div>'
             }).join('');
         }
         if (text) {
-            addModalWide(MESSAGES[64], '<h1>标准答案</h1><p>答案：</p>' + text, '')
+            addModalWide('标准答案', text, '')
             // setTimeout(function(){
             //     openNewPage();
             //     // if (confirm('新开窗口做实验？(已经新开过直接点否~)')) window.open(location.href)
             // }, 500)
         } else {
-            addModalWide(MESSAGES[64], '<h1>标准答案</h1><p>答案：暂无数据</p>', '')
+            addModalWide('标准答案', '<p>暂无数据</p>', '')
         }
         // if (data && data.data && data.data.content) text = data.data.content;
         // addModalWide(MESSAGES[64], '<h1>标准答案</h1><p>答案：</p><p>' + text + '</p>', '')
