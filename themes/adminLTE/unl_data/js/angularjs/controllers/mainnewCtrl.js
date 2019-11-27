@@ -17,7 +17,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 	$scope.isShowPage = true
 	
 	//Default variables ///END
-	$scope.apiBase = 'http://56djax.natappfree.cc';
+	$scope.apiBase = 'http://cqn62k.natappfree.cc';
 	$scope.navList = [
 		{ name: '平台介绍' },
 		{ name: '实验项目' },
@@ -89,7 +89,8 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 	}
 
 	// $scope.listKey = { 0: 'platFormList', 2: 'courseList', 3: 'docList', 4: 'tongzhiList' }
-	$scope.listKey = { 0: 'platFormList', 2: 'labList', 3: 'docList', 4: 'tongzhiList' }
+	// $scope.listKey = { 0: 'platFormList', 2: 'labList', 3: 'docList', 4: 'tongzhiList' }
+	$scope.listKey = { 0: 'platFormList', 2: 'stuCenter', 3: 'docList', 4: 'tongzhiList' }
 
 	$scope.clickTab = function (item, idx, isPageClick) {
 		if (!isPageClick) {
