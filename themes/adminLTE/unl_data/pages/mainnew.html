@@ -163,6 +163,9 @@
 		height: 20px;
 		overflow: hidden;
 	}
+	.user-menu a {
+		color: #fff;
+	}
 </style>
 <div class="wrapper" style="height:80%;">
 
@@ -258,7 +261,7 @@
 								<li data-ng-repeat="item in docList track by $index">
 									<span>{{item.name}}</span>
 									<div class="fr">
-										{{item.createtime}}
+										{{item.createtime.split(' ')[0]}}&nbsp;{{item.admin ? item.admin.name || '' : ''}}
 										<div class="btn" data-ng-click="downItem(item)">下载</div>
 									</div>
 								</li>
@@ -278,8 +281,8 @@
 								<div class="back" data-ng-click="showTongzhiList()" style="float: left;position: relative;top: -80px;">返回</div>
 								<div class="title">{{curTongzhi.title}}</div>
 								<div style="margin-top: 10px;">
-									<span style="margin-right: 30px;">作者:{{curTongzhi.createBy}}</span>
-									<span>日期:{{curTongzhi.createtime}}</span>
+									<span style="margin-right: 30px;">作者:{{curTongzhi.admin ? curTongzhi.admin.name || '' : ''}}</span>
+									<span>日期:{{curTongzhi.createtime.split(' ')[0]}}</span>
 								</div>
 								<div class="tongzhi_dtl" ng-bind-html="curTongzhi.content"></div>
 							</div>

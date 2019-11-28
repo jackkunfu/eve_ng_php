@@ -1,14 +1,30 @@
  <!-- Main Header -->
+ <style>
+  .main-header .container a {
+    color: #fff;
+  }
+  .main-header .container a:hover, .main-header .container a:active, .main-header .container a:focus {
+    background-color: #337ab7;
+    color: #fff;
+  }
+  .nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
+    background-color: #337ab7;
+    color: #fff;
+  }
+  .dropdown-menu {
+    background: rgba(60, 141, 188);
+  }
+ </style>
 
-<header class="main-header" style="height: 50px;">
+<header class="main-header" style="height: 50px;background: rgba(60, 141, 188);color: #fff;">
 
     <nav class="navbar navbar-static-top">
 
-      <div class="container">
+      <div class="container" style="text-align: center;">
 
         <div class="navbar-header">
 
-          <a href="#/mainnew" class="navbar-brand" data-ng-click="blockui('/mainnew')" style="padding-top: 15px;color: #3c8dbc;">
+          <a href="#/mainnew" class="navbar-brand" data-ng-click="blockui('/mainnew')" style="padding-top: 15px;width: 200px;">
             <!-- <img class="hidden-xs" src="/themes/adminLTE/unl_data/img/mainLogo.png" style="width:104px;height:40px"> -->
             媒体工程学院
           </a>
@@ -80,7 +96,7 @@
               <a href="http://www.unetlab.com/">©2016 Eve-NG</a>
 
             </li> -->
-          <li><a href="http://www.unetlab.com/">后台管理系统</a></li>
+          <li><a href="http://eve.izhenwu.com/" target="_blank">后台管理系统</a></li>
 
           </ul>
 
@@ -90,7 +106,7 @@
 
         <!-- Navbar Right Menu -->
 
-        <div class="navbar-custom-menu">
+        <div class="navbar-custom-menu" style="float: none;">
 
           <ul class="nav navbar-nav">
 
@@ -100,7 +116,7 @@
 
               <!-- Menu Toggle Button -->
 
-              <a class="pointer" data-ng-click="openModal('edituser', username);">
+              <a class="pointer" data-ng-click="openModal('edituser', username);" style="color: #fff;">
 
                 <!-- The user image in the navbar
 
