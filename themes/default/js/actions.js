@@ -526,7 +526,7 @@ $(document).on('click', '.action-labbodyget', function (e) {
     });
 });
 
-var api9000Basic = 'http://cqn62k.natappfree.cc';
+var api9000Basic = 'http://bi2nha.natappfree.cc';
 function s_ajax(url, data, cb, type, upfile) {
     let options = data || {};
     if (!upfile) options.username = localStorage.EVENEWUSERNAME;
