@@ -190,7 +190,7 @@
 				</div>
 				<div class="main_new_right">
 					<div class="right_main">
-					<div data-ng-if="curNav === 0">
+						<div data-ng-if="curNav === 0">
 							<div class="right_title">平台介绍
 								<span class="fr sub" data-ng-repeat="item in platFormList track by $index" data-ng-if="$index == 0" style="color: #999;margin-left: 10px;font-size: 10px;">
 									{{item.admin && item.admin.name ? item.admin.name : ''}}
@@ -200,10 +200,10 @@
 								<div data-ng-repeat="item in platFormList track by $index" ng-bind-html="item.content || ''"></div>
 							</div>
 						</div>
-						<div data-ng-if="curNav === 1">
+						<div data-ng-if="curNav === 2">
 							<div class="right_title">平台介绍</div>
 						</div>
-						<div data-ng-if="curNav === 2">
+						<div data-ng-if="curNav === 3">
 							<!-- <div class="back" data-ng-click="showCourseList()">返回</div> -->
 							<div class="right_title">学生中心</div>
 							<table>
@@ -255,7 +255,7 @@
 								</table>
 							</div> -->
 						</div>
-						<div data-ng-if="curNav === 3">
+						<div data-ng-if="curNav === 4">
 							<div class="right_title">资料下载</div>
 							<ul>
 								<li data-ng-repeat="item in docList track by $index">
@@ -267,11 +267,19 @@
 								</li>
 							</ul>
 						</div>
-						<div data-ng-if="curNav === 4">
-							<div class="right_title">通知中心</div>
+						<!-- 使用说明和平台介绍使用下面同一套模板 -->
+						<div data-ng-if="curNav === 5 || curNav === 1">
+							<div data-ng-if="curNav === 5" class="right_title">通知中心</div>
+							<div data-ng-if="curNav === 1" class="right_title">使用说明</div>
 							<div data-ng-show="!isShowTongzhiDtl">
-								<ul>
+								<ul data-ng-if="curNav === 5">
 									<li data-ng-repeat="item in tongzhiList track by $index" data-ng-click="showTongzhi(item)">
+										<span class="a">{{item.title}}</span>
+										<div class="fr">{{item.createtime}}</div>
+									</li>
+								</ul>
+								<ul data-ng-if="curNav === 1">
+									<li data-ng-repeat="item in useDescList track by $index" data-ng-click="showTongzhi(item)">
 										<span class="a">{{item.title}}</span>
 										<div class="fr">{{item.createtime}}</div>
 									</li>

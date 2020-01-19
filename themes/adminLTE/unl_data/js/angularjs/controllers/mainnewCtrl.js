@@ -17,15 +17,17 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 	$scope.isShowPage = true
 	
 	//Default variables ///END
-	$scope.apiBase = 'http://bi2nha.natappfree.cc';
+	$scope.apiBase = 'http://5dnnra.natappfree.cc';
 	$scope.navList = [
 		{ name: '平台介绍' },
+		{ name: '使用说明' },
 		{ name: '实验项目' },
 		{ name: '学生中心' },
 		{ name: '资料下载' },
 		{ name: '通知中心' }
 	]
 	$scope.platformList = []
+	$scope.useDescList = []
 	$scope.labList = []
 	$scope.courseList = [
 		{ name: 'CCNA', id: 1 },
@@ -60,10 +62,11 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 
 	var tabUrl = {
 		0: '/api/article/list',
-		2: '/api/student/list', // '/api/lab/list'
+		1: '/api/article/list',
+		3: '/api/student/list', // '/api/lab/list'
 		// 2: '/api/lab/list', // '/api/lab/list'
-		3: '/api/file/list',
-		4: '/api/article/list'
+		4: '/api/file/list',
+		5: '/api/article/list'
 	}
 
 	$scope.curPage = 1
@@ -73,24 +76,23 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 		0: {
 			username: EVENEWUSERNAME, category: 'introduce', pageNum: $scope.curPage, pageSize: $scope.pSize
 		},
-		2: {
+		1: {
+			username: EVENEWUSERNAME, category: 'useDesc', pageNum: $scope.curPage, pageSize: $scope.pSize
+		},
+		3: {
 			username: EVENEWUSERNAME, pageSize: $scope.pSize
 		},
-		// 2: {
-		// 	// pageNum: 1, pageSize: 1000, labId: $scope.curLabId
-		// 	username: EVENEWUSERNAME, path: '/opt/unetlab/labs', pageNum: $scope.curPage, pageSize: $scope.pSize
-		// },
-		3: {
+		4: {
 			username: EVENEWUSERNAME, pageNum: $scope.curPage, pageSize: $scope.pSize
 		},
-		4: {
+		5: {
 			username: EVENEWUSERNAME, category: 'notify', pageNum: $scope.curPage, pageSize: $scope.pSize
 		}
 	}
 
 	// $scope.listKey = { 0: 'platFormList', 2: 'courseList', 3: 'docList', 4: 'tongzhiList' }
 	// $scope.listKey = { 0: 'platFormList', 2: 'labList', 3: 'docList', 4: 'tongzhiList' }
-	$scope.listKey = { 0: 'platFormList', 2: 'stuCenter', 3: 'docList', 4: 'tongzhiList' }
+	$scope.listKey = { 0: 'platFormList', 1: 'useDescList', 3: 'stuCenter', 4: 'docList', 5: 'tongzhiList' }
 
 	$scope.clickTab = function (item, idx, isPageClick) {
 		if (!isPageClick) {
@@ -105,7 +107,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 			$scope.curNav = idx
 			$scope.curPage = 1
 
-			if (idx == 1) {
+			if (idx == 2) {
 				$location.path('/main')
 				return
 			}
@@ -143,12 +145,12 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 						$scope[$scope.listKey[idx]] = res.list || []
 					}
 
-					console.log('res.total')
-					console.log(res.total)
+					let total = res.total || 0
+					let totolP = Math.floor(total / 15) + 1
 
 					$('#page').bootstrapPaginator({
 						currentPage: $scope.curPage,//当前的请求页面。
-						totalPages: res.total || 1,//一共多少页。
+						totalPages: totolP,//一共多少页。
 						size: "normal",//应该是页眉的大小。
 						// bootstrapMajorVersion: 3,//bootstrap的版本要求。
 				    alignment:"right",
@@ -177,7 +179,7 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 		)
 	}
 
-	$scope.clickTab({}, 4);
+	// $scope.clickTab({}, 4);
 	$scope.clickTab({}, 0);
 
 	$scope.downItem = function (item) {
@@ -203,12 +205,12 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 							$scope.labList = res.list || []
 						}
 
-						console.log('res.total')
-						console.log(res.total)
+						let total = res.total || 0
+						let totolP = Math.floor(total / 15) + 1
 	
 						$('#page').bootstrapPaginator({
 							currentPage: $scope.curPage,//当前的请求页面。
-							totalPages: res.total || 1,//一共多少页。
+							totalPages: totolP,//一共多少页。
 							size: "normal",//应该是页眉的大小。
 							// bootstrapMajorVersion: 3,//bootstrap的版本要求。
 							alignment: "right",
@@ -253,14 +255,14 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 			function successcallback(response) {
 				if (response && response.data) {
 					var res = response.data.data || {}
-					console.log(res)
 					$scope.stuCenter = res.list || []
-					console.log('res.total')
-					console.log(res.total)
-					// console.log($scope.stuCenter)
+					
+					let total = res.total || 0
+					let totolP = Math.floor(total / 15) + 1
+
 					$('#page').bootstrapPaginator({
 						currentPage: $scope.curPage,//当前的请求页面。
-						totalPages: res.total || 1,//一共多少页。
+						totalPages: totolP,//一共多少页。
 						size: "normal",//应该是页眉的大小。
 						// bootstrapMajorVersion: 3,//bootstrap的版本要求。
 						alignment: "right",
