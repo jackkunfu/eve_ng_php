@@ -1,0 +1,270 @@
+<div data-ng-include="'/themes/adminLTE/unl_data/pages/constant/header.html'" data-ng-controller="HeaderController" style="height: 50px;"></div>
+<style>
+.ctn {
+	text-align: center;
+}
+.head {
+	height: 60px;
+	line-height: 60px;
+}
+
+.center {
+	width: 1200px;
+	text-align: left;
+	padding: 30px 0;
+	margin: 0 auto;
+	min-height: 100px;
+}
+.center .tit {
+	text-align: center;
+	font-size: 26px;
+	font-weight: bold;
+	margin-bottom: 20px;
+}
+.grey {
+	background: #eee;
+}
+.half {
+	display: inline-block;
+	width: 50%;
+}
+
+.top {
+	padding: 50px 0 30px;
+	text-align: center;
+	background: #aaa;
+	color: #fff;
+}
+.top .t1 {
+	font-size: 20px;
+	margin-bottom: 20px;
+}
+.top .t2 {
+	font-size: 12px;
+	margin-bottom: 10px;
+}
+.top .btn {
+	width: 120px;
+	height: 40px;
+	line-height: 40px;
+	background: #38f;
+	border-radius: 20px;
+	margin: 30px auto
+}
+.top .t1 {}
+.head .center {
+	padding: 0;
+}
+.head .center span {
+	display: inline-block;
+	margin-right: 20px;
+}
+
+.pingtai {
+	overflow: hidden;
+}
+
+.pingtai .half {
+	box-sizing: border-box;
+	float: left;
+	padding: 20px;
+	text-align: left;
+}
+.pingtai .half .tit {
+	text-align: left;
+}
+
+.pingtai .img {
+	width: 100%;
+	height: 100%;
+}
+
+.shuoming .list {
+	overflow: hidden;
+}
+
+.shuoming-item {
+	float: left;
+	width: 285px;
+	margin-left: 20px;
+	background: #fff;
+	padding-bottom: 5px;
+}
+.shuoming-item:first-child {
+	margin-left: 0;
+}
+.shuoming-item img {
+	width: 100%;
+	height: 150px;
+}
+.shuoming-item div {
+	padding-left: 20px;
+}
+.shuoming-item .name {
+	font-size: 16px;
+	font-weight: bold;
+	margin: 20px 0;
+}
+.shuoming-item .btn {
+	width: 100px;
+	height: 30px;
+	line-height: 30px;
+	background: #fff;
+	border: 1px solid #eee;
+	color: #aaa;
+	border-radius: 15px;
+	margin: 20px;
+	cursor: pointer;
+	text-align: center;
+	padding-left: 0;
+}
+.shuoming-item .btn:hover {
+	background: #38f;
+	color: #fff;
+}
+.line-btn-ctn {
+	text-align: center;
+}
+.line-btn {
+	width: 50px;
+	height: 3px;
+	background: #fff;
+	margin: 30px 5px;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.table-stu {
+	width: 100%;
+	border: none;
+}
+.table-stu tr {
+	background: rgba(51,136,255,0.1);
+}
+.table-stu tr:nth-child(2n+1) {
+	background: #fff;
+}
+.table-stu td {
+	text-align: center;
+	line-height: 40px;
+}
+.table-stu th {
+	background: #38f;
+	color: #fff;
+	line-height: 50px;
+}
+.show-more {
+	width: 120px;
+	height: 30px;
+	line-height: 30px;
+	background: #fff;
+	border: 1px solid #bbb;
+	color: #666;
+	border-radius: 15px;
+	margin: 20px auto;
+	cursor: pointer;
+	text-align: center;
+}
+
+</style>
+<div class="wrapper" style="height:80%;">
+	<div class="top">
+		<div class="t1">网络工程虚拟仿真实验平台</div>
+		<div class="t2">主要面向"IP交换与路由技术"、"网络管理"、"Linux操作系统"等多门课程的实验教学</div>
+		<div class="btn">去做实验</div>
+	</div>
+	<div class="head grey">
+		<div class="center">
+			<span data-ng-repeat="item in navList track by $index" ng-class="{'cur': curNav == $index}">{{item}}</span>
+			<span>平台介绍</span>
+			<span>使用说明</span>
+			<span>学生中心</span>
+			<span>资料下载</span>
+			<span>通知中心</span>
+		</div>
+	</div>
+	<div class="ctn">
+		<div class="center pingtai">
+			<div class="half">
+				<div class="tit">平台介绍</div>
+			</div>
+			<div class="half"><img class="img" src="" /></div>
+		</div>
+	</div>
+	<div class="ctn grey">
+		<div class="center shuoming">
+			<div class="tit">使用说明</div>
+			<div class="list">
+				<div class="item shuoming-item">
+					<img src="" alt="">
+					<div class="name">XXXXX</div>
+					<div>20323-234-23423</div>
+					<div class="btn">查看详情</div>
+				</div>
+
+				<div class="item shuoming-item">
+					<img src="" alt="">
+					<div class="name">XXXXX</div>
+					<div>20323-234-23423</div>
+					<div class="btn">查看详情</div>
+				</div>
+				<div class="item shuoming-item">
+					<img src="" alt="">
+					<div class="name">XXXXX</div>
+					<div>20323-234-23423</div>
+					<div class="btn">查看详情</div>
+				</div>
+				<div class="item shuoming-item">
+					<img src="" alt="">
+					<div class="name">XXXXX</div>
+					<div>20323-234-23423</div>
+					<div class="btn">查看详情</div>
+				</div>
+
+
+			</div>
+			<div class="line-btn-ctn">
+				<div class="line-btn"></div><div class="line-btn"></div><div class="line-btn"></div><div class="line-btn"></div>
+			</div>
+		</div>
+	</div>
+	<div class="ctn">
+		<div class="center">
+			<div class="tit">学生中心</div>
+			<table class="table-stu">
+				<tr>
+					<th>实验名称</th><th width="100">实验分数</th><th width="100">报告分数</th><th>报告评语</th>
+				</tr>
+				<tr>
+					<td>{{ 实验名称 }}</td><td width="100">{{ 95 }}</td><td width="100">{{ 95 }}</td><td>{{ 报告评语 }}</td>
+				</tr>
+				<tr>
+					<td>{{ 实验名称 }}</td><td width="100">{{ 95 }}</td><td width="100">{{ 95 }}</td><td>{{ 报告评语 }}</td>
+				</tr>
+			</table>
+			<div class="show-more">展开更多</div>
+		</div>
+	</div>
+	<div class="ctn grey">
+		<div class="center">
+			<div class="tit">资料下载</div>
+		</div>
+	</div>
+	<div class="ctn">
+		<div class="center">
+			<div class="tit">通知中心</div>
+		</div>
+	</div>
+
+  <!-- Main Footer -->
+  <!--<div data-ng-include="'/themes/adminLTE/unl_data/pages/constant/footer.html'" >-->
+</div>
+
+<script src="/themes/adminLTE/dist/js/app.js"></script>
+
+<link rel="stylesheet" href="/themes/adminLTE/unl_data/css/unl_lab.css">
+
+<!-- <link rel="stylesheet" href="/themes/adminLTE/unl_data/css/custom_unl_lab.css"> -->
+
+<link rel="stylesheet" href="/themes/adminLTE/dist/css/skins/skin-#38f.css">
+
