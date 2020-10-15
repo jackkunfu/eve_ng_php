@@ -1,4 +1,4 @@
-function mainnewController($scope, $http, $location, $window, $uibModal, $log, $rootScope, FileUploader, focus) {
+function mainnew1Controller($scope, $http, $location, $window, $uibModal, $log, $rootScope, FileUploader, focus) {
 	$.unblockUI();
 	$rootScope.openLaba=false;
 	// $scope.testAUTH("/main"); //TEST AUTH
