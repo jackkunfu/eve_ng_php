@@ -227,7 +227,7 @@ app_main_unl.config(['$stateProvider', '$urlRouterProvider', function($stateProv
             url: "/mainnew1",
             templateUrl: "/themes/adminLTE/unl_data/pages/mainnew1.html",
             data: {pageTitle: 'Main menu'},
-			controller: "s",
+			controller: "mainnew1Controller",
             resolve: {
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
@@ -235,6 +235,28 @@ app_main_unl.config(['$stateProvider', '$urlRouterProvider', function($stateProv
                         insertBefore: '#load_files_before',
                         files: [
                             '/themes/adminLTE/unl_data/js/angularjs/controllers/mainnew1Ctrl.js',
+                            '/themes/adminLTE/unl_data/js/angularjs/controllers/modalCtrl.js',
+                            '/themes/adminLTE/unl_data/js/angularjs/controllers/labviewCtrl.js',
+                            '/themes/adminLTE/plugins/angularJS/plugins/angular-file-upload/angular-file-upload.min.js',
+                            '/themes/adminLTE/dist/css/skins/skin-blue.min.css',
+                            '/themes/adminLTE/dist/js/app.min.js',
+                        ] 
+                    });
+                }]
+            }
+        })
+        .state('detail', {
+            url: "/detail",
+            templateUrl: "/themes/adminLTE/unl_data/pages/detail.html",
+            data: {pageTitle: 'Main menu'},
+			controller: "detailController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'app_main_unl',
+                        insertBefore: '#load_files_before',
+                        files: [
+                            '/themes/adminLTE/unl_data/js/angularjs/controllers/detailCtrl.js',
                             '/themes/adminLTE/unl_data/js/angularjs/controllers/modalCtrl.js',
                             '/themes/adminLTE/unl_data/js/angularjs/controllers/labviewCtrl.js',
                             '/themes/adminLTE/plugins/angularJS/plugins/angular-file-upload/angular-file-upload.min.js',

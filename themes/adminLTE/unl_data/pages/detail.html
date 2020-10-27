@@ -1,0 +1,120 @@
+<div data-ng-include="'/themes/adminLTE/unl_data/pages/constant/header.html'" data-ng-controller="HeaderController" style="height: 50px;"></div>
+<style>
+.center {
+	width: 1200px;
+	margin: 0 auto;
+}
+.detail {
+	background: #eee;
+}
+.detail .thu {
+	color: #999;
+	line-height: 60px;
+}
+.detail .thu span {
+	color: #333;
+}
+.detail .main {
+	background: #fff;
+	padding: 50px;
+	margin-bottom: 20px;
+}
+.detail .main .title {
+	text-align: center;
+	color: #333;
+	font-size: 32px;
+	margin-bottom: 30px;
+}
+.detail .main .gray {
+	text-align: center;
+	background: #f8f8f8;
+	height: 50px;
+	line-height: 50px;
+	color: #999;
+}
+.detail .main .gray span {
+	margin: 0 50px;
+}
+.detail .ctnt {
+	color: #666;
+}
+.detail .btm {
+	overflow: hidden;
+}
+.detail .half {
+	float: left;
+	width: 590px;
+	text-align: center;
+	cursor: pointer;
+	background: #fff;
+	line-height: 80px;
+}
+</style>
+
+<div class="wrapper detail">
+	<div class="thu center">
+		<a href="#/mainnew1">首页</a> > 使用说明 > <span>详情</span>
+	</div>
+	<div class="main center">
+		<div class="title">{{ dtlData.title }}</div>
+		<div class="gray">
+			<span>{{ dtlData.title }}</span><span>{{ dtlData.title }}</span>
+		</div>
+		<div class="ctnt" ng-bind-html="dtlData.conent"></div>
+	</div>
+	<div class="center btm">
+		<div class="half" style="margin-right: 20px;">
+			<span>上一篇</span> {{}}
+		</div>
+		<div class="half">
+			<span>下一篇</span> {{}}
+		</div>
+	</div>
+</div>
+
+<script>
+	function hdlPages (cur, total) {
+		let arr = []
+		if (total < 7) { // 不需要展示省略号
+			var i = 1
+			while (i <= total) {
+				arr.push(i)
+				i++
+			}
+		}
+		return arr
+
+
+		// 需要展示省略号 目标 [1,2,3,'...', cur - 1, cur, cur + 1, '...', total - 2, total - 1, total]
+
+		if (cur < 5) {
+			var i = 1
+			while (i <= cur) {
+				arr.push(i)
+				i++
+			}
+		} else {
+			arr = [1,2,3,'...',cur - 1, cur]
+		}
+		if (cur < total - 4) {
+			arr.push(cur + 1, '...', total - 2, total - 1, total)
+		} else {
+			var i = 1
+			while (i <= total - cur)  {
+				arr.push(total - cur + i)
+				i++
+			}
+		}
+
+		return arr
+	}
+</script>
+
+<script src="/themes/adminLTE/dist/js/app.js"></script>
+
+<link rel="stylesheet" href="/themes/adminLTE/unl_data/css/unl_lab.css">
+
+<!-- <link rel="stylesheet" href="/themes/adminLTE/unl_data/css/custom_unl_lab.css"> -->
+
+<link rel="stylesheet" href="/themes/adminLTE/dist/css/skins/skin-#38f.css">
+

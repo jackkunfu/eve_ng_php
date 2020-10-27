@@ -1283,7 +1283,7 @@ function newUIreturn(param) {
         clearInterval(UPDATEID);
     }
     $('body').removeClass('login');
-        window.location.href = "/#/mainnew" ;
+        window.location.href = "/#/mainnew1" ;
 }
 
 //set Network

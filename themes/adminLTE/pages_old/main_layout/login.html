@@ -28,7 +28,7 @@
 <!-- /.login-box -->
 <script>
 	function loginController($scope, $http, $location) {
-		$scope.testAUTH("/mainnew");
+		$scope.testAUTH("/mainnew1");
 		$('body').removeClass().addClass('hold-transition login-page');
 		$scope.tryLogin = function(){
 			$scope.loginMessageInfo="";
@@ -39,7 +39,7 @@
 					.then(
 					function successCallback(response) {
 						if (response.status == '200' && response.statusText == 'OK'){
-						$location.path("/mainnew");}
+						$location.path("/mainnew1");}
 					}, 
 					function errorCallback(response) {
 						if (response.status == '400' && response.statusText == 'Bad Request'){

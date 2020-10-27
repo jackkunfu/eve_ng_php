@@ -26,7 +26,7 @@ app_main_unl.controller('unlMainController', ['$scope', '$rootScope', '$http', '
         $http.get('/api/auth').then(
             function successCallback(response) {
                 if (response.status == '200' && response.statusText == 'OK'){
-                    $location.path("/mainnew");
+                    $location.path("/mainnew1");
                     $scope.userfolder = response.data.folder;
                 }
             }, 
