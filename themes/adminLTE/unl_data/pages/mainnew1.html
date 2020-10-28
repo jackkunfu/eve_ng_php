@@ -20,7 +20,12 @@
 	text-align: center;
 	font-size: 26px;
 	font-weight: bold;
-	margin-bottom: 20px;
+	margin-bottom: 40px;
+}
+.center .tit img {
+	width: auto;
+	height: 48px;
+	margin-bottom: 16px;
 }
 .grey {
 	background: #f8f8f8;
@@ -87,6 +92,7 @@
 }
 .pingtai .half .tit {
 	text-align: left;
+	margin-bottom: 0;
 }
 
 .pingtai .img {
@@ -270,7 +276,9 @@
 	<div class="ctn" id="nav1">
 		<div class="center pingtai">
 			<div class="half">
-				<div class="tit">平台介绍
+				<div class="tit">
+					<img src="/themes/adminLTE/unl_data/img/mainnew1/icon_module_introduce.png" alt="">
+					平台介绍
 					<div ng-bind-html="platform.content"></div>
 				</div>
 			</div>
@@ -279,7 +287,7 @@
 	</div>
 	<div class="ctn grey" id="nav2">
 		<div class="center shuoming">
-			<div class="tit">使用说明</div>
+			<div class="tit"><div><img src="/themes/adminLTE/unl_data/img/mainnew1/icon_module_instructions.png" alt=""></div>使用说明</div>
 			<div class="list">
 				<div
 					class="item shuoming-item"
@@ -302,7 +310,7 @@
 	</div>
 	<div class="ctn" id="nav3">
 		<div class="center">
-			<div class="tit">学生中心</div>
+			<div class="tit"><div><img src="/themes/adminLTE/unl_data/img/mainnew1/icon_module_students.png" alt=""></div>学生中心</div>
 			<table class="table-stu">
 				<tr>
 					<th>实验名称</th><th width="100">实验分数</th><th width="100">报告分数</th><th>报告评语</th>
@@ -316,7 +324,7 @@
 	</div>
 	<div class="ctn grey" id="nav4">
 		<div class="center">
-			<div class="tit">资料下载</div>
+			<div class="tit"><div><img src="/themes/adminLTE/unl_data/img/mainnew1/icon_module_download.png" alt=""></div>资料下载</div>
 			<div>
 				<div class="excel" data-ng-repeat="item in docList">
 					<span><img src="" /></span>
@@ -336,7 +344,7 @@
 	</div>
 	<div class="ctn" style="background-color: #333;color: #fff;" id="nav5">
 		<div class="center">
-			<div class="tit">通知中心</div>
+			<div class="tit"><div><img src="/themes/adminLTE/unl_data/img/mainnew1/icon_module_notice.png" alt=""></div>通知中心</div>
 			<div class="tongzhi_list">
 				<div class="item" data-ng-repeat="item in tongzhiList">
 					<div class="time">{{item.createtime}}</div>
