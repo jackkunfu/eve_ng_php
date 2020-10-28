@@ -85,7 +85,7 @@ function mainnew1Controller($scope, $http, $location, $window, $uibModal, $log, 
 		console.log('showUseDescList',$scope.showUseDescList);
 	}
 	$scope.seeDtl = function (item) {
-		console.log(item);
+		// console.log(item);
 		location.href = '#/detail?id=' + item.id;
 	}
 
@@ -367,24 +367,8 @@ function mainnew1Controller($scope, $http, $location, $window, $uibModal, $log, 
 			}
 		)
 	}
-	$scope.showCourseList = function () {
-		$scope.isShowStu = false
-		$scope.curCourse = {}
-	}
-	$scope.showTongzhiList = function () {
-		$scope.isShowTongzhiDtl = false
-		$scope.curTongzhi = {}
-	}
 
-
-	// $http.get('/api/labs/CCNA/configs/' + id)
-	// 	.then(
-	// 		function successCallback(response){
-	// 			$("#nodeconfig").val(response.data.data.data)
-	// 		},
-	// 		function errorCallback(response){
-	// 			console.log('Server Error');
-	// 			console.log(response);
-	// 		}
-	// 	)
+	$scope.downExcel = function (url) {
+		location.href = url
+	}
 }

@@ -24,7 +24,7 @@ function detailController($scope, $http, $location, $window, $uibModal, $log, $r
 	$scope.getDtl = function () {
 		var obj = {
 			method: 'post',
-			url: $scope.apiBase + '/api/admin/article/get?id=' + id + '&username=' + EVENEWUSERNAME,
+			url: $scope.apiBase + '/api/article/get?id=' + id + '&username=' + EVENEWUSERNAME,
 			parmas: {
 				id: id,
 				username: EVENEWUSERNAME
@@ -35,7 +35,8 @@ function detailController($scope, $http, $location, $window, $uibModal, $log, $r
 			function successcallback(response) {
 				console.log(response);
 				if (response && response.data) {
-					$scope.dtlData = response.data
+					$scope.dtlData = response.data.data || {}
+					// console.log('dtl', $scope.dtlData);
 				}
 			},
 			function errorcallback(response) {
@@ -45,4 +46,9 @@ function detailController($scope, $http, $location, $window, $uibModal, $log, $r
 		)
 	}
 	$scope.getDtl();
+
+	$scope.goDtl = function (id) {
+		location.href = '#/detail?id=' + id;
+		location.reload()
+	}
 }

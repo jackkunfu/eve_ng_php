@@ -18,13 +18,14 @@
 }
 .center .tit {
 	text-align: center;
-	font-size: 26px;
+	font-size: 28px;
 	font-weight: bold;
 	margin-bottom: 40px;
+	vertical-align: middle;
 }
 .center .tit img {
 	width: auto;
-	height: 48px;
+	height: 44px;
 	margin-bottom: 16px;
 }
 .grey {
@@ -254,6 +255,7 @@
 	margin: 15px;
 	background-color: rgba(6, 6, 6, 0.2);
 	padding: 30px 20px;
+	cursor: pointer;
 }
 .tongzhi_list .item .time {
 	margin-bottom: 8px;
@@ -282,7 +284,7 @@
 					<div ng-bind-html="platform.content"></div>
 				</div>
 			</div>
-			<div class="half"><img class="img" ng-bind-src="{{ platform.img }}" /></div>
+			<div class="half"><img class="img" ng-src="{{ platform.image }}" /></div>
 		</div>
 	</div>
 	<div class="ctn grey" id="nav2">
@@ -292,7 +294,7 @@
 				<div
 					class="item shuoming-item"
 					data-ng-repeat="item in showUseDescList track by $index">
-					<img ng-bind-src="{{ item.image }}" alt="">
+					<img ng-src="{{ item.image }}" alt="">
 					<div class="name">{{ item.title }}</div>
 					<div>{{ item.createtime }}</div>
 					<div class="btn" data-ng-click="seeDtl(item)">查看详情</div>
@@ -327,10 +329,10 @@
 			<div class="tit"><div><img src="/themes/adminLTE/unl_data/img/mainnew1/icon_module_download.png" alt=""></div>资料下载</div>
 			<div>
 				<div class="excel" data-ng-repeat="item in docList">
-					<span><img src="" /></span>
+					<span><img ng-src="{{ item.image }}" /></span>
 					<span class="name">{{ item.name }}</span>
 					<span>{{ item.time }}</span>
-					<span class="fr"><div class="btn">下载</div></span>
+					<span class="fr"><div class="btn" ng-click="downExcel(item.url)">下载</div></span>
 				</div>
 			</div>
 			<div class="page">
@@ -349,6 +351,7 @@
 				<div class="item" data-ng-repeat="item in tongzhiList">
 					<div class="time">{{item.createtime}}</div>
 					<div>{{item.title}}</div>
+					<div style="margin-top: 18px;"><img src="/themes/adminLTE/unl_data/img/mainnew1/notice_icon_1.png" alt=""></div>
 				</div>
 			</div>
 		</div>

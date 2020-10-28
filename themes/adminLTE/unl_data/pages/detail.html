@@ -37,6 +37,12 @@
 }
 .detail .ctnt {
 	color: #666;
+	padding: 50px;
+}
+.detail .ctnt img {
+	width: auto;
+	height: auto;
+	margin: 20px auto;
 }
 .detail .btm {
 	overflow: hidden;
@@ -44,10 +50,15 @@
 .detail .half {
 	float: left;
 	width: 590px;
-	text-align: center;
+	padding-left: 50px;
 	cursor: pointer;
 	background: #fff;
 	line-height: 80px;
+	color: #333;
+}
+.detail .half span {
+	color: #999;
+	margin-right: 50px;
 }
 </style>
 
@@ -58,16 +69,19 @@
 	<div class="main center">
 		<div class="title">{{ dtlData.title }}</div>
 		<div class="gray">
-			<span>{{ dtlData.title }}</span><span>{{ dtlData.title }}</span>
+			<span>发布时间：{{ dtlData.createtime }}</span><span>作者：{{ dtlData.title }}</span>
 		</div>
-		<div class="ctnt" ng-bind-html="dtlData.conent"></div>
+		<div class="ctnt">
+			<div style="text-align: center;"><img ng-src="{{ dtlData.image }}" alt=""></div>
+			<div ng-bind-html="dtlData.content"></div>
+		</div>
 	</div>
 	<div class="center btm">
-		<div class="half" style="margin-right: 20px;">
-			<span>上一篇</span> {{}}
+		<div class="half" ng-if="dtlData.pre" ng-click="goDtl(dtlData.pre.id)">
+			<span>上一篇:</span> {{ dtlData.pre.title }}
 		</div>
-		<div class="half">
-			<span>下一篇</span> {{}}
+		<div class="half" style="float: right;" ng-if="dtlData.after" ng-click="goDtl(dtlData.after.id)">
+			<span>下一篇:</span> {{ dtlData.after.title }}
 		</div>
 	</div>
 </div>
