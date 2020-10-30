@@ -15,7 +15,7 @@ function detailController($scope, $http, $location, $window, $uibModal, $log, $r
 	$scope.checkboxArray=[];
 
 	//Default variables ///END
-	$scope.apiBase = 'http://9pp7ig.natappfree.cc';
+	$scope.apiBase = 'http://h743h5.natappfree.cc';
 	// $scope.apiBase = 'http://' + location.hostname + ':9000';
 	var EVENEWUSERNAME = localStorage.EVENEWUSERNAME || ''
 

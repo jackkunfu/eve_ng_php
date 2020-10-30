@@ -235,11 +235,18 @@
 .page .btn {
 	float: left;
 	padding: 10px;
-	background: #aaa;
+	/* background: #aaa; */
 	margin: 10px 5px;
+	color: #333;
+	border: 1px solid #D8D8D8;
 }
-.page .btn.cur {
+.page.tongzhi_page .btn {
+	color: #fff;
+}
+.page .btn.cur, .page .btn:hover {
 	background: #3974FF;
+	color: #fff;
+	border: 1px solid #3974FF;
 }
 .page .btn.els {
 	background: none;
@@ -293,7 +300,7 @@
 			<div class="list">
 				<div
 					class="item shuoming-item"
-					data-ng-repeat="item in showUseDescList track by $index">
+					data-ng-repeat="item in useDescList track by $index">
 					<img ng-src="{{ item.image }}" alt="">
 					<div class="name">{{ item.title }}</div>
 					<div>{{ item.createtime }}</div>
@@ -306,6 +313,16 @@
 					data-ng-repeat="item in lineBtnNum track by $index"
 					data-ng-class="{'cur': lineBtnIdx == $index}"
 					data-ng-click="clickLine($index)">
+				</div>
+			</div>
+			<div class="page">
+				<div class="page-list">
+					<div class="btn" data-ng-if="pageOpt[1].cur > 1" ng-click="clickPage(1, 'pre')">上一页</div>
+					<div
+						class="btn" data-ng-repeat="item in pageArr1 track by $index"
+						ng-click="clickPage(1, item)" data-ng-class="{'cur': pageOpt[1].cur == item}"
+					>{{ item }}</div>
+					<div class="btn" data-ng-if="pageOpt[1].cur < pageOpt[1].total" ng-click="clickPage(1, 'next')">下一页</div>
 				</div>
 			</div>
 		</div>
@@ -322,6 +339,16 @@
 				</tr>
 			</table>
 			<!-- <div class="show-more">展开更多</div> -->
+			<div class="page">
+				<div class="page-list">
+					<div class="btn" data-ng-if="pageOpt[3].cur > 1" ng-click="clickPage(3, 'pre')">上一页</div>
+					<div
+						class="btn" data-ng-repeat="item in pageArr3 track by $index"
+						ng-click="clickPage(3, item)" data-ng-class="{'cur': pageOpt[3].cur == item}"
+					>{{ item }}</div>
+					<div class="btn" data-ng-if="pageOpt[3].cur < pageOpt[3].total" ng-click="clickPage(3, 'next')">下一页</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="ctn grey" id="nav4">
@@ -337,9 +364,12 @@
 			</div>
 			<div class="page">
 				<div class="page-list">
-					<div class="btn" data-ng-if="curZiP > 1">上一页</div>
-					<div class="btn" data-ng-repeat="item in ziPages"></div>
-					<div class="btn" data-ng-if="curZiP < curZiTotal">下一页</div>
+					<div class="btn" data-ng-if="pageOpt[4].cur > 1" ng-click="clickPage(4, 'pre')">上一页</div>
+					<div
+						class="btn" data-ng-repeat="item in pageArr4 track by $index"
+						ng-click="clickPage(4, item)" data-ng-class="{'cur': pageOpt[4].cur == item}"
+					>{{ item }}</div>
+					<div class="btn" data-ng-if="pageOpt[4].cur < pageOpt[4].total" ng-click="clickPage(4, 'next')">下一页</div>
 				</div>
 			</div>
 		</div>
@@ -354,47 +384,19 @@
 					<div style="margin-top: 18px;"><img src="/themes/adminLTE/unl_data/img/mainnew1/notice_icon_1.png" alt=""></div>
 				</div>
 			</div>
+			<div class="page tongzhi_page">
+				<div class="page-list">
+					<div class="btn" data-ng-if="pageOpt[5].cur > 1" ng-click="clickPage(5, 'pre')">上一页</div>
+					<div
+						class="btn" data-ng-repeat="item in pageArr5 track by $index"
+						ng-click="clickPage(5, item)" data-ng-class="{'cur': pageOpt[5].cur == item}"
+					>{{ item }}</div>
+					<div class="btn" data-ng-if="pageOpt[5].cur < pageOpt[5].total" ng-click="clickPage(5, 'next')">下一页</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
-
-<script>
-	function hdlPages (cur, total) {
-		let arr = []
-		if (total < 7) { // 不需要展示省略号
-			var i = 1
-			while (i <= total) {
-				arr.push(i)
-				i++
-			}
-		}
-		return arr
-
-
-		// 需要展示省略号 目标 [1,2,3,'...', cur - 1, cur, cur + 1, '...', total - 2, total - 1, total]
-
-		if (cur < 5) {
-			var i = 1
-			while (i <= cur) {
-				arr.push(i)
-				i++
-			}
-		} else {
-			arr = [1,2,3,'...',cur - 1, cur]
-		}
-		if (cur < total - 4) {
-			arr.push(cur + 1, '...', total - 2, total - 1, total)
-		} else {
-			var i = 1
-			while (i <= total - cur)  {
-				arr.push(total - cur + i)
-				i++
-			}
-		}
-
-		return arr
-	}
-</script>
 
 <script src="/themes/adminLTE/dist/js/app.js"></script>
 

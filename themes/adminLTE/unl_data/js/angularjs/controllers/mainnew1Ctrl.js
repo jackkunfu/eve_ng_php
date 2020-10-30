@@ -8,6 +8,38 @@ function getPoint(obj) { //获取某元素以浏览器左上角为原点的坐�
 	}
 	return { t: t, l: l }
 }
+function hdlPages (cur, total) {
+	var arr = []
+	if (total < 11) { // 不需要展示省略号
+		var i = 1
+		while (i <= total) {
+			arr.push(i)
+			i++
+		}
+		return arr
+	}
+
+	// 需要展示省略号 目标 [1,'...', cur - 2, cur - 1, cur, cur + 1, cur + 2, '...', total]
+
+	var i = 1
+	if (cur < 5) {
+		var i = 1
+		while (i <= cur + 2) {
+			arr.push(i)
+			i++
+		}
+		return arr.concat(['...', total])
+	} else if (cur > total - 4) {
+		var i = cur - 2
+		while (i <= total) {
+			arr.push(i)
+			i++
+		}
+		return [1,'...'].concat(arr)
+	} else { // 拼接省略号之后
+		return [1,'...', cur - 2, cur - 1, cur, cur + 1, cur + 2, '...', total]
+	}
+}
 function mainnew1Controller($scope, $http, $location, $window, $uibModal, $log, $rootScope, FileUploader, focus) {
 	console.log('mainnew11')
 	$.unblockUI();
@@ -32,7 +64,7 @@ function mainnew1Controller($scope, $http, $location, $window, $uibModal, $log, 
 	}
 	
 	//Default variables ///END
-	$scope.apiBase = 'http://9pp7ig.natappfree.cc';
+	$scope.apiBase = 'http://h743h5.natappfree.cc';
 	// $scope.apiBase = 'http://' + location.hostname + ':9000';
 	$scope.navList = [
 		{ name: '平台介绍', hf: 'nav1' },
@@ -89,9 +121,6 @@ function mainnew1Controller($scope, $http, $location, $window, $uibModal, $log, 
 		location.href = '#/detail?id=' + item.id;
 	}
 
-	$scope.ziPages = []
-	$scope.curZiP = 0
-
 	var tabUrl = {
 		0: '/api/article/list',
 		1: '/api/article/list',
@@ -105,70 +134,64 @@ function mainnew1Controller($scope, $http, $location, $window, $uibModal, $log, 
 	$scope.pSize = 15
 
 	var tabOpts = {
-		0: {
-			username: EVENEWUSERNAME, category: 'introduce', pageNum: $scope.curPage, pageSize: $scope.pSize
-		},
-		1: {
-			username: EVENEWUSERNAME, category: 'useDesc', pageNum: $scope.curPage, pageSize: $scope.pSize
-		},
-		2: {
-			username: EVENEWUSERNAME, pageNum: 0, pageSize: 1000
-		},
-		3: {
-			username: EVENEWUSERNAME, pageSize: $scope.pSize
-		},
-		4: {
-			username: EVENEWUSERNAME, pageNum: $scope.curPage, pageSize: $scope.pSize
-		},
-		5: {
-			username: EVENEWUSERNAME, category: 'notify', pageNum: $scope.curPage, pageSize: $scope.pSize
-		}
+		0: { username: EVENEWUSERNAME, category: 'introduce' },
+		1: { username: EVENEWUSERNAME, category: 'useDesc' },
+		2: { username: EVENEWUSERNAME, pageSize: 1000 },
+		3: { username: EVENEWUSERNAME },
+		4: { username: EVENEWUSERNAME },
+		5: { username: EVENEWUSERNAME, category: 'notify' }
 	}
 
-	// $scope.listKey = { 0: 'platFormList', 2: 'courseList', 3: 'docList', 4: 'tongzhiList' }
-	// $scope.listKey = { 0: 'platFormList', 2: 'labList', 3: 'docList', 4: 'tongzhiList' }
+	$scope.pageOpt = {
+		0: { cur: 1, size: 20, total: 0 },
+		1: { cur: 1, size: 4, total: 0 },
+		2: { cur: 1, size: 1000, total: 0 }, // 配置1000size相当于全量获取
+		3: { cur: 1, size: 20, total: 0 },
+		4: { cur: 1, size: 20, total: 0 },
+		5: { cur: 1, size: 20, total: 0 }
+	}
+
+	$scope.pageArr0 = []
+	$scope.pageArr1 = []
+	$scope.pageArr2 = []
+	$scope.pageArr3 = []
+	$scope.pageArr4 = []
+	$scope.pageArr5 = []
+
 	$scope.listKey = { 0: 'platFormList', 1: 'useDescList', 2: 'labList', 3: 'stuCenter', 4: 'docList', 5: 'tongzhiList' }
 
-	$scope.clickTab = function (idx, isPageClick) {
-		if (!isPageClick) {
-			if (idx == 0) {
-				$scope.isShowPage = false
-			} else {
-				$scope.isShowPage = true
-			}
-			$scope.isShowTongzhiDtl = false
-			// if ($scope.curNav == idx && $scope.curNav != 2) return
-			// $scope.isShowStu = false
-			$scope.curNav = idx
-			$scope.curPage = 1
-
-			// if (idx == 2) {
-			// 	$location.path('/main')
-			// 	return
-			// }
+	$scope.clickPage = function (idx, page) {
+		if (page === 'pre') {
+			$scope.pageOpt[idx].cur--
+		} else if (page === 'next') {
+			$scope.pageOpt[idx].cur++
+		} else if (page !== '...') {
+			$scope.pageOpt[idx].cur = page
 		}
 
-		// if (isPageClick) {
-		// 	if ($scope.isShowStu) {
-		// 		$scope.showCourse($scope.curCourse);
-		// 		return
-		// 	}
-		// }
+		$scope.clickTab(idx)
+	}
 
+	$scope.clickTab = function (idx) {
 		var urlSplit = tabUrl[idx].split(',')
 		var method = urlSplit[1] ? urlSplit[1].trim() : 'get'
 		var obj = {
 			method: method,
 			url: $scope.apiBase + urlSplit[0]
 		}
-		
+
+		var idxPage = $scope.pageOpt[idx].cur
+		var idxSize = $scope.pageOpt[idx].size // 实验不做分页 传递1000全量获取
 		if (method.toLocaleLowerCase() == 'get') {
 			obj.params = tabOpts[idx]
-			obj.params.pageNum = $scope.curPage
+			obj.params.pageNum = idxPage
+			obj.params.pageSize = idxSize
 		} else {
 			obj.data = tabOpts[idx]
-			obj.data.pageNum = $scope.curPage
+			obj.data.pageNum = idxPage
+			obj.data.pageSize = idxSize
 		}
+
 		$http(obj).then(
 			function successcallback(response) {
 				if (response && response.data && response.data.data) {
@@ -182,33 +205,19 @@ function mainnew1Controller($scope, $http, $location, $window, $uibModal, $log, 
 						$scope.platform.content = list[0].content
 						$scope.platform.img = list[0].image
 					}
-					else if (idx == 1) $scope.clickLine(0) // 使用说明展示
+					// else if (idx == 1) $scope.clickLine(0) // 使用说明展示
 
 					var total = res.total || 0
-					var totolP = Math.floor(total / 15) + 1
+					var totalP = total % idxSize > 0 ? Math.floor(total / idxSize) + 1 : total / idxSize // 总页码
 
-					$('#page').bootstrapPaginator({
-						currentPage: $scope.curPage,//当前的请求页面。
-						totalPages: totolP,//一共多少页。
-						size: "normal",//应该是页眉的大小。
-						// bootstrapMajorVersion: 3,//bootstrap的版本要求。
-				    alignment:"right",
-				    // numberOfPages: 8,//一页列出多少数据。
-				    itemTexts: function (type, page, current) {//如下的代码是将页眉显示的中文显示我们自定义的中文。
-							switch (type) {
-								case "first": return "首页";
-								case "prev": return "上一页";
-								case "next": return "下一页";
-								case "last": return "末页";
-								case "page": return page;
-							}
-						},
-						onPageClicked: function (event, originalEvent, type, page) {
-							console.log(page)
-							$scope.curPage = page;
-							$scope.clickTab($scope.curNav, true);
-						}
-					});
+					// totalP = 20
+					// idxPage = 5
+
+					$scope.pageOpt[idx].total = totalP
+					$scope['pageArr' + idx] = []
+					// $scope.$apply(function () {
+						$scope['pageArr' + idx] = hdlPages(idxPage, totalP)
+					// })
 				}
 			},
 			function errorcallback(response) {
@@ -233,142 +242,10 @@ function mainnew1Controller($scope, $http, $location, $window, $uibModal, $log, 
 	}
 
 	$scope.goMain = function () {
-		location.href = '#main'
-	}
-
-	$scope.downItem = function (item) {
-		window.open(item.url);
-	}
-
-	$scope.chooseCourse = function (item) {
-		$scope.curPage = 1;
-		if (item.directory) { // 请求子集目录
-			$http({
-				method: 'get',
-				url: $scope.apiBase + '/api/lab/list',
-				params: {
-					pageSize: 15, pageNum: $scope.curPage, path: item.path, username: EVENEWUSERNAME
-				}
-			}).then(
-				function successcallback(response) {
-					if (response && response.data && response.data.data) {
-						var res = response.data.data
-						if (Object.prototype.toString.call(res) == '[object Array]') {
-							$scope.labList = res
-						} else {
-							$scope.labList = res.list || []
-						}
-
-						var total = res.total || 0
-						var totolP = Math.floor(total / 15) + 1
-	
-						$('#page').bootstrapPaginator({
-							currentPage: $scope.curPage,//当前的请求页面。
-							totalPages: totolP,//一共多少页。
-							size: "normal",//应该是页眉的大小。
-							// bootstrapMajorVersion: 3,//bootstrap的版本要求。
-							alignment: "right",
-							// numberOfPages: 8,//一页列出多少数据。
-							itemTexts: function (type, page, current) {//如下的代码是将页眉显示的中文显示我们自定义的中文。
-								switch (type) {
-									case "first": return "首页";
-									case "prev": return "上一页";
-									case "next": return "下一页";
-									case "last": return "末页";
-									case "page": return page;
-								}
-							},
-							onPageClicked: function (event, originalEvent, type, page) {
-								console.log(page)
-								$scope.curPage = page;
-								$scope.clickTab($scope.curNav, true);
-							}
-						});
-					}
-				},
-				function errorcallback(response) {
-					console.log("unknown error. why did api doesn't respond?");
-					// $location.path("/login");
-				}
-			)
-			return
-		}
-
-		$scope.curCourse = item;
-		$scope.isShowStu = true
-
-		getStuList($scope.curCourse.path);
-	}
-
-	function getStuList (labId) {
-		$http({
-			method: 'get',
-			url: $scope.apiBase + '/api/student/list',
-			params: { username: EVENEWUSERNAME, pageNum: $scope.curPage, pageSize: 15, labId: labId }
-		}).then(
-			function successcallback(response) {
-				if (response && response.data) {
-					var res = response.data.data || {}
-					$scope.stuCenter = res.list || []
-					
-					var total = res.total || 0
-					var totolP = Math.floor(total / 15) + 1
-
-					$('#page').bootstrapPaginator({
-						currentPage: $scope.curPage,//当前的请求页面。
-						totalPages: totolP,//一共多少页。
-						size: "normal",//应该是页眉的大小。
-						// bootstrapMajorVersion: 3,//bootstrap的版本要求。
-						alignment: "right",
-						// numberOfPages: 8,//一页列出多少数据。
-						itemTexts: function (type, page, current) {//如下的代码是将页眉显示的中文显示我们自定义的中文。
-							switch (type) {
-								case "first": return "首页";
-								case "prev": return "上一页";
-								case "next": return "下一页";
-								case "last": return "末页";
-								case "page": return page;
-							}
-						},
-						onPageClicked: function (event, originalEvent, type, page) {
-							console.log(page)
-							$scope.curPage = page;
-							getStuList(labId)
-						}
-					});
-				}
-			},
-			function errorcallback(response) {
-				console.log("unknown error. why did api doesn't respond?");
-			}
-		)
-	}
-
-	$scope.showTongzhi = function (item) {
-		$scope.curTongzhi = item
-		$scope.isShowTongzhiDtl = true
-	}
-	$scope.showCourse = function (item) {
-		$scope.curCourse = item
-		$scope.isShowCourseDtl = true
-		$http({
-			method: 'get',
-			url: $scope.apiBase + '/api/student/list',
-			params: { username: EVENEWUSERNAME, pageNum: $scope.curPage, pageSize: 1000 }
-		}).then(
-			function successcallback(response) {
-				if (response && response.data) {
-					$scope.stuCenter = response.data.data || []
-					// console.log($scope.stuCenter)
-				}
-			},
-			function errorcallback(response) {
-				console.log("unknown error. why did api doesn't respond?");
-			}
-		)
+		location.href = '#/main'
 	}
 
 	$scope.downExcel = function (url) {
-		location.href = url
+		window.open(url)
 	}
 }
