@@ -64,8 +64,8 @@ function mainnew1Controller($scope, $http, $location, $window, $uibModal, $log, 
 	}
 	
 	//Default variables ///END
-	$scope.apiBase = 'http://h743h5.natappfree.cc';
-	// $scope.apiBase = 'http://' + location.hostname + ':9000';
+	// $scope.apiBase = 'http://vz6qg7.natappfree.cc';
+	$scope.apiBase = 'http://' + location.hostname + ':9000';
 	$scope.navList = [
 		{ name: '平台介绍', hf: 'nav1' },
 		{ name: '使用说明', hf: 'nav2' },
@@ -82,15 +82,7 @@ function mainnew1Controller($scope, $http, $location, $window, $uibModal, $log, 
 		{ name: 'CCNP SWITCH', id: 1 },
 		{ name: 'TEST 1', id: 1 }
 	]
-	$scope.stuCenter = [
-		// { name: 'bjssbhpishvdvis', createTime: '2019-01-01' },
-		// { name: 'bjssbhpishvdvis', createTime: '2019-01-01' },
-		// { name: 'bjssbhpishvdvis', createTime: '2019-01-01' },
-		// { name: 'bjssbhpishvdvis', createTime: '2019-01-01' },
-		// { name: 'bjssbhpishvdvis', createTime: '2019-01-01' },
-		// { name: 'bjssbhpishvdvis', createTime: '2019-01-01' },
-		// { name: 'bjssbhpishvdvis', createTime: '2019-01-01' }
-	]
+	$scope.stuCenter = []
 	$scope.messageList = []
 	$scope.docList = []
 	$scope.tongzhiList = []
@@ -199,7 +191,7 @@ function mainnew1Controller($scope, $http, $location, $window, $uibModal, $log, 
 
 					var list = Object.prototype.toString.call(res) == '[object Array]' ? res : res.list || []
 					$scope[$scope.listKey[idx]] = list
-					console.log($scope.listKey[idx], list);
+					// console.log($scope.listKey[idx], list);
 
 					if (idx == 0) {
 						$scope.platform.content = list[0].content
@@ -210,14 +202,8 @@ function mainnew1Controller($scope, $http, $location, $window, $uibModal, $log, 
 					var total = res.total || 0
 					var totalP = total % idxSize > 0 ? Math.floor(total / idxSize) + 1 : total / idxSize // 总页码
 
-					// totalP = 20
-					// idxPage = 5
-
 					$scope.pageOpt[idx].total = totalP
-					$scope['pageArr' + idx] = []
-					// $scope.$apply(function () {
-						$scope['pageArr' + idx] = hdlPages(idxPage, totalP)
-					// })
+					$scope['pageArr' + idx] = hdlPages(idxPage, totalP)
 				}
 			},
 			function errorcallback(response) {

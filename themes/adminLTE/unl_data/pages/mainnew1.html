@@ -109,10 +109,11 @@
 	float: left;
 	width: 285px;
 	margin-left: 20px;
+	margin-bottom: 20px;
 	background: #fff;
 	padding-bottom: 5px;
 }
-.shuoming-item:first-child {
+.shuoming-item:nth-of-type(4n) {
 	margin-left: 0;
 }
 .shuoming-item img {
@@ -336,6 +337,9 @@
 				</tr>
 				<tr data-ng-repeat="item in stuCenter track by $index">
 					<td>{{ item.lab }}</td><td width="100">{{ item.labScore }}</td><td width="100">{{ item.reportScore }}</td><td>{{ item.content }}</td>
+				</tr>
+				<tr data-ng-if="!stuCenter || stuCenter.length === 0">
+					<td colspan="4">暂无数据</td>
 				</tr>
 			</table>
 			<!-- <div class="show-more">展开更多</div> -->
