@@ -17,7 +17,8 @@ function mainnewController($scope, $http, $location, $window, $uibModal, $log, $
 	$scope.isShowPage = true
 	
 	//Default variables ///END
-	$scope.apiBase = 'http://10.1.125.130:9000';
+	// $scope.apiBase = 'http://10.1.125.130:9000';
+	$scope.apiBase = 'http://' + location.hostname + ':9000';
 	$scope.navList = [
 		{ name: '平台介绍' },
 		{ name: '使用说明' },

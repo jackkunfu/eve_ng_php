@@ -64,7 +64,7 @@ function mainnew1Controller($scope, $http, $location, $window, $uibModal, $log, 
 	}
 	
 	//Default variables ///END
-	// $scope.apiBase = 'http://vz6qg7.natappfree.cc';
+	// $scope.apiBase = 'http://a26bgz.natappfree.cc';
 	$scope.apiBase = 'http://' + location.hostname + ':9000';
 	$scope.navList = [
 		{ name: '平台介绍', hf: 'nav1' },
@@ -196,6 +196,11 @@ function mainnew1Controller($scope, $http, $location, $window, $uibModal, $log, 
 					if (idx == 0) {
 						$scope.platform.content = list[0].content
 						$scope.platform.img = list[0].image
+					} else if (idx == 3 && list.length > 0) {
+						for (var i = 0; i < list.length; i++) {
+							list[i].lab = (list[i].lab || '').replace(/\/opt\/unetlab\/labs\//, '')
+						}
+						$scope[$scope.listKey[idx]] = list
 					}
 					// else if (idx == 1) $scope.clickLine(0) // 使用说明展示
 
