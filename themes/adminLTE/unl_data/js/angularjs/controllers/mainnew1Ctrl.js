@@ -139,7 +139,7 @@ function mainnew1Controller($scope, $http, $location, $window, $uibModal, $log, 
 		1: { cur: 1, size: 4, total: 0 },
 		2: { cur: 1, size: 1000, total: 0 }, // 配置1000size相当于全量获取
 		3: { cur: 1, size: 20, total: 0 },
-		4: { cur: 1, size: 20, total: 0 },
+		4: { cur: 1, size: 15, total: 0 },
 		5: { cur: 1, size: 20, total: 0 }
 	}
 
