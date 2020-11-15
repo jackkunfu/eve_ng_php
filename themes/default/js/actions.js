@@ -684,7 +684,7 @@ $(document).on('click', '.action-tijiaopeizhi', function (id) {
 
 
 $(document).on('click', '#tj_btn', function () {
-    var list = [], datares = []
+    var list = [], datares = [], score = 0
     function upOnePeizhi (textarea) {
         var deferred = $.Deferred();
         s_ajax('/api/labSpotReport/add', {
@@ -693,11 +693,16 @@ $(document).on('click', '#tj_btn', function () {
             console.log(res)
             if (res) {
                 deferred.resolve(res);
+                res.name = textarea.data('name')
+                if (res.code == 1) {
+                    if (res.data && res.data.score && res.data.score > score) {
+                        score = res.data.score
+                    }
+                }
             } else {
                 deferred.reject(res);
             }
-            if (res) res.name = textarea.data('name')
-            datares[i] = res
+            datares.push(res)
             // addModalWide('提交配置', '<h1>提交成功</h1>', '')
             // addModalWide(MESSAGES[64], '<h1>' + info['name'] + '</h1><p>' + info['description'] + '</p><p><code>ID: ' + info['id'] + '</code></p>' + body, '')
         }, 'post')
@@ -719,7 +724,7 @@ $(document).on('click', '#tj_btn', function () {
         $('body >.modal-wide').remove()
         $('body >.modal-backdrop').remove()
         setTimeout(function() {
-            addModalWide('提交配置', '<h1>提交成功</h1>', '')
+            addModalWide('提交配置', '<h1>提交成功<style>' + score + '分</style></h1>', '')
         }, 200)
     }).fail(function (e) {
         addModalError('提交配置', '<h1>提交失败</h1>', '')
