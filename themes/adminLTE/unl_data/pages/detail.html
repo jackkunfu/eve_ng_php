@@ -69,7 +69,7 @@
 	<div class="main center">
 		<div class="title">{{ dtlData.title }}</div>
 		<div class="gray">
-			<span>发布时间：{{ dtlData.createtime }}</span><span>作者：{{ dtlData.title }}</span>
+			<span>发布时间：{{ dtlData.createtime }}</span><span>作者：{{ dtlData.admin ? dtlData.admin.name || '' : '' }}</span>
 		</div>
 		<div class="ctnt">
 			<!-- <div style="text-align: center;"><img ng-src="{{ dtlData.image }}" alt=""></div> -->

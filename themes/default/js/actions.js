@@ -724,7 +724,7 @@ $(document).on('click', '#tj_btn', function () {
         $('body >.modal-wide').remove()
         $('body >.modal-backdrop').remove()
         setTimeout(function() {
-            addModalWide('提交配置', '<h1>提交成功<style>' + score + '分</style></h1>', '')
+            addModalWide('提交配置', '<h1>提交成功&nbsp;&nbsp;<span style="color: #ff3973;">' + score + '分</span></h1>', '')
         }, 200)
     }).fail(function (e) {
         addModalError('提交配置', '<h1>提交失败</h1>', '')
