@@ -8,7 +8,7 @@ var app_main_unl = angular.module("unlMainApp", [
 	"ngAnimate",
 	"ui.knob",
 	"ngCookies"
-]); 
+]);
 
 app_main_unl.run(function($rootScope) {
     $rootScope.imgpath = '/themes/adminLTE/unl_data/img/';
@@ -78,6 +78,13 @@ app_main_unl.directive('myEnter', function () {
         });
     };
 });
+
+
+app_main_unl.filter('trust2Html', ['$sce',function($sce) {
+	return function(val) {
+		return $sce.trustAsHtml(val); 
+	};
+}])
 
 /* Setup App Main Controller */
 app_main_unl.controller('unlMainController', ['$scope', '$rootScope', '$http', '$location', '$cookies', function($scope, $rootScope, $http, $location, $cookies) {

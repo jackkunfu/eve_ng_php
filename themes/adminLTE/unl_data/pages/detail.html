@@ -73,7 +73,7 @@
 		</div>
 		<div class="ctnt">
 			<!-- <div style="text-align: center;"><img ng-src="{{ dtlData.image }}" alt=""></div> -->
-			<div ng-bind-html="dtlData.content"></div>
+			<div ng-bind-html="dtlData.content|trust2Html"></div>
 		</div>
 	</div>
 	<div class="center btm">
