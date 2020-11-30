@@ -68,7 +68,7 @@ function mainnew1Controller($scope, $http, $location, $window, $uibModal, $log, 
 	$scope.apiBase = 'http://' + location.hostname + ':9000';
 	$scope.navList = [
 		{ name: '平台介绍', hf: 'nav1' },
-		{ name: '使用说明', hf: 'nav2' },
+		{ name: '实验预习', hf: 'nav2' },
 		{ name: '学生中心', hf: 'nav3' },
 		{ name: '资料下载', hf: 'nav4' },
 		{ name: '通知中心', hf: 'nav5' }

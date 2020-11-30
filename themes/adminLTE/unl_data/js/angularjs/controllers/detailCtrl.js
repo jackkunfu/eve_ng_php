@@ -36,6 +36,8 @@ function detailController($scope, $http, $location, $window, $uibModal, $log, $r
 				console.log(response);
 				if (response && response.data) {
 					$scope.dtlData = response.data.data || {}
+					let content = $scope.dtlData.content || ''
+					$scope.dtlData.content = $scope.trustAsHtml(content)
 					// console.log('dtl', $scope.dtlData);
 				}
 			},
