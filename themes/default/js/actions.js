@@ -666,7 +666,8 @@ $(document).on('click', '.action-zhidaoshu', function (e) {
 // 提交配置
 $(document).on('click', '.action-tijiaopeizhi', function (id) {
     if (!labId) return
-    s_ajax('/api/lab/device/list', { username: localStorage.EVENEWUSERNAME, path: urlPre + labId }, function (res) {
+    var opt = { username: localStorage.EVENEWUSERNAME, path: urlPre + labId, labId: urlPre + labId }
+    s_ajax('/api/lab/device/list', opt, function (res) {
         if (res.code == 1 && res.data && res.data.topology && res.data.topology.nodes) {
             var list = res.data.topology.nodes.node || []
             var listHtml = '<div class="tj_ctn"><div class="tj_list">'
@@ -677,10 +678,32 @@ $(document).on('click', '.action-tijiaopeizhi', function (id) {
             }
             listHtml += '</div>' + '<div class="tj_btn"><button id="tj_btn">确定提交</button></div>' + '</div>'
             addModalWide('提交配置', listHtml, '')
+            showDeviceValue(opt)
         }
     })
 });
 
+function showDeviceValue (opt) {
+    s_ajax('/api/labSpotReport/get', opt, function (res) {
+        if (res.code == 1 && res.data) {
+            var list = res.data || []
+            var map = {}
+            for (var i = 0; i < list.length; i++) {
+                var node = list[i]
+                map[node.nodeId] = node.command || ''
+                // var spot = node.spot
+                // if (spot) {
+                //     map[spot.nodeId] = spot.command || ''
+                // }
+            }
+            var areas = $('.tj_ctn textarea')
+            for (var i = 0; i < areas.length; i++) {
+                var item = $(areas[i])
+                item.val(map[item.attr('data-id')])
+            }
+        }
+    }, 'post')
+}
 
 
 $(document).on('click', '#tj_btn', function () {
