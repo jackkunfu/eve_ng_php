@@ -612,6 +612,35 @@ function openNewPage (url) {
     }
 }
 
+function showRoutersContent (list) {
+    console.log(list)
+    list = [ { name: 'rr111111111111', content: '1111111111111111111' }, { name: 'rr2222222222222', content: '222222222222222' } ]
+    var bthHeight = screen.availHeight - 550
+    var btns = ''
+    for (var i = 0; i < list.length; i++) {
+        btns += '<div class="r_btn" style="display:inline-block;padding:0 10px;margin: 5px 8px;background: #fff;' +
+            'border-radius: 30px;height: 30px;line-height: 30px;cursor: pointer;">' + list[i].name + '</div>'
+    }
+    var ctn = $('<div class="routers-content" style="position:fixed;z-index:1000;right:0;top:0;width:500px;background:rgb(127,127,127);">' + 
+        '<div class="top" style="text-align: center;background:rgb(32, 158, 145);color: #fff;height: 40px;line-height: 40px;">实验指导书' + 
+            '<div class="x" style="float: right;right: 10px;cursor: pointer;">X</span></div>' +
+        '</div>' +
+        '<div>' + 
+            '<div class="content" style="height:500px;overflow:auto;margin:20px;background: #fff;"></div>' + 
+            '<div style="height:'+ bthHeight + 'px;overflow: auto;margin:20px">' + btns + '</div>' + 
+        '</div>' +
+    '</div>')
+    $('body').append($(ctn))
+    $(document).on('click', '.routers-content .r_btn', function (e) {
+        console.log(this)
+        var idx = Array.prototype.indexOf.call(document.querySelectorAll('.routers-content .r_btn'), this)
+        $('.routers-content .content').html(list[idx].content)
+    })
+    $(document).on('click', '.routers-content .x', function (e) {
+        $('body').remove($(ctn))
+    })
+}
+
 // 查看指导书
 $(document).on('click', '.action-zhidaoshu', function (e) {
     logger(1, 'DEBUG: action = labbodyget');
@@ -619,6 +648,7 @@ $(document).on('click', '.action-zhidaoshu', function (e) {
     if (!labId) return
     // labId = labId.split('.unl')[0] + '.unl';
     s_ajax('/api/labGuide/get', { labId: urlPre + labId }, function (data) {
+        // showRoutersContent(data.data || [])
         var text = ''
         if (data && data.data && data.data.content) text = data.data.content;
         // addModalWide(MESSAGES[64], '<h1>' + info['name'] + '</h1><p>' + info['description'] + '</p><p><code>ID: ' + info['id'] + '</code></p>' + body, '')
