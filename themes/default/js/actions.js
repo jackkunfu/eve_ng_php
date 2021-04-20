@@ -612,33 +612,44 @@ function openNewPage (url) {
     }
 }
 
+var zhidaoshuFixed = null
 function showRoutersContent (list) {
-    console.log(list)
-    list = [ { name: 'rr111111111111', content: '1111111111111111111' }, { name: 'rr2222222222222', content: '222222222222222' } ]
+    if (zhidaoshuFixed) zhidaoshuFixed.remove()
+    list = list || []
     var bthHeight = screen.availHeight - 550
     var btns = ''
     for (var i = 0; i < list.length; i++) {
         btns += '<div class="r_btn" style="display:inline-block;padding:0 10px;margin: 5px 8px;background: #fff;' +
-            'border-radius: 30px;height: 30px;line-height: 30px;cursor: pointer;">' + list[i].name + '</div>'
+            'border-radius: 30px;height: 30px;line-height: 30px;cursor: pointer;">' + list[i].nodeName + '</div>'
     }
     var ctn = $('<div class="routers-content" style="position:fixed;z-index:1000;right:0;top:0;width:500px;background:rgb(127,127,127);">' + 
         '<div class="top" style="text-align: center;background:rgb(32, 158, 145);color: #fff;height: 40px;line-height: 40px;">实验指导书' + 
-            '<div class="x" style="float: right;right: 10px;cursor: pointer;">X</span></div>' +
+            '<div class="x" style="float: right;margin-right: 20px;cursor: pointer;font-size: 20px;">X</span></div>' +
         '</div>' +
         '<div>' + 
             '<div class="content" style="height:500px;overflow:auto;margin:20px;background: #fff;"></div>' + 
             '<div style="height:'+ bthHeight + 'px;overflow: auto;margin:20px">' + btns + '</div>' + 
         '</div>' +
     '</div>')
-    $('body').append($(ctn))
+    zhidaoshuFixed = $(ctn)
+    $('body').append(zhidaoshuFixed)
+
+    var style = document.createElement('style');
+    style.type = 'text/css';
+    style.innerHTML='.routers-content .r_btn.cur{ color: rgb(32, 158, 145) }';
+    document.getElementsByTagName('head').item(0).appendChild(style);
+
     $(document).on('click', '.routers-content .r_btn', function (e) {
-        console.log(this)
+        $('.r_btn.cur').removeClass('cur')
+        $(this).addClass('cur')
         var idx = Array.prototype.indexOf.call(document.querySelectorAll('.routers-content .r_btn'), this)
         $('.routers-content .content').html(list[idx].content)
     })
     $(document).on('click', '.routers-content .x', function (e) {
-        $('body').remove($(ctn))
+        zhidaoshuFixed.remove()
+        zhidaoshuFixed = null
     })
+    $('.routers-content .r_btn').length && $('.routers-content .r_btn').eq(0).click()
 }
 
 // 查看指导书
@@ -648,19 +659,15 @@ $(document).on('click', '.action-zhidaoshu', function (e) {
     if (!labId) return
     // labId = labId.split('.unl')[0] + '.unl';
     s_ajax('/api/labGuide/get', { labId: urlPre + labId }, function (data) {
-        // showRoutersContent(data.data || [])
-        var text = ''
-        if (data && data.data && data.data.content) text = data.data.content;
+        
+        // var text = ''
+        // if (data && data.data && data.data.content) text = data.data.content;
         // addModalWide(MESSAGES[64], '<h1>' + info['name'] + '</h1><p>' + info['description'] + '</p><p><code>ID: ' + info['id'] + '</code></p>' + body, '')
 
-        if (text) {
-            // window.open(text)
-            openNewPage(text)
+        if (data && data.data && data.data.length) {
+            showRoutersContent(data.data)
+            // openNewPage(text)
             // addModalWide('实验指导书', '<div>' + text + '</div>', '')
-            // setTimeout(function(){
-            //     openNewPage()
-            //     // if (confirm('新开窗口做实验？(已经新开过直接点否~)')) window.open(location.href)
-            // }, 500)
         } else {
             addModalWide('实验指导书', '<p>暂无数据</p>', '')
         }
