@@ -613,6 +613,7 @@ function openNewPage (url) {
 }
 
 var zhidaoshuFixed = null
+var fixedZindex = 500
 function showRoutersContent (list) {
     if (zhidaoshuFixed) zhidaoshuFixed.remove()
     list = list || []
@@ -622,9 +623,11 @@ function showRoutersContent (list) {
         btns += '<div class="r_btn" style="display:inline-block;padding:0 10px;margin: 5px 8px;background: #fff;' +
             'border-radius: 30px;height: 30px;line-height: 30px;cursor: pointer;">' + list[i].nodeName + '</div>'
     }
-    var ctn = $('<div class="routers-content" style="position:fixed;z-index:1000;right:0;top:0;width:500px;background:rgb(127,127,127);">' + 
-        '<div class="top" style="text-align: center;background:rgb(32, 158, 145);color: #fff;height: 40px;line-height: 40px;">实验指导书' + 
-            '<div class="x" style="float: right;margin-right: 20px;cursor: pointer;font-size: 20px;">X</span></div>' +
+    var ctn = $('<div class="rc_zhidao" style="position:fixed;z-index:' + (fixedZindex + 1)  + ';right:0;top:0;width:500px;background:rgb(127,127,127);">' + 
+        '<div class="top" style="text-align: center;background:rgb(32, 158, 145);color: #fff;height: 40px;line-height: 40px;">' +
+            '<div class="scale" style="float: right;margin-right: 20px;cursor: pointer;font-size: 20px;">scale</div>' +
+            '实验指导书' + 
+            '<div class="x" style="float: right;margin-right: 20px;cursor: pointer;font-size: 20px;">X</div>' +
         '</div>' +
         '<div>' + 
             '<div class="content" style="height:500px;overflow:auto;margin:20px;background: #fff;"></div>' + 
@@ -636,20 +639,24 @@ function showRoutersContent (list) {
 
     var style = document.createElement('style');
     style.type = 'text/css';
-    style.innerHTML='.routers-content .r_btn.cur{ color: rgb(32, 158, 145) }';
+    style.innerHTML='.rc_zhidao .r_btn.cur{ color: rgb(32, 158, 145) }';
     document.getElementsByTagName('head').item(0).appendChild(style);
 
-    $(document).on('click', '.routers-content .r_btn', function (e) {
+    $(document).on('click', '.rc_zhidao .r_btn', function (e) {
         $('.r_btn.cur').removeClass('cur')
         $(this).addClass('cur')
-        var idx = Array.prototype.indexOf.call(document.querySelectorAll('.routers-content .r_btn'), this)
-        $('.routers-content .content').html(list[idx].content)
+        var idx = Array.prototype.indexOf.call(document.querySelectorAll('.rc_zhidao .r_btn'), this)
+        $('.rc_zhidao .content').html(list[idx].content)
     })
-    $(document).on('click', '.routers-content .x', function (e) {
+    $(document).on('click', '.rc_zhidao .x', function (e) {
         zhidaoshuFixed.remove()
         zhidaoshuFixed = null
     })
-    $('.routers-content .r_btn').length && $('.routers-content .r_btn').eq(0).click()
+    $(document).on('click', '.rc_zhidao .scale', function (e) {
+        if ($('.rc_zhidao').css('width') === '500px') $('.rc_zhidao').css('width', '100%')
+        else $('.rc_zhidao').css('width', '500px')
+    })
+    $('.rc_zhidao .r_btn').length && $('.rc_zhidao .r_btn').eq(0).click()
 }
 
 // 查看指导书
@@ -700,6 +707,126 @@ $(document).on('click', '.action-zhidaoshu', function (e) {
 //     })
 // });
 
+function upOnePeizhi (textarea) {
+    var deferred = $.Deferred();
+    s_ajax('/api/labSpotReport/add', {
+        username: localStorage.EVENEWUSERNAME, labId: urlPre + labId, nodeId: textarea.data('id'), command: textarea.val()
+    }, function (res) {
+        console.log(res)
+        if (res) {
+            deferred.resolve(res);
+            res.name = textarea.data('name')
+            if (res.code == 1) {
+                if (res.data && res.data.score && res.data.score > score) {
+                    score = res.data.score
+                }
+            }
+        } else {
+            deferred.reject(res);
+        }
+        datares.push(res)
+        // addModalWide('提交配置', '<h1>提交成功</h1>', '')
+        // addModalWide(MESSAGES[64], '<h1>' + info['name'] + '</h1><p>' + info['description'] + '</p><p><code>ID: ' + info['id'] + '</code></p>' + body, '')
+    }, 'post')
+    return deferred.promise()
+}
+
+function getPeizhiScore (data) {
+    s_ajax('/api/labSpotReport/add', {
+        username: localStorage.EVENEWUSERNAME, labId: urlPre + labId, nodeId: data.id, command: $('.rc_peizhi .content textarea').val()
+    }, function (res) {
+        console.log(res)
+        if (res && res.code == 1) {
+            if (res.data) {
+                $('.rc_peizhi #score').val(res.data.score + '/' + res.data.score)
+                $('.rc_peizhi #total_score').val(res.data.score)
+            }
+        } else {
+            addModalWide('提交配置', '<h1>' + wrongFirst.name + '</h1>提交失败，请重试', '')
+        }
+    }, 'post')
+}
+
+var peizhiFixed = null
+function showPeizhiRc (list) {
+    console.log('showPeizhiRc list:')
+    console.log(list)
+    if (peizhiFixed) peizhiFixed.remove()
+    list = list || []
+    var curRouter = null
+    var btns = ''
+    for (var i = 0; i < list.length; i++) {
+        btns += '<div class="r_btn" style="display:inline-block;padding:0 10px;margin: 5px 8px;background: #fff;' +
+            'border-radius: 30px;height: 30px;line-height: 30px;cursor: pointer;">' + list[i].name + '</div>'
+    }
+    var ctn = $('<div class="rc_peizhi" style="position:fixed;z-index:' + (fixedZindex + 1)  + ';left: 50%;top:50%;transform:translate(-50%,-50%);width:770px;height:608px;background:rgb(127,127,127);">' + 
+        '<div class="top" style="text-align: center;background:rgb(32, 158, 145);color: #fff;height: 40px;line-height: 40px;">提交实验配置' + 
+            '<div class="x" style="float: right;margin-right: 20px;cursor: pointer;font-size: 20px;">X</div>' +
+        '</div>' +
+        '<div>' +
+            '<div>实验得分<span id="score" style="color:red;"></span><div style="float:right;margin-right:20px;">实验总得分：<span id="total_score" style="color:red;"></span></div></div>' +
+            '<div class="content" style="height:300px;overflow:auto;margin:20px;background: #fff;">' +
+                '<textarea style="width:100%;height: 100%;margin:0;padding:0;" />' +
+            '</div>' +
+            '<div style="text-align: center;position:relative;">' +
+                '<div class="peizhirc_btn" style="width:200px;height:40px;line-height:40px;color:#fff;cursor:pointer;margin: 0 auto;background:rgb(32, 158, 145);">提交</div>' +
+                '<div id="compare" style="width:200px;height:40px;line-height:40px;color:#fff;cursor:pointer;position:absolute;right:20px;top:30px;background:rgb(22, 155, 213);">对比答案</div>' +
+            '</div>' +
+            '<div style="height:180px;overflow: auto;margin:20px;border-top: 1px solid #ccc;padding-top: 18px;">' + btns + '</div>' + 
+        '</div>' +
+    '</div>')
+    peizhiFixed = $(ctn)
+    $('body').append(peizhiFixed)
+
+    var style = document.createElement('style');
+    style.type = 'text/css';
+    style.innerHTML='.rc_peizhi .r_btn.cur{ color: rgb(32, 158, 145) }';
+    document.getElementsByTagName('head').item(0).appendChild(style);
+
+    $(document).on('click', '.rc_peizhi .r_btn', function (e) {
+        $('.r_btn.cur').removeClass('cur')
+        $(this).addClass('cur')
+        var idx = Array.prototype.indexOf.call(document.querySelectorAll('.rc_peizhi .r_btn'), this)
+        curRouter = list[idx]
+        $('.rc_peizhi .content').html(list[idx].content)
+    })
+    $(document).on('click', '.rc_peizhi .x', function (e) {
+        peizhiFixed.remove()
+        peizhiFixed = null
+        curRouter = null
+    })
+    $('.rc_peizhi .r_btn').length && $('.rc_peizhi .r_btn').eq(0).click()
+    $(document).on('click', '.peizhirc_btn', function (e) {
+        getPeizhiScore(curRouter)
+    })
+}
+
+function showDeviceValueList (opt, devices) {
+    s_ajax('/api/labSpotReport/get', opt, function (res) {
+        if (res.code == 1 && res.data) {
+            var list = res.data || []
+            var map = {}
+            console.log('showDeviceValueList list:')
+            console.log(list)
+            for (var i = 0; i < list.length; i++) {
+                var node = list[i]
+                map[node.nodeId] = node.command || ''
+                // var spot = node.spot
+                // if (spot) {
+                //     map[spot.nodeId] = spot.command || ''
+                // }
+            }
+            for (var i = 0; i < devices.length; i++) {
+                var item = devices[i]
+                let str = map[item.id] || '' 
+                item.command = str
+                item.content = str
+            }
+            $('.rc_peizhi .r_btn').length && $('.rc_peizhi .r_btn').eq(0).click()
+        }
+    }, 'post')
+}
+
 // 提交配置
 $(document).on('click', '.action-tijiaopeizhi', function (id) {
     if (!labId) return
@@ -707,15 +834,17 @@ $(document).on('click', '.action-tijiaopeizhi', function (id) {
     s_ajax('/api/lab/device/list', opt, function (res) {
         if (res.code == 1 && res.data && res.data.topology && res.data.topology.nodes) {
             var list = res.data.topology.nodes.node || []
-            var listHtml = '<div class="tj_ctn"><div class="tj_list">'
-            for (var i = 0; i < list.length; i++) {
-                var item = list[i]
-                listHtml += '<div class="tj_name">' + item.name + '</div>' +
-                    '<div><textarea class="device_textarea" data-name="' + item.name + '" data-id="' + item.id + '" style="resize: none;width: 100%;height: 200px;"></textarea></div>'
-            }
-            listHtml += '</div>' + '<div class="tj_btn"><button id="tj_btn">确定提交</button></div>' + '</div>'
-            addModalWide('提交配置', listHtml, '')
-            showDeviceValue(opt)
+            // var listHtml = '<div class="tj_ctn"><div class="tj_list">'
+            // for (var i = 0; i < list.length; i++) {
+            //     var item = list[i]
+            //     listHtml += '<div class="tj_name">' + item.name + '</div>' +
+            //         '<div><textarea class="device_textarea" data-name="' + item.name + '" data-id="' + item.id + '" style="resize: none;width: 100%;height: 200px;"></textarea></div>'
+            // }
+            // listHtml += '</div>' + '<div class="tj_btn"><button id="tj_btn">确定提交</button></div>' + '</div>'
+            // addModalWide('提交配置', listHtml, '')
+            // showDeviceValue(opt)
+            showPeizhiRc(list)
+            showDeviceValueList(opt, list)
         }
     })
 });
