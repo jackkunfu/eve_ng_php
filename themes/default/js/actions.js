@@ -625,7 +625,7 @@ function showRoutersContent (list) {
     }
     var ctn = $('<div class="rc_zhidao" style="position:fixed;z-index:' + (fixedZindex + 1)  + ';right:0;top:0;width:500px;background:rgb(127,127,127);">' + 
         '<div class="top" style="text-align: center;background:rgb(32, 158, 145);color: #fff;height: 40px;line-height: 40px;">' +
-            '<div class="scale" style="float: right;margin-right: 20px;cursor: pointer;font-size: 20px;">scale</div>' +
+            '<div class="scale" style="float:left;margin-left: 20px;cursor: pointer;font-size: 20px;">scale</div>' +
             '实验指导书' + 
             '<div class="x" style="float: right;margin-right: 20px;cursor: pointer;font-size: 20px;">X</div>' +
         '</div>' +
@@ -790,7 +790,7 @@ function showPeizhiRc (list) {
         $(this).addClass('cur')
         var idx = Array.prototype.indexOf.call(document.querySelectorAll('.rc_peizhi .r_btn'), this)
         curRouter = list[idx]
-        $('.rc_peizhi .content').html(list[idx].content)
+        $('.rc_peizhi .content textarea').val(list[idx].content)
     })
     $(document).on('click', '.rc_peizhi .x', function (e) {
         peizhiFixed.remove()
