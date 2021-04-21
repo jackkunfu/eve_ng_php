@@ -738,7 +738,9 @@ function getPeizhiScore (data) {
         console.log(res)
         if (res && res.code == 1) {
             if (res.data) {
-                $('.rc_peizhi #score').val(res.data.score + '/' + res.data.score)
+                var labSpots = res.data.labSpots || []
+                var curData = labSpots.filter(function(el) { return el.nodeId == data.id })[0] || {}
+                $('.rc_peizhi #score').val((curData.score || 0) + '/' + (curData.score || 0))
                 $('.rc_peizhi #total_score').val(res.data.score)
             }
         } else {
@@ -766,11 +768,11 @@ function showPeizhiRc (list) {
         '<div>' +
             '<div>实验得分<span id="score" style="color:red;"></span><div style="float:right;margin-right:20px;">实验总得分：<span id="total_score" style="color:red;"></span></div></div>' +
             '<div class="content" style="height:300px;overflow:auto;margin:20px;background: #fff;">' +
-                '<textarea style="width:100%;height: 100%;margin:0;padding:0;" />' +
+                '<textarea style="width:100%;height: 100%;margin:0;padding:0;"></textarea>' +
             '</div>' +
             '<div style="text-align: center;position:relative;">' +
                 '<div class="peizhirc_btn" style="width:200px;height:40px;line-height:40px;color:#fff;cursor:pointer;margin: 0 auto;background:rgb(32, 158, 145);">提交</div>' +
-                '<div id="compare" style="width:200px;height:40px;line-height:40px;color:#fff;cursor:pointer;position:absolute;right:20px;top:30px;background:rgb(22, 155, 213);">对比答案</div>' +
+                '<div id="compare" style="width:200px;height:40px;line-height:40px;color:#fff;cursor:pointer;position:absolute;right:20px;top:0;background:rgb(22, 155, 213);">对比答案</div>' +
             '</div>' +
             '<div style="height:180px;overflow: auto;margin:20px;border-top: 1px solid #ccc;padding-top: 18px;">' + btns + '</div>' + 
         '</div>' +
