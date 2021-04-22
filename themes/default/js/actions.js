@@ -740,6 +740,7 @@ function tjPeizhiData (data, cb) {
             if (res.data) {
                 cb(res.data)
             }
+            alert('提交成功')
         } else {
             addModalWide('提交配置', '<h1>' + data.name + '</h1>提交失败，请重试', '')
         }
@@ -757,8 +758,11 @@ function showPeizhiRc (list) {
     var curRouter = null
     var btns = ''
     for (var i = 0; i < list.length; i++) {
-        btns += '<div class="r_btn" style="display:inline-block;padding:0 10px;margin: 5px 8px;background: #fff;' +
-            'border-radius: 30px;height: 30px;line-height: 30px;cursor: pointer;">' + list[i].name + '</div>'
+        btns += '<div class="r_btn" style="display:inline-block;padding:0 10px;margin: 5px 8px;background: #ccc;position:relative;' +
+            'border-radius: 30px;overflow:hidden;height: 30px;line-height: 30px;cursor: pointer;">' +
+            '<span style="position:relative;z-index:1;">' + list[i].name + '</span>' +
+            '<div class="bg" style="position:absolute;top:0;left:0;width:0;height:100%;background:#7ac2ba;z-index:0;"></div>' +
+        '</div>'
     }
     var ctn = $('<div class="rc_peizhi" style="position:fixed;z-index:' + (fixedZindex + 1)  + ';left: 50%;top:50%;transform:translate(-50%,-50%);width:770px;height:608px;background:#fff;">' + 
         '<div class="top" style="text-align: center;background:rgb(32, 158, 145);color: #fff;height: 40px;line-height: 40px;">提交实验配置' + 
@@ -800,43 +804,49 @@ function showPeizhiRc (list) {
     $(document).on('click', '.peizhirc_btn', function (e) {
         tjPeizhiData(curRouter, function (data) {
             var labSpots = data.labSpots || []
-            var curData = labSpots.filter(function(el) { return el.nodeId == data.id })[0] || {}
+            var curData = labSpots.filter(function(el) { return el.nodeId == curRouter.id })[0] || {}
             $('.rc_peizhi #score').text((data.score || 0) + '/' + (curData.score || 0))
             $('.rc_peizhi #total_score').text(data.totalScore || 0)
+            if (curData.score == 0) {
+                $('.rc_peizhi .r_btn').eq(list.indexOf(curRouter)).css('width', 0)
+            } else {
+                // if (data.score == 0) data.score = 15 // 数据模拟
+                if (data.score > curData.score) data.score = curData.score
+                $('.rc_peizhi .r_btn').eq(list.indexOf(curRouter)).find('div').css('width', ((data.score || 0) / (curData.score || 0) * 100).toFixed(2) + '%')
+            }
         })
     })
     $(document).on('click', '#compare', function (e) {
-        // getNodeData(curRouter, function (data) {
-            if (compareFixed) compareFixed.remove()
-            var dom = $('<div class="rc_compare" style="position:fixed;z-index:' + (fixedZindex + 1)  + ';left: 50%;top:50%;transform:translate(-50%,-50%);width:770px;height:608px;background:#fff;">' + 
-                '<div class="top" style="text-align: center;background:rgb(32, 158, 145);color: #fff;height: 40px;line-height: 40px;">对比答案' + 
-                    '<div class="x" style="float: right;margin-right: 20px;cursor: pointer;font-size: 20px;">X</div>' +
+        // getNodeData(curRouter, function (cbData) {})
+        if (compareFixed) compareFixed.remove()
+        var dom = $('<div class="rc_compare" style="position:fixed;z-index:' + (fixedZindex + 1)  + ';left: 50%;top:50%;transform:translate(-50%,-50%);width:770px;height:608px;background:#fff;">' + 
+            '<div class="top" style="text-align: center;background:rgb(32, 158, 145);color: #fff;height: 40px;line-height: 40px;">对比答案' + 
+                '<div class="x" style="float: right;margin-right: 20px;cursor: pointer;font-size: 20px;">X</div>' +
+            '</div>' +
+            '<div style="padding: 20px;">' +
+                '<div class="left" style="float:left;width:50%;">' +
+                    '<div class="ans" style="height: 500px;border:1px solid #ccc;"></div>' +'<div style="text-align: center;margin-top:10px;">你的答案</div>' +
                 '</div>' +
-                '<div style="padding: 20px;">' +
-                    '<div class="left" style="float:left;width:50%;border:1px solid #ccc;">' +
-                        '<div class="ans" style="height: 500px;"></div>' +'<div style="text-align: center;">你的答案</div>' +
-                    '</div>' +
-                    '<div class="right" style="float:left;width:50%;border:1px solid #ccc;">' +
-                        '<div class="ans" style="height: 500px;"></div>' +'<div style="text-align: center;">标准答案</div>' +
-                    '</div>' +
+                '<div class="right" style="float:left;width:50%;">' +
+                    '<div class="ans" style="height: 500px;border:1px solid #ccc;"></div>' +'<div style="text-align: center;margin-top:10px;">标准答案</div>' +
                 '</div>' +
-            '</div>')
-            compareFixed = $(dom)
-            $('body').append(compareFixed)
+            '</div>' +
+        '</div>')
+        compareFixed = $(dom)
+        $('body').append(compareFixed)
 
-            $('.rc_compare .left .ans').text(curRouter.command || '')
-            s_ajax('/api/labAnswer/get', { labId: urlPre + labId, nodeId: data.id }, function (res) {
-                if (res && res.code == 1 && res.data) {
-                    var list = res.data || []
-                    var result = list.filter(function(el) { el.nodeId == data.id })[0]
-                    $('.rc_compare .right .ans').text(result.content || '')
-                }
-            })
-            
-            $(document).on('click', '.rc_compare .x', function (e) {
-                compareFixed.remove()
-            })
-        // })
+        $('.rc_compare .left .ans').text(curRouter.command || '')
+        s_ajax('/api/labAnswer/get', { labId: urlPre + labId, nodeId: curRouter.id }, function (res) {
+            if (res && res.code == 1 && res.data) {
+                var list = res.data || []
+                var result = list.filter(function(el) { el.nodeId == curRouter.id })[0]
+                $('.rc_compare .right .ans').text(result.content || '')
+            }
+        })
+        
+        $(document).on('click', '.rc_compare .x', function (e) {
+            compareFixed.remove()
+        })
     })
 }
 
@@ -861,6 +871,7 @@ function showDeviceValueList (opt, devices) {
                 item.command = str
             }
             $('.rc_peizhi .r_btn').length && $('.rc_peizhi .r_btn').eq(0).click()
+            $('.peizhirc_btn').click()
         }
     }, 'post')
 }
