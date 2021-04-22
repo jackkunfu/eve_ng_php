@@ -731,7 +731,7 @@ function upOnePeizhi (textarea) {
     return deferred.promise()
 }
 
-function getPeizhiData (data, cb) {
+function tjPeizhiData (data, cb) {
     s_ajax('/api/labSpotReport/add', {
         username: localStorage.EVENEWUSERNAME, labId: urlPre + labId, nodeId: data.id, command: $('.rc_peizhi .content textarea').val()
     }, function (res) {
@@ -760,7 +760,7 @@ function showPeizhiRc (list) {
         btns += '<div class="r_btn" style="display:inline-block;padding:0 10px;margin: 5px 8px;background: #fff;' +
             'border-radius: 30px;height: 30px;line-height: 30px;cursor: pointer;">' + list[i].name + '</div>'
     }
-    var ctn = $('<div class="rc_peizhi" style="position:fixed;z-index:' + (fixedZindex + 1)  + ';left: 50%;top:50%;transform:translate(-50%,-50%);width:770px;height:608px;">' + 
+    var ctn = $('<div class="rc_peizhi" style="position:fixed;z-index:' + (fixedZindex + 1)  + ';left: 50%;top:50%;transform:translate(-50%,-50%);width:770px;height:608px;background:#fff;">' + 
         '<div class="top" style="text-align: center;background:rgb(32, 158, 145);color: #fff;height: 40px;line-height: 40px;">提交实验配置' + 
             '<div class="x" style="float: right;margin-right: 20px;cursor: pointer;font-size: 20px;">X</div>' +
         '</div>' +
@@ -796,40 +796,47 @@ function showPeizhiRc (list) {
         peizhiFixed = null
         curRouter = null
     })
-    $('.rc_peizhi .r_btn').length && $('.rc_peizhi .r_btn').eq(0).click()
+    // $('.rc_peizhi .r_btn').length && $('.rc_peizhi .r_btn').eq(0).click() // showDeviceValueList 获取command数据后再点击
     $(document).on('click', '.peizhirc_btn', function (e) {
-        getPeizhiData(curRouter, function (data) {
+        tjPeizhiData(curRouter, function (data) {
             var labSpots = data.labSpots || []
             var curData = labSpots.filter(function(el) { return el.nodeId == data.id })[0] || {}
-            $('.rc_peizhi #score').innerHTML = (data.score || 0) + '/' + (curData.score || 0)
-            $('.rc_peizhi #total_score').innerHTML = data.totalScore || 0
+            $('.rc_peizhi #score').text((data.score || 0) + '/' + (curData.score || 0))
+            $('.rc_peizhi #total_score').text(data.totalScore || 0)
         })
     })
     $(document).on('click', '#compare', function (e) {
-        getPeizhiData(curRouter, function (data) {
+        // getNodeData(curRouter, function (data) {
             if (compareFixed) compareFixed.remove()
-            var dom = $('<div class="rc_compare" style="position:fixed;z-index:' + (fixedZindex + 1)  + ';left: 50%;top:50%;transform:translate(-50%,-50%);width:770px;height:608px;background:rgb(127,127,127);">' + 
-                '<div class="top" style="text-align: center;background:rgb(32, 158, 145);color: #fff;height: 40px;line-height: 40px;">提交实验配置' + 
+            var dom = $('<div class="rc_compare" style="position:fixed;z-index:' + (fixedZindex + 1)  + ';left: 50%;top:50%;transform:translate(-50%,-50%);width:770px;height:608px;background:#fff;">' + 
+                '<div class="top" style="text-align: center;background:rgb(32, 158, 145);color: #fff;height: 40px;line-height: 40px;">对比答案' + 
                     '<div class="x" style="float: right;margin-right: 20px;cursor: pointer;font-size: 20px;">X</div>' +
                 '</div>' +
                 '<div style="padding: 20px;">' +
-                    '<div class="left" style="float:left;width:50%;border:1px solid #ccc;"><span></span><div>你的答案</div><div>' +
-                    '<div class="right" style="float:left;width:50%;border:1px solid #ccc;"><span></span><div>标准答案</div><div>' +
+                    '<div class="left" style="float:left;width:50%;border:1px solid #ccc;">' +
+                        '<div class="ans" style="height: 500px;"></div>' +'<div style="text-align: center;">你的答案</div>' +
+                    '</div>' +
+                    '<div class="right" style="float:left;width:50%;border:1px solid #ccc;">' +
+                        '<div class="ans" style="height: 500px;"></div>' +'<div style="text-align: center;">标准答案</div>' +
+                    '</div>' +
                 '</div>' +
             '</div>')
             compareFixed = $(dom)
             $('body').append(compareFixed)
 
-            $('.rc_compare .left span').innerHTML = data.command || ''
-            s_ajax('/api/labAnswer/get', { labId: urlPre + labId, nodeId: data.id }, function (data) {
-                console.log(data)
-                $('.rc_compare .right span').innerHTML = data.command || ''
+            $('.rc_compare .left .ans').text(curRouter.command || '')
+            s_ajax('/api/labAnswer/get', { labId: urlPre + labId, nodeId: data.id }, function (res) {
+                if (res && res.code == 1 && res.data) {
+                    var list = res.data || []
+                    var result = list.filter(function(el) { el.nodeId == data.id })[0]
+                    $('.rc_compare .right .ans').text(result.content || '')
+                }
             })
             
             $(document).on('click', '.rc_compare .x', function (e) {
                 compareFixed.remove()
             })
-        })
+        // })
     })
 }
 
@@ -879,6 +886,20 @@ $(document).on('click', '.action-tijiaopeizhi', function (id) {
         }
     })
 });
+
+function getNodeData (data, cb) {
+    console.log('getNodeData data:')
+    console.log(data)
+    s_ajax('/api/labSpotReport/get', { username: localStorage.EVENEWUSERNAME, labId: urlPre + labId }, function (res) {
+        if (res.code == 1 && res.data) {
+            var list = res.data || []
+            console.log('getNodeData list:')
+            console.log(list)
+            var result = list.filter(function(el) { el.nodeId == data.id })[0]
+            cb(result || {})
+        } else alert('获取节点信息失败')
+    }, 'post')
+}
 
 function showDeviceValue (opt) {
     s_ajax('/api/labSpotReport/get', opt, function (res) {
