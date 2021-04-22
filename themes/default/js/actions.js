@@ -731,28 +731,27 @@ function upOnePeizhi (textarea) {
     return deferred.promise()
 }
 
-function getPeizhiScore (data) {
+function getPeizhiData (data, cb) {
     s_ajax('/api/labSpotReport/add', {
         username: localStorage.EVENEWUSERNAME, labId: urlPre + labId, nodeId: data.id, command: $('.rc_peizhi .content textarea').val()
     }, function (res) {
         console.log(res)
         if (res && res.code == 1) {
             if (res.data) {
-                var labSpots = res.data.labSpots || []
-                var curData = labSpots.filter(function(el) { return el.nodeId == data.id })[0] || {}
-                $('.rc_peizhi #score').val((curData.score || 0) + '/' + (curData.score || 0))
-                $('.rc_peizhi #total_score').val(res.data.score)
+                cb(res.data)
             }
         } else {
-            addModalWide('提交配置', '<h1>' + wrongFirst.name + '</h1>提交失败，请重试', '')
+            addModalWide('提交配置', '<h1>' + data.name + '</h1>提交失败，请重试', '')
         }
     }, 'post')
 }
 
 var peizhiFixed = null
+var compareFixed = null
 function showPeizhiRc (list) {
-    console.log('showPeizhiRc list:')
-    console.log(list)
+    // console.log('showPeizhiRc list:')
+    // console.log(list)
+    if (compareFixed) compareFixed.remove()
     if (peizhiFixed) peizhiFixed.remove()
     list = list || []
     var curRouter = null
@@ -761,20 +760,20 @@ function showPeizhiRc (list) {
         btns += '<div class="r_btn" style="display:inline-block;padding:0 10px;margin: 5px 8px;background: #fff;' +
             'border-radius: 30px;height: 30px;line-height: 30px;cursor: pointer;">' + list[i].name + '</div>'
     }
-    var ctn = $('<div class="rc_peizhi" style="position:fixed;z-index:' + (fixedZindex + 1)  + ';left: 50%;top:50%;transform:translate(-50%,-50%);width:770px;height:608px;background:rgb(127,127,127);">' + 
+    var ctn = $('<div class="rc_peizhi" style="position:fixed;z-index:' + (fixedZindex + 1)  + ';left: 50%;top:50%;transform:translate(-50%,-50%);width:770px;height:608px;">' + 
         '<div class="top" style="text-align: center;background:rgb(32, 158, 145);color: #fff;height: 40px;line-height: 40px;">提交实验配置' + 
             '<div class="x" style="float: right;margin-right: 20px;cursor: pointer;font-size: 20px;">X</div>' +
         '</div>' +
-        '<div>' +
+        '<div style="padding:20px;">' +
             '<div>实验得分<span id="score" style="color:red;"></span><div style="float:right;margin-right:20px;">实验总得分：<span id="total_score" style="color:red;"></span></div></div>' +
-            '<div class="content" style="height:300px;overflow:auto;margin:20px;background: #fff;">' +
+            '<div class="content" style="height:300px;overflow:auto;margin:10px 0;background: #fff;">' +
                 '<textarea style="width:100%;height: 100%;margin:0;padding:0;"></textarea>' +
             '</div>' +
             '<div style="text-align: center;position:relative;">' +
                 '<div class="peizhirc_btn" style="width:200px;height:40px;line-height:40px;color:#fff;cursor:pointer;margin: 0 auto;background:rgb(32, 158, 145);">提交</div>' +
                 '<div id="compare" style="width:200px;height:40px;line-height:40px;color:#fff;cursor:pointer;position:absolute;right:20px;top:0;background:rgb(22, 155, 213);">对比答案</div>' +
             '</div>' +
-            '<div style="height:180px;overflow: auto;margin:20px;border-top: 1px solid #ccc;padding-top: 18px;">' + btns + '</div>' + 
+            '<div style="height:180px;overflow: auto;margin:10px 0;border-top: 1px solid #ccc;padding-top: 18px;">' + btns + '</div>' + 
         '</div>' +
     '</div>')
     peizhiFixed = $(ctn)
@@ -790,7 +789,7 @@ function showPeizhiRc (list) {
         $(this).addClass('cur')
         var idx = Array.prototype.indexOf.call(document.querySelectorAll('.rc_peizhi .r_btn'), this)
         curRouter = list[idx]
-        $('.rc_peizhi .content textarea').val(list[idx].content)
+        $('.rc_peizhi .content textarea').val(list[idx].command)
     })
     $(document).on('click', '.rc_peizhi .x', function (e) {
         peizhiFixed.remove()
@@ -799,7 +798,38 @@ function showPeizhiRc (list) {
     })
     $('.rc_peizhi .r_btn').length && $('.rc_peizhi .r_btn').eq(0).click()
     $(document).on('click', '.peizhirc_btn', function (e) {
-        getPeizhiScore(curRouter)
+        getPeizhiData(curRouter, function (data) {
+            var labSpots = data.labSpots || []
+            var curData = labSpots.filter(function(el) { return el.nodeId == data.id })[0] || {}
+            $('.rc_peizhi #score').innerHTML = (data.score || 0) + '/' + (curData.score || 0)
+            $('.rc_peizhi #total_score').innerHTML = data.totalScore || 0
+        })
+    })
+    $(document).on('click', '#compare', function (e) {
+        getPeizhiData(curRouter, function (data) {
+            if (compareFixed) compareFixed.remove()
+            var dom = $('<div class="rc_compare" style="position:fixed;z-index:' + (fixedZindex + 1)  + ';left: 50%;top:50%;transform:translate(-50%,-50%);width:770px;height:608px;background:rgb(127,127,127);">' + 
+                '<div class="top" style="text-align: center;background:rgb(32, 158, 145);color: #fff;height: 40px;line-height: 40px;">提交实验配置' + 
+                    '<div class="x" style="float: right;margin-right: 20px;cursor: pointer;font-size: 20px;">X</div>' +
+                '</div>' +
+                '<div style="padding: 20px;">' +
+                    '<div class="left" style="float:left;width:50%;border:1px solid #ccc;"><span></span><div>你的答案</div><div>' +
+                    '<div class="right" style="float:left;width:50%;border:1px solid #ccc;"><span></span><div>标准答案</div><div>' +
+                '</div>' +
+            '</div>')
+            compareFixed = $(dom)
+            $('body').append(compareFixed)
+
+            $('.rc_compare .left span').innerHTML = data.command || ''
+            s_ajax('/api/labAnswer/get', { labId: urlPre + labId, nodeId: data.id }, function (data) {
+                console.log(data)
+                $('.rc_compare .right span').innerHTML = data.command || ''
+            })
+            
+            $(document).on('click', '.rc_compare .x', function (e) {
+                compareFixed.remove()
+            })
+        })
     })
 }
 
@@ -822,7 +852,6 @@ function showDeviceValueList (opt, devices) {
                 var item = devices[i]
                 let str = map[item.id] || '' 
                 item.command = str
-                item.content = str
             }
             $('.rc_peizhi .r_btn').length && $('.rc_peizhi .r_btn').eq(0).click()
         }
