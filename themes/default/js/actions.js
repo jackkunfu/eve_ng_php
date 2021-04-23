@@ -631,7 +631,7 @@ function showRoutersContent (list) {
         '</div>' +
         '<div>' + 
             '<div class="content" style="height:500px;overflow:auto;margin:20px;background: #fff;"></div>' + 
-            '<div style="height:'+ bthHeight + 'px;overflow: auto;margin:20px">' + btns + '</div>' + 
+            '<div style="height:'+ bthHeight + 'px;overflow: auto;margin:20px;">' + btns + '</div>' + 
         '</div>' +
     '</div>')
     zhidaoshuFixed = $(ctn)
@@ -731,6 +731,10 @@ function upOnePeizhi (textarea) {
     return deferred.promise()
 }
 
+var peizhiFixed = null
+var compareFixed = null
+var isGetPeizhiData = false
+
 function tjPeizhiData (data, cb) {
     s_ajax('/api/labSpotReport/add', {
         username: localStorage.EVENEWUSERNAME, labId: urlPre + labId, nodeId: data.id, command: $('.rc_peizhi .content textarea').val()
@@ -740,15 +744,16 @@ function tjPeizhiData (data, cb) {
             if (res.data) {
                 cb(res.data)
             }
-            alert('提交成功')
+            if (isGetPeizhiData) {
+                isGetPeizhiData = false
+            } else {
+                alert('提交成功')
+            }
         } else {
             addModalWide('提交配置', '<h1>' + data.name + '</h1>提交失败，请重试', '')
         }
     }, 'post')
 }
-
-var peizhiFixed = null
-var compareFixed = null
 function showPeizhiRc (list) {
     // console.log('showPeizhiRc list:')
     // console.log(list)
@@ -777,7 +782,7 @@ function showPeizhiRc (list) {
                 '<div class="peizhirc_btn" style="width:200px;height:40px;line-height:40px;color:#fff;cursor:pointer;margin: 0 auto;background:rgb(32, 158, 145);">提交</div>' +
                 '<div id="compare" style="width:200px;height:40px;line-height:40px;color:#fff;cursor:pointer;position:absolute;right:20px;top:0;background:rgb(22, 155, 213);">对比答案</div>' +
             '</div>' +
-            '<div style="height:180px;overflow: auto;margin:10px 0;border-top: 1px solid #ccc;padding-top: 18px;">' + btns + '</div>' + 
+            '<div style="height:180px;overflow: auto;margin:10px 0;border-top: 1px solid #ccc;padding-top: 18px;color:#fff;">' + btns + '</div>' + 
         '</div>' +
     '</div>')
     peizhiFixed = $(ctn)
@@ -794,6 +799,9 @@ function showPeizhiRc (list) {
         var idx = Array.prototype.indexOf.call(document.querySelectorAll('.rc_peizhi .r_btn'), this)
         curRouter = list[idx]
         $('.rc_peizhi .content textarea').val(list[idx].command)
+
+        isGetPeizhiData = true
+        $('.peizhirc_btn').click()
     })
     $(document).on('click', '.rc_peizhi .x', function (e) {
         peizhiFixed.remove()
@@ -838,7 +846,7 @@ function showPeizhiRc (list) {
         $('.rc_compare .left .ans').text(curRouter.command || '')
         s_ajax('/api/labAnswer/get', { labId: urlPre + labId, nodeId: curRouter.id }, function (res) {
             if (res && res.code == 1 && res.data) {
-                var list = res.data || []
+                var list = res.data.list || []
                 var result = list.filter(function(el) { el.nodeId == curRouter.id })[0]
                 $('.rc_compare .right .ans').text(result.content || '')
             }
@@ -871,7 +879,6 @@ function showDeviceValueList (opt, devices) {
                 item.command = str
             }
             $('.rc_peizhi .r_btn').length && $('.rc_peizhi .r_btn').eq(0).click()
-            $('.peizhirc_btn').click()
         }
     }, 'post')
 }
