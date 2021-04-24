@@ -736,8 +736,9 @@ var compareFixed = null
 var isGetPeizhiData = false
 
 function tjPeizhiData (data, cb) {
+    data.command = $('.rc_peizhi .content textarea').val()
     s_ajax('/api/labSpotReport/add', {
-        username: localStorage.EVENEWUSERNAME, labId: urlPre + labId, nodeId: data.id, command: $('.rc_peizhi .content textarea').val()
+        username: localStorage.EVENEWUSERNAME, labId: urlPre + labId, nodeId: data.id, command: data.command
     }, function (res) {
         console.log(res)
         if (res && res.code == 1) {
@@ -811,16 +812,18 @@ function showPeizhiRc (list) {
     // $('.rc_peizhi .r_btn').length && $('.rc_peizhi .r_btn').eq(0).click() // showDeviceValueList 获取command数据后再点击
     $(document).on('click', '.peizhirc_btn', function (e) {
         tjPeizhiData(curRouter, function (data) {
-            var labSpots = data.labSpots || []
-            var curData = labSpots.filter(function(el) { return el.nodeId == curRouter.id })[0] || {}
-            $('.rc_peizhi #score').text((data.score || 0) + '/' + (curData.score || 0))
+            // var labSpots = data.labSpots || []
+            // var curData = labSpots.filter(function(el) { return el.nodeId == curRouter.id })[0] || {}
+            // var curAllSco = curData.score
+            var curAllSco = data.nodeScore
+            $('.rc_peizhi #score').text((data.score || 0) + '/' + (curAllSco || 0))
             $('.rc_peizhi #total_score').text(data.totalScore || 0)
-            if (curData.score == 0) {
-                $('.rc_peizhi .r_btn').eq(list.indexOf(curRouter)).css('width', 0)
+            if (curAllSco == 0) {
+                $('.rc_peizhi .r_btn').eq(list.indexOf(curRouter)).find('.bg').css('width', 0)
             } else {
                 // if (data.score == 0) data.score = 15 // 数据模拟
-                if (data.score > curData.score) data.score = curData.score
-                $('.rc_peizhi .r_btn').eq(list.indexOf(curRouter)).find('div').css('width', ((data.score || 0) / (curData.score || 0) * 100).toFixed(2) + '%')
+                if (data.score > curAllSco) data.score = curAllSco
+                $('.rc_peizhi .r_btn').eq(list.indexOf(curRouter)).find('.bg').css('width', ((data.score || 0) / (curAllSco || 0) * 100).toFixed(2) + '%')
             }
         })
     })
