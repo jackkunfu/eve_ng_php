@@ -734,8 +734,10 @@ function upOnePeizhi (textarea) {
 var peizhiFixed = null
 var compareFixed = null
 var isGetPeizhiData = false
+var curRouter = null
 
 function tjPeizhiData (data, cb) {
+    console.log('tjPeizhiData', data)
     data.command = $('.rc_peizhi .content textarea').val()
     s_ajax('/api/labSpotReport/add', {
         username: localStorage.EVENEWUSERNAME, labId: urlPre + labId, nodeId: data.id, command: data.command
@@ -761,7 +763,6 @@ function showPeizhiRc (list) {
     if (compareFixed) compareFixed.remove()
     if (peizhiFixed) peizhiFixed.remove()
     list = list || []
-    var curRouter = null
     var btns = ''
     for (var i = 0; i < list.length; i++) {
         btns += '<div class="r_btn" style="display:inline-block;padding:0 10px;margin: 5px 8px;background: #ccc;position:relative;' +
@@ -811,6 +812,7 @@ function showPeizhiRc (list) {
     })
     // $('.rc_peizhi .r_btn').length && $('.rc_peizhi .r_btn').eq(0).click() // showDeviceValueList 获取command数据后再点击
     $(document).on('click', '.peizhirc_btn', function (e) {
+        // if (!curRouter) return
         tjPeizhiData(curRouter, function (data) {
             // var labSpots = data.labSpots || []
             // var curData = labSpots.filter(function(el) { return el.nodeId == curRouter.id })[0] || {}
