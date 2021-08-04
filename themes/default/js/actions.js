@@ -737,21 +737,18 @@ var isGetPeizhiData = false
 var curRouter = null
 
 function tjPeizhiData (data, cb) {
-    console.log('tjPeizhiData', data)
+    // console.log('tjPeizhiData', data)
     data.command = $('.rc_peizhi .content textarea').val()
     s_ajax('/api/labSpotReport/add', {
         username: localStorage.EVENEWUSERNAME, labId: urlPre + labId, nodeId: data.id, command: data.command
     }, function (res) {
-        console.log(res)
+        // console.log(res)
         if (res && res.code == 1) {
-            if (res.data) {
-                cb(res.data)
-            }
-            if (isGetPeizhiData) {
-                isGetPeizhiData = false
-            } else {
-                alert('提交成功')
-            }
+            if (res.data) cb(res.data)
+
+            if (isGetPeizhiData) isGetPeizhiData = false
+            else alert('提交成功')
+
         } else {
             addModalWide('提交配置', '<h1>' + data.name + '</h1>提交失败，请重试', '')
         }
@@ -760,8 +757,8 @@ function tjPeizhiData (data, cb) {
 function showPeizhiRc (list) {
     // console.log('showPeizhiRc list:')
     // console.log(list)
-    if (compareFixed) compareFixed.remove()
-    if (peizhiFixed) peizhiFixed.remove()
+    if ($('.rc_compare .x').length) $('.rc_compare .x').click()
+    if ($('.rc_peizhi .x').length) $('.rc_peizhi .x').click()
     list = list || []
     var btns = ''
     for (var i = 0; i < list.length; i++) {
@@ -795,7 +792,7 @@ function showPeizhiRc (list) {
     style.innerHTML='.rc_peizhi .r_btn.cur{ color: rgb(32, 158, 145) }';
     document.getElementsByTagName('head').item(0).appendChild(style);
 
-    $(document).on('click', '.rc_peizhi .r_btn', function (e) {
+    function peizhiRbtn(e) {
         $('.r_btn.cur').removeClass('cur')
         $(this).addClass('cur')
         var idx = Array.prototype.indexOf.call(document.querySelectorAll('.rc_peizhi .r_btn'), this)
@@ -804,14 +801,10 @@ function showPeizhiRc (list) {
 
         isGetPeizhiData = true
         $('.peizhirc_btn').click()
-    })
-    $(document).on('click', '.rc_peizhi .x', function (e) {
-        peizhiFixed.remove()
-        peizhiFixed = null
-        curRouter = null
-    })
-    // $('.rc_peizhi .r_btn').length && $('.rc_peizhi .r_btn').eq(0).click() // showDeviceValueList 获取command数据后再点击
-    $(document).on('click', '.peizhirc_btn', function (e) {
+    }
+    $(document).on('click', '.rc_peizhi .r_btn', peizhiRbtn)
+
+    function peizhircBtn(e) {
         // if (!curRouter) return
         tjPeizhiData(curRouter, function (data) {
             // var labSpots = data.labSpots || []
@@ -828,7 +821,9 @@ function showPeizhiRc (list) {
                 $('.rc_peizhi .r_btn').eq(list.indexOf(curRouter)).find('.bg').css('width', ((data.score || 0) / (curAllSco || 0) * 100).toFixed(2) + '%')
             }
         })
-    })
+    }
+    $(document).on('click', '.peizhirc_btn', peizhircBtn)
+
     $(document).on('click', '#compare', function (e) {
         // getNodeData(curRouter, function (cbData) {})
         if (compareFixed) compareFixed.remove()
@@ -852,7 +847,7 @@ function showPeizhiRc (list) {
         s_ajax('/api/labAnswer/get', { labId: urlPre + labId, nodeId: curRouter.id }, function (res) {
             if (res && res.code == 1 && res.data) {
                 var list = res.data.list || []
-                var result = list.filter(function(el) { el.nodeId == curRouter.id })[0]
+                var result = list.filter(function(el) { return el.nodeId == curRouter.id })[0]
                 $('.rc_compare .right .ans').text(result.content || '')
             }
         })
@@ -861,6 +856,15 @@ function showPeizhiRc (list) {
             compareFixed.remove()
         })
     })
+
+    $(document).on('click', '.rc_peizhi .x', function (e) {
+        curRouter = null
+        isGetPeizhiData = false
+        $(document).off('click', '.peizhirc_btn', peizhircBtn)
+        $(document).off('click', '.rc_peizhi .r_btn', peizhiRbtn)
+        peizhiFixed.remove()
+    })
+    // $('.rc_peizhi .r_btn').length && $('.rc_peizhi .r_btn').eq(0).click() // showDeviceValueList 获取command数据后再点击
 }
 
 function showDeviceValueList (opt, devices) {
@@ -868,8 +872,8 @@ function showDeviceValueList (opt, devices) {
         if (res.code == 1 && res.data) {
             var list = res.data || []
             var map = {}
-            console.log('showDeviceValueList list:')
-            console.log(list)
+            // console.log('showDeviceValueList list:')
+            // console.log(list)
             for (var i = 0; i < list.length; i++) {
                 var node = list[i]
                 map[node.nodeId] = node.command || ''
@@ -911,14 +915,14 @@ $(document).on('click', '.action-tijiaopeizhi', function (id) {
 });
 
 function getNodeData (data, cb) {
-    console.log('getNodeData data:')
-    console.log(data)
+    // console.log('getNodeData data:')
+    // console.log(data)
     s_ajax('/api/labSpotReport/get', { username: localStorage.EVENEWUSERNAME, labId: urlPre + labId }, function (res) {
         if (res.code == 1 && res.data) {
             var list = res.data || []
-            console.log('getNodeData list:')
-            console.log(list)
-            var result = list.filter(function(el) { el.nodeId == data.id })[0]
+            // console.log('getNodeData list:')
+            // console.log(list)
+            var result = list.filter(function(el) { return el.nodeId == data.id })[0]
             cb(result || {})
         } else alert('获取节点信息失败')
     }, 'post')
@@ -954,7 +958,7 @@ $(document).on('click', '#tj_btn', function () {
         s_ajax('/api/labSpotReport/add', {
             username: localStorage.EVENEWUSERNAME, labId: urlPre + labId, nodeId: textarea.data('id'), command: textarea.val()
         }, function (res) {
-            console.log(res)
+            // console.log(res)
             if (res) {
                 deferred.resolve(res);
                 res.name = textarea.data('name')
@@ -977,8 +981,8 @@ $(document).on('click', '#tj_btn', function () {
         list.push(upOnePeizhi(textarea))
     }
     $.when.apply($, list).done(function (data) {
-        console.log('datares')
-        console.log(datares)
+        // console.log('datares')
+        // console.log(datares)
         var wrong = datares.filter(function (el) { return el.code != 1 })
         if (wrong.length > 0) {
             let wrongFirst = wrong[0]
