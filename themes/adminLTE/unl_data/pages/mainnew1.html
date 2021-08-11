@@ -287,7 +287,7 @@
 			<span data-ng-repeat="item in navList track by $index" data-ng-class="{'cur': curNav == $index}" data-ng-click="navClick(item, $index)">{{ item.name }}</span>
 		</div>
 	</div>
-	<div class="ctn" id="nav1">
+	<div class="ctn grey" id="nav1">
 		<div class="center pingtai">
 			<div class="half">
 				<div class="tit">
@@ -332,7 +332,40 @@
 			</div>
 		</div>
 	</div>
-	<div class="ctn" id="nav3">
+	<div class="ctn grey" id="nav22">
+		<div class="center shuoming">
+			<div class="tit"><div><img src="/themes/adminLTE/unl_data/img/mainnew1/icon_module_instructions.png" alt=""></div>常见问题</div>
+			<div class="list">
+				<div
+					class="item shuoming-item"
+					data-ng-repeat="item in useDescList track by $index">
+					<img ng-src="{{ item.image }}" alt="">
+					<div class="name">{{ item.title }}</div>
+					<div>{{ item.createtime }}</div>
+					<div class="btn" data-ng-click="seeDtl(item)">查看详情</div>
+				</div>
+			</div>
+			<div class="line-btn-ctn">
+				<div
+					class="line-btn"
+					data-ng-repeat="item in lineBtnNum track by $index"
+					data-ng-class="{'cur': lineBtnIdx == $index}"
+					data-ng-click="clickLine($index)">
+				</div>
+			</div>
+			<div class="page">
+				<div class="page-list">
+					<div class="btn" data-ng-if="pageOpt[1].cur > 1" ng-click="clickPage(1, 'pre')">上一页</div>
+					<div
+						class="btn" data-ng-repeat="item in pageArr1 track by $index"
+						ng-click="clickPage(1, item)" data-ng-class="{'cur': pageOpt[1].cur == item}"
+					>{{ item }}</div>
+					<div class="btn" data-ng-if="pageOpt[1].cur < pageOpt[1].total" ng-click="clickPage(1, 'next')">下一页</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="ctn grey" id="nav3">
 		<div class="center">
 			<div class="tit"><div><img src="/themes/adminLTE/unl_data/img/mainnew1/icon_module_students.png" alt=""></div>学生中心</div>
 			<table class="table-stu">
@@ -382,7 +415,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="ctn" style="background-color: #333;color: #fff;" id="nav5">
+	<div class="ctn grey" style="background-color: #333;color: #fff;" id="nav5">
 		<div class="center">
 			<div class="tit"><div><img src="/themes/adminLTE/unl_data/img/mainnew1/icon_module_notice.png" alt=""></div>通知中心</div>
 			<div class="tongzhi_list">
