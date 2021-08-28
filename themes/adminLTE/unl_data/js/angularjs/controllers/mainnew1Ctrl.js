@@ -131,7 +131,8 @@ function mainnew1Controller(
   };
   $scope.seeDtl = function (item) {
     // console.log(item);
-    location.href = '#/detail?id=' + item.id;
+    window.open(location.origin + '/#/detail?id=' + item.id);
+    // location.href = '#/detail?id=' + item.id;
   };
 
   var tabUrl = {
@@ -274,6 +275,7 @@ function mainnew1Controller(
   };
 
   $scope.downExcel = function (url) {
-    window.open(url);
+    // window.open(url);
+    location.href = url;
   };
 }

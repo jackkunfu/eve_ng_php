@@ -771,7 +771,7 @@ function showRoutersContent(list) {
   var btns = '';
   for (var i = 0; i < list.length; i++) {
     btns +=
-      '<div class="r_btn" style="display:inline-block;padding:0 10px;margin: 5px 8px;background: #fff;' +
+      '<div class="r_btn" style="display:inline-block;padding:0 10px;margin: 5px 8px;background-color: #fff;' +
       'border-radius: 30px;height: 30px;line-height: 30px;cursor: pointer;">' +
       list[i].nodeName +
       '</div>';
@@ -801,7 +801,7 @@ function showRoutersContent(list) {
   var style = document.createElement('style');
   style.type = 'text/css';
   style.innerHTML =
-    '.rc_zhidao .r_btn.cur{ background-color: rgb(32, 158, 145); color: #fff; }';
+    '.rc_zhidao .r_btn.cur{ background-color: rgb(32, 158, 145) !important; color: #fff; }';
   document.getElementsByTagName('head').item(0).appendChild(style);
 
   $(document).on('click', '.rc_zhidao .r_btn', function (e) {
