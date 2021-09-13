@@ -309,7 +309,7 @@
 					<img ng-src="{{ item.image }}" alt="">
 					<div class="name">{{ item.title }}</div>
 					<div>{{ item.createtime }}</div>
-					<div class="btn" data-ng-click="seeDtl(item)">查看详情</div>
+					<div class="btn" data-ng-click="seeDtl(item, '实验预习')">查看详情</div>
 				</div>
 			</div>
 			<div class="line-btn-ctn">
@@ -342,7 +342,7 @@
 					<img ng-src="{{ item.image }}" alt="">
 					<div class="name">{{ item.title }}</div>
 					<div>{{ item.createtime }}</div>
-					<div class="btn" data-ng-click="seeDtl(item)">查看详情</div>
+					<div class="btn" data-ng-click="seeDtl(item, '常见问题')">查看详情</div>
 				</div>
 			</div>
 			<div class="line-btn-ctn">
@@ -400,7 +400,7 @@
 					<span><img ng-src="{{ item.image }}" /></span>
 					<span class="name">{{ item.name }}</span>
 					<span>{{ item.time }}</span>
-					<span class="fr"><div class="btn" ng-click="downExcel(item.url)">下载</div></span>
+					<span class="fr"><div class="btn" ng-click="downExcel(item.url, item.name)">下载</div></span>
 				</div>
 			</div>
 			<div class="page">
@@ -419,7 +419,7 @@
 		<div class="center">
 			<div class="tit"><div><img src="/themes/adminLTE/unl_data/img/mainnew1/icon_module_notice.png" alt=""></div>通知中心</div>
 			<div class="tongzhi_list">
-				<div class="item" data-ng-repeat="item in tongzhiList" ng-click="seeDtl(item)">
+				<div class="item" data-ng-repeat="item in tongzhiList" ng-click="seeDtl(item, '通知中心')">
 					<div class="time">{{item.createtime}}</div>
 					<div>{{item.title}}</div>
 					<div style="margin-top: 18px;"><img src="/themes/adminLTE/unl_data/img/mainnew1/notice_icon_1.png" alt=""></div>

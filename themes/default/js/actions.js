@@ -18,7 +18,7 @@ var KEY_CODES = {
   shift: 16,
   ctrl: 17,
   alt: 18,
-  escape: 27,
+  escape: 27
 };
 
 // Attach files
@@ -40,9 +40,7 @@ $(document).on('keydown', 'body', function (e) {
   if (KEY_CODES.escape == e.which) {
     $('.lab-viewport-click-catcher').unbind('click');
     $('#mouse_frame').remove();
-    $('#lab-viewport')
-      .removeClass('lab-viewport-click-catcher')
-      .data('prevent-contextmenu', false);
+    $('#lab-viewport').removeClass('lab-viewport-click-catcher').data('prevent-contextmenu', false);
 
     //remove active link node connection
 
@@ -82,7 +80,7 @@ $('body').on('click', '.follower-wrapper', function (e) {
 $(document).on('click', '#privacy', function () {
   $.cookie('privacy', 'true', {
     expires: 90,
-    path: '/',
+    path: '/'
   });
   if ($.cookie('privacy') == 'true') {
     window.location.reload();
@@ -234,10 +232,7 @@ $(document).on('contextmenu', '.context-menu', function (e) {
 
   var isFreeSelectMode = $('#lab-viewport').hasClass('freeSelectMode');
 
-  if (
-    isFreeSelectMode &&
-    !$(this).is('.node_frame.free-selected', '.node_frame.free-selected *')
-  ) {
+  if (isFreeSelectMode && !$(this).is('.node_frame.free-selected', '.node_frame.free-selected *')) {
     // prevent 'contextmenu' on non Free Selected Elements
 
     return;
@@ -550,8 +545,7 @@ $(document).on('click', '.action-configsget', function (e) {
   logger(1, 'DEBUG: action = configsget');
   $.when(getNodeConfigs(null))
     .done(function (configs) {
-      var body =
-        '<div class="row"><div class="config-list col-md-2 col-lg-2"><ul>';
+      var body = '<div class="row"><div class="config-list col-md-2 col-lg-2"><ul>';
       $.each(configs, function (key, config) {
         var title = config['config'] == 0 ? MESSAGES[122] : MESSAGES[121];
         body +=
@@ -566,8 +560,7 @@ $(document).on('click', '.action-configsget', function (e) {
         }
         body += '</a></li>';
       });
-      body +=
-        '</ul></div><div id="config-data" class="col-md-10 col-lg-10"></div></div>';
+      body += '</ul></div><div id="config-data" class="col-md-10 col-lg-10"></div></div>';
       addModalWide(MESSAGES[120], body, '');
     })
     .fail(function (message) {
@@ -687,7 +680,7 @@ function s_ajax(url, data, cb, type, upfile) {
       // Server error
       cb(data, true);
       var message = getJsonMessage(data.msg);
-    },
+    }
   };
   if (upfile) {
     config.contentType = false;
@@ -726,7 +719,7 @@ function getConfigByIdEach(labId, nodeId) {
     url: '/api/labs/' + labId + '/configs/' + nodeId,
     dataType: 'json',
     data: {},
-    type: 'get',
+    type: 'get'
   }).done(function (command) {
     // var labId = location.href.split('/legacy/')[1];
     if (!labId) return;
@@ -740,7 +733,7 @@ function getConfigByIdEach(labId, nodeId) {
         username: localStorage.EVENEWUSERNAME,
         labId: urlPre + labId,
         nodeId: nodeId,
-        command: data,
+        command: data
       },
       function () {
         // addModalWide('提交配置', '<h1>提交成功</h1>', '')
@@ -800,17 +793,13 @@ function showRoutersContent(list) {
 
   var style = document.createElement('style');
   style.type = 'text/css';
-  style.innerHTML =
-    '.rc_zhidao .r_btn.cur{ background-color: rgb(32, 158, 145) !important; color: #fff; }';
+  style.innerHTML = '.rc_zhidao .r_btn.cur{ background-color: rgb(32, 158, 145) !important; color: #fff; }';
   document.getElementsByTagName('head').item(0).appendChild(style);
 
   $(document).on('click', '.rc_zhidao .r_btn', function (e) {
     $('.r_btn.cur').removeClass('cur');
     $(this).addClass('cur');
-    var idx = Array.prototype.indexOf.call(
-      document.querySelectorAll('.rc_zhidao .r_btn'),
-      this
-    );
+    var idx = Array.prototype.indexOf.call(document.querySelectorAll('.rc_zhidao .r_btn'), this);
     $('.rc_zhidao .content').html(list[idx].content);
   });
   $(document).on('click', '.rc_zhidao .x', function (e) {
@@ -818,8 +807,7 @@ function showRoutersContent(list) {
     zhidaoshuFixed = null;
   });
   $(document).on('click', '.rc_zhidao .scale', function (e) {
-    if ($('.rc_zhidao').css('width') === '500px')
-      $('.rc_zhidao').css('width', '100%');
+    if ($('.rc_zhidao').css('width') === '500px') $('.rc_zhidao').css('width', '100%');
     else $('.rc_zhidao').css('width', '500px');
   });
   $('.rc_zhidao .r_btn').length && $('.rc_zhidao .r_btn').eq(0).click();
@@ -880,7 +868,7 @@ function upOnePeizhi(textarea) {
       username: localStorage.EVENEWUSERNAME,
       labId: urlPre + labId,
       nodeId: textarea.data('id'),
-      command: textarea.val(),
+      command: textarea.val()
     },
     function (res) {
       console.log(res);
@@ -921,7 +909,7 @@ function tjPeizhiData(data, cb) {
       username: localStorage.EVENEWUSERNAME,
       labId: urlPre + labId,
       nodeId: data.id,
-      command: data.command,
+      command: data.command
     },
     function (res) {
       // console.log(res)
@@ -931,11 +919,7 @@ function tjPeizhiData(data, cb) {
         if (isGetPeizhiData) isGetPeizhiData = false;
         else alert('提交成功');
       } else {
-        addModalWide(
-          '提交配置',
-          '<h1>' + data.name + '</h1>提交失败，请重试',
-          ''
-        );
+        addModalWide('提交配置', '<h1>' + data.name + '</h1>提交失败，请重试', '');
       }
     },
     'post'
@@ -985,16 +969,13 @@ function showPeizhiRc(list) {
 
   var style = document.createElement('style');
   style.type = 'text/css';
-  style.innerHTML = '.rc_peizhi .r_btn.cur{ color: rgb(32, 158, 145) }';
+  style.innerHTML = '.rc_peizhi .r_btn.cur{ background-color: rgb(32, 158, 145) !important; color: #fff; }';
   document.getElementsByTagName('head').item(0).appendChild(style);
 
   function peizhiRbtn(e) {
     $('.r_btn.cur').removeClass('cur');
     $(this).addClass('cur');
-    var idx = Array.prototype.indexOf.call(
-      document.querySelectorAll('.rc_peizhi .r_btn'),
-      this
-    );
+    var idx = Array.prototype.indexOf.call(document.querySelectorAll('.rc_peizhi .r_btn'), this);
     curRouter = list[idx];
     $('.rc_peizhi .content textarea').val(list[idx].command);
 
@@ -1013,20 +994,14 @@ function showPeizhiRc(list) {
       $('.rc_peizhi #score').text((data.score || 0) + '/' + (curAllSco || 0));
       $('.rc_peizhi #total_score').text(data.totalScore || 0);
       if (curAllSco == 0) {
-        $('.rc_peizhi .r_btn')
-          .eq(list.indexOf(curRouter))
-          .find('.bg')
-          .css('width', 0);
+        $('.rc_peizhi .r_btn').eq(list.indexOf(curRouter)).find('.bg').css('width', 0);
       } else {
         // if (data.score == 0) data.score = 15 // 数据模拟
         if (data.score > curAllSco) data.score = curAllSco;
         $('.rc_peizhi .r_btn')
           .eq(list.indexOf(curRouter))
           .find('.bg')
-          .css(
-            'width',
-            (((data.score || 0) / (curAllSco || 0)) * 100).toFixed(2) + '%'
-          );
+          .css('width', (((data.score || 0) / (curAllSco || 0)) * 100).toFixed(2) + '%');
       }
     });
   }
@@ -1067,19 +1042,15 @@ function showPeizhiRc(list) {
     $('body').append(compareFixed);
 
     $('.rc_compare .left .ans').text(curRouter.command || '');
-    s_ajax(
-      '/api/labAnswer/get',
-      { labId: urlPre + labId, nodeId: curRouter.id },
-      function (res) {
-        if (res && res.code == 1 && res.data) {
-          var list = res.data.list || [];
-          var result = list.filter(function (el) {
-            return el.nodeId == curRouter.id;
-          })[0];
-          $('.rc_compare .right .ans').text(result.content || '');
-        }
+    s_ajax('/api/labAnswer/get', { labId: urlPre + labId, nodeId: curRouter.id }, function (res) {
+      if (res && res.code == 1 && res.data) {
+        var list = res.data.list || [];
+        var result = list.filter(function (el) {
+          return el.nodeId == curRouter.id;
+        })[0];
+        $('.rc_compare .right .ans').text(result.content || '');
       }
-    );
+    });
 
     $(document).on('click', '.rc_compare .x', function (e) {
       compareFixed.remove();
@@ -1132,15 +1103,10 @@ $(document).on('click', '.action-tijiaopeizhi', function (id) {
   var opt = {
     username: localStorage.EVENEWUSERNAME,
     path: urlPre + labId,
-    labId: urlPre + labId,
+    labId: urlPre + labId
   };
   s_ajax('/api/lab/device/list', opt, function (res) {
-    if (
-      res.code == 1 &&
-      res.data &&
-      res.data.topology &&
-      res.data.topology.nodes
-    ) {
+    if (res.code == 1 && res.data && res.data.topology && res.data.topology.nodes) {
       var list = res.data.topology.nodes.node || [];
       // var listHtml = '<div class="tj_ctn"><div class="tj_list">'
       // for (var i = 0; i < list.length; i++) {
@@ -1217,7 +1183,7 @@ $(document).on('click', '#tj_btn', function () {
         username: localStorage.EVENEWUSERNAME,
         labId: urlPre + labId,
         nodeId: textarea.data('id'),
-        command: textarea.val(),
+        command: textarea.val()
       },
       function (res) {
         // console.log(res)
@@ -1254,11 +1220,7 @@ $(document).on('click', '#tj_btn', function () {
       });
       if (wrong.length > 0) {
         let wrongFirst = wrong[0];
-        addModalWide(
-          '提交配置',
-          '<h1>' + wrongFirst.name + '</h1>提交失败，请重试',
-          ''
-        );
+        addModalWide('提交配置', '<h1>' + wrongFirst.name + '</h1>提交失败，请重试', '');
         return;
       }
       $('body >.modal-wide').remove();
@@ -1266,9 +1228,7 @@ $(document).on('click', '#tj_btn', function () {
       setTimeout(function () {
         addModalWide(
           '提交配置',
-          '<h1>提交成功&nbsp;&nbsp;<span style="color: #ff3973;">' +
-            score +
-            '分</span></h1>',
+          '<h1>提交成功&nbsp;&nbsp;<span style="color: #ff3973;">' + score + '分</span></h1>',
           ''
         );
       }, 200);
@@ -1289,8 +1249,7 @@ $(document).on('click', '.action-tijiaobaogao', function (e) {
   file.width = 0;
   file.height = 0;
   // file.accept = "application/msword"
-  file.accept =
-    '.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+  file.accept = '.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document';
   document.body.appendChild(file);
   file.addEventListener('change', function (e) {
     var fd = new FormData();
@@ -1353,11 +1312,7 @@ $(document).on('click', '.action-peizhidaan', function (e) {
       text = data.data.list
         .map(function (el) {
           return (
-            '<div style="font-weight: 600;margin-top: 15px;">' +
-            el.nodeName +
-            '</div><div>' +
-            el.content +
-            '</div>'
+            '<div style="font-weight: 600;margin-top: 15px;">' + el.nodeName + '</div><div>' + el.content + '</div>'
           );
         })
         .join('');
@@ -1452,31 +1407,27 @@ $(document).on('hide.bs.modal', function (e) {
 
 // Delete lab node
 
-$(document).on(
-  'click',
-  '.action-nodedelete, .action-nodedelete-group',
-  function (e) {
-    if (!confirm('Are you sure ?')) return;
-    logger(1, 'DEBUG: action = action-nodedelete');
-    var node_id = $(this).attr('data-path'),
-      isFreeSelectMode = $('#lab-viewport').hasClass('freeSelectMode');
-    if (isFreeSelectMode) {
-      window.freeSelectedNodes = window.freeSelectedNodes.sort(function (a, b) {
-        return a.path < b.path ? -1 : 1;
+$(document).on('click', '.action-nodedelete, .action-nodedelete-group', function (e) {
+  if (!confirm('Are you sure ?')) return;
+  logger(1, 'DEBUG: action = action-nodedelete');
+  var node_id = $(this).attr('data-path'),
+    isFreeSelectMode = $('#lab-viewport').hasClass('freeSelectMode');
+  if (isFreeSelectMode) {
+    window.freeSelectedNodes = window.freeSelectedNodes.sort(function (a, b) {
+      return a.path < b.path ? -1 : 1;
+    });
+    recursionNodeDelete(window.freeSelectedNodes);
+  } else {
+    $.when(deleteNode(node_id))
+      .done(function (values) {
+        $('.node' + node_id).remove();
+      })
+      .fail(function (message) {
+        addModalError(message);
       });
-      recursionNodeDelete(window.freeSelectedNodes);
-    } else {
-      $.when(deleteNode(node_id))
-        .done(function (values) {
-          $('.node' + node_id).remove();
-        })
-        .fail(function (message) {
-          addModalError(message);
-        });
-    }
-    $('#context-menu').remove();
   }
-);
+  $('#context-menu').remove();
+});
 
 function recursionNodeDelete(restOfList) {
   var node = restOfList.pop();
@@ -1617,10 +1568,7 @@ $(document).on('click', '.action-labopen', function (e) {
 
 // Preview a lab
 $(document).on('dblclick', '.action-labpreview', function (e) {
-  logger(
-    1,
-    'DEBUG: opening a preview of lab "' + $(this).attr('data-path') + '".'
-  );
+  logger(1, 'DEBUG: opening a preview of lab "' + $(this).attr('data-path') + '".');
   $('.lab-opened').each(function () {
     // Remove all previous selected lab
     $(this).removeClass('lab-opened');
@@ -1860,7 +1808,7 @@ $('body').on('submit', '#form-picture-add', function (e) {
     },
     error: function (data) {
       addMessage('DANGER', getJsonMessage(data['responseText']));
-    },
+    }
   });
 
   // Hide and delete the modal (or will be posted twice)
@@ -1913,7 +1861,7 @@ $(document).on('click', '#follower', function (e) {
   e.preventDefault();
   e.folowerPosition = {
     left: parseFloat($('#follower').css('left')) - 30,
-    top: parseFloat($('#follower').css('top')) + 30,
+    top: parseFloat($('#follower').css('top')) + 30
   };
 });
 
@@ -1923,8 +1871,7 @@ $(document).on('click', '.action-picturesget', function (e) {
   $.when(getPictures())
     .done(function (pictures) {
       if (!$.isEmptyObject(pictures)) {
-        var body =
-          '<div class="row"><div class="picture-list col-md-1 col-lg-1"><ul class="map">';
+        var body = '<div class="row"><div class="picture-list col-md-1 col-lg-1"><ul class="map">';
         $.each(pictures, function (key, picture) {
           var title = picture['name'] || 'pic name';
           body += '<li>';
@@ -1943,8 +1890,7 @@ $(document).on('click', '.action-picturesget', function (e) {
             '</a>';
           body += '</a></li>';
         });
-        body +=
-          '</ul></div><div id="config-data" class="col-md-11 col-lg-11"></div></div>';
+        body += '</ul></div><div id="config-data" class="col-md-11 col-lg-11"></div></div>';
         addModalWide(MESSAGES[59], body, '', 'modal-ultra-wide');
       } else {
         addMessage('info', MESSAGES[134]);
@@ -2095,286 +2041,261 @@ $(document).on('click', '.action-selectedexport', function (e) {
 });
 
 // Delete all startup-config
-$(document).on(
-  'click',
-  '.action-nodesbootdelete, .action-nodesbootdelete-group',
-  function (e) {
-    $('#context-menu').remove();
-    var isFreeSelectMode = $('#lab-viewport').hasClass('freeSelectMode');
-    if (isFreeSelectMode) {
-      var nodeLenght = window.freeSelectedNodes.length;
-      var lab_filename = $('#lab-viewport').attr('data-path');
-      $.each(window.freeSelectedNodes, function (i, node) {
-        var form_data = {};
-        form_data['id'] = node.path;
-        form_data['data'] = '';
-        var url = '/api/labs' + lab_filename + '/configs/' + node.path;
-        var type = 'PUT';
-        $.when(
-          $.ajax({
-            timeout: TIMEOUT,
-            type: type,
-            url: encodeURI(url),
-            dataType: 'json',
-            data: JSON.stringify(form_data),
-          })
-        )
-          .done(function (message) {
-            // Config deleted
-            nodeLenght--;
-            if (nodeLenght < 1) {
-              addMessage('success', MESSAGES[160]);
-            }
-          })
-          .fail(function (message) {
-            // Cannot delete config
-            nodeLenght--;
-            if (nodeLenght < 1) {
-              addMessage('danger', node.name + ': ' + message);
-            }
-          });
-      });
-    } else {
-      $.when(getNodes(null))
-        .done(function (nodes) {
-          var nodeLenght = Object.keys(nodes).length;
-          $.each(nodes, function (key, values) {
-            var lab_filename = $('#lab-viewport').attr('data-path');
-            var form_data = {};
-            form_data['id'] = key;
-            form_data['data'] = '';
-            var url = '/api/labs' + lab_filename + '/configs/' + key;
-            var type = 'PUT';
-            $.when(
-              $.ajax({
-                timeout: TIMEOUT,
-                type: type,
-                url: encodeURI(url),
-                dataType: 'json',
-                data: JSON.stringify(form_data),
-              })
-            )
-              .done(function (message) {
-                // Config deleted
-                nodeLenght--;
-                if (nodeLenght < 1) {
-                  addMessage('success', MESSAGES[142]);
-                }
-              })
-              .fail(function (message) {
-                // Cannot delete config
-                nodeLenght--;
-                if (nodeLenght < 1) {
-                  addMessage('danger', values['name'] + ': ' + message);
-                }
-              });
-          });
+$(document).on('click', '.action-nodesbootdelete, .action-nodesbootdelete-group', function (e) {
+  $('#context-menu').remove();
+  var isFreeSelectMode = $('#lab-viewport').hasClass('freeSelectMode');
+  if (isFreeSelectMode) {
+    var nodeLenght = window.freeSelectedNodes.length;
+    var lab_filename = $('#lab-viewport').attr('data-path');
+    $.each(window.freeSelectedNodes, function (i, node) {
+      var form_data = {};
+      form_data['id'] = node.path;
+      form_data['data'] = '';
+      var url = '/api/labs' + lab_filename + '/configs/' + node.path;
+      var type = 'PUT';
+      $.when(
+        $.ajax({
+          timeout: TIMEOUT,
+          type: type,
+          url: encodeURI(url),
+          dataType: 'json',
+          data: JSON.stringify(form_data)
+        })
+      )
+        .done(function (message) {
+          // Config deleted
+          nodeLenght--;
+          if (nodeLenght < 1) {
+            addMessage('success', MESSAGES[160]);
+          }
         })
         .fail(function (message) {
-          addModalError(message);
-        });
-    }
-  }
-);
-
-// Configure nodes to boot from scratch
-$(document).on(
-  'click',
-  '.action-nodesbootscratch, .action-nodesbootscratch-group',
-  function (e) {
-    $('#context-menu').remove();
-
-    var isFreeSelectMode = $('#lab-viewport').hasClass('freeSelectMode');
-    if (isFreeSelectMode) {
-      $.each(window.freeSelectedNodes, function (i, node) {
-        $.when(setNodeBoot(node.path, 0))
-          .done(function () {
-            addMessage('success', node.name + ': ' + MESSAGES[144]);
-          })
-          .fail(function (message) {
-            // Cannot configure
+          // Cannot delete config
+          nodeLenght--;
+          if (nodeLenght < 1) {
             addMessage('danger', node.name + ': ' + message);
-          });
-      });
-    } else {
-      $.when(getNodes(null))
-        .done(function (nodes) {
-          $.each(nodes, function (key, values) {
-            $.when(setNodeBoot(key, 0))
-              .done(function () {
-                // Node configured -> print a small green message
-                addMessage('success', values['name'] + ': ' + MESSAGES[144]);
-              })
-              .fail(function (message) {
-                // Cannot start
-                addMessage('danger', values['name'] + ': ' + message);
-              });
-          });
-        })
-        .fail(function (message) {
-          addModalError(message);
+          }
         });
-    }
-  }
-);
-
-// Configure nodes to boot from startup-config
-$(document).on(
-  'click',
-  '.action-nodesbootsaved, .action-nodesbootsaved-group',
-  function (e) {
-    $('#context-menu').remove();
-
-    var isFreeSelectMode = $('#lab-viewport').hasClass('freeSelectMode');
-    if (isFreeSelectMode) {
-      $.each(window.freeSelectedNodes, function (i, node) {
-        $.when(setNodeBoot(node.path, 1))
-          .done(function () {
-            addMessage('success', node.name + ': ' + MESSAGES[143]);
-          })
-          .fail(function (message) {
-            // Cannot configure
-            addMessage('danger', node.name + ': ' + message);
-          });
-      });
-    } else {
-      $.when(getNodes(null))
-        .done(function (nodes) {
-          $.each(nodes, function (key, values) {
-            $.when(setNodeBoot(key, 1))
-              .done(function () {
-                // Node configured -> print a small green message
-                addMessage('success', values['name'] + ': ' + MESSAGES[143]);
-              })
-              .fail(function (message) {
-                // Cannot configure
-                addMessage('danger', values['name'] + ': ' + message);
-              });
-          });
-        })
-        .fail(function (message) {
-          addModalError(message);
-        });
-    }
-  }
-);
-
-// Export a config
-$(document).on(
-  'click',
-  '.action-nodeexport, .action-nodesexport, .action-nodeexport-group',
-  function (e) {
-    $('#context-menu').remove();
-
-    var node_id,
-      isFreeSelectMode = $('#lab-viewport').hasClass('freeSelectMode'),
-      exportAll = false,
-      nodesLength;
-
-    if ($(this).hasClass('action-nodeexport')) {
-      logger(1, 'DEBUG: action = nodeexport');
-      node_id = $(this).attr('data-path');
-    } else {
-      logger(1, 'DEBUG: action = nodesexport');
-      exportAll = true;
-    }
-
+    });
+  } else {
     $.when(getNodes(null))
       .done(function (nodes) {
-        if (isFreeSelectMode) {
-          nodesLenght = window.freeSelectedNodes.length;
-          addMessage('info', 'Export Selected:  Starting');
-          $.when(recursive_cfg_export(window.freeSelectedNodes, nodesLenght))
-            .done(function () {})
-            .fail(function (message) {
-              addMessage('danger', 'Export Selected: Error');
-            });
-        } else if (node_id) {
-          addMessage('info', nodes[node_id]['name'] + ': ' + MESSAGES[138]);
-          $.when(cfg_export(node_id))
-            .done(function () {
-              // Node exported -> print a small green message
-              setNodeBoot(node_id, '1');
-              addMessage(
-                'success',
-                nodes[node_id]['name'] + ': ' + MESSAGES[79]
-              );
+        var nodeLenght = Object.keys(nodes).length;
+        $.each(nodes, function (key, values) {
+          var lab_filename = $('#lab-viewport').attr('data-path');
+          var form_data = {};
+          form_data['id'] = key;
+          form_data['data'] = '';
+          var url = '/api/labs' + lab_filename + '/configs/' + key;
+          var type = 'PUT';
+          $.when(
+            $.ajax({
+              timeout: TIMEOUT,
+              type: type,
+              url: encodeURI(url),
+              dataType: 'json',
+              data: JSON.stringify(form_data)
+            })
+          )
+            .done(function (message) {
+              // Config deleted
+              nodeLenght--;
+              if (nodeLenght < 1) {
+                addMessage('success', MESSAGES[142]);
+              }
             })
             .fail(function (message) {
-              // Cannot export
-              addMessage('danger', nodes[node_id]['name'] + ': ' + message);
+              // Cannot delete config
+              nodeLenght--;
+              if (nodeLenght < 1) {
+                addMessage('danger', values['name'] + ': ' + message);
+              }
             });
-        } else if (exportAll) {
-          /*
-           * Parallel call for each node
-           */
-          nodesLenght = Object.keys(nodes).length;
-          addMessage('info', 'Export all:  Starting');
-          $.when(recursive_cfg_export(nodes, nodesLenght))
-            .done(function () {})
-            .fail(function (message) {
-              addMessage('danger', 'Export all: Error');
-            });
-        }
+        });
       })
       .fail(function (message) {
         addModalError(message);
       });
   }
-);
+});
 
-// Start a node
-$(document).on(
-  'click',
-  '.action-nodestart, .action-nodesstart, .action-nodestart-group',
-  function (e) {
-    $('#context-menu').remove();
-    var node_id,
-      startAll,
-      isFreeSelectMode = $('#lab-viewport').hasClass('freeSelectMode'),
-      nodeLenght;
+// Configure nodes to boot from scratch
+$(document).on('click', '.action-nodesbootscratch, .action-nodesbootscratch-group', function (e) {
+  $('#context-menu').remove();
 
-    if ($(this).hasClass('action-nodestart')) {
-      logger(1, 'DEBUG: action = nodestart');
-      node_id = $(this).attr('data-path');
-    } else {
-      logger(1, 'DEBUG: action = nodesstart');
-      startAll = true;
-    }
-
+  var isFreeSelectMode = $('#lab-viewport').hasClass('freeSelectMode');
+  if (isFreeSelectMode) {
+    $.each(window.freeSelectedNodes, function (i, node) {
+      $.when(setNodeBoot(node.path, 0))
+        .done(function () {
+          addMessage('success', node.name + ': ' + MESSAGES[144]);
+        })
+        .fail(function (message) {
+          // Cannot configure
+          addMessage('danger', node.name + ': ' + message);
+        });
+    });
+  } else {
     $.when(getNodes(null))
       .done(function (nodes) {
-        if (isFreeSelectMode) {
-          nodeLenght = window.freeSelectedNodes.length;
-          addMessage('info', 'Start selected nodes...');
-          $.when(recursive_start(window.freeSelectedNodes, nodeLenght))
-            .done(function () {})
-            .fail(function (message) {
-              addMessage('danger', 'Start all: Error');
-            });
-        } else if (node_id != null) {
-          $.when(start(node_id))
+        $.each(nodes, function (key, values) {
+          $.when(setNodeBoot(key, 0))
             .done(function () {
-              // Node started -> print a small green message
-              addMessage(
-                'success',
-                nodes[node_id]['name'] + ': ' + MESSAGES[76]
-              );
-              printLabStatus();
+              // Node configured -> print a small green message
+              addMessage('success', values['name'] + ': ' + MESSAGES[144]);
             })
             .fail(function (message) {
               // Cannot start
-              addMessage('danger', nodes[node_id]['name'] + ': ' + message);
+              addMessage('danger', values['name'] + ': ' + message);
             });
-        } else if (startAll) {
-          nodesLenght = Object.keys(nodes).length;
-          addMessage('info', 'Start all...');
-          $.when(recursive_start(nodes, nodesLenght))
-            .done(function () {})
+        });
+      })
+      .fail(function (message) {
+        addModalError(message);
+      });
+  }
+});
+
+// Configure nodes to boot from startup-config
+$(document).on('click', '.action-nodesbootsaved, .action-nodesbootsaved-group', function (e) {
+  $('#context-menu').remove();
+
+  var isFreeSelectMode = $('#lab-viewport').hasClass('freeSelectMode');
+  if (isFreeSelectMode) {
+    $.each(window.freeSelectedNodes, function (i, node) {
+      $.when(setNodeBoot(node.path, 1))
+        .done(function () {
+          addMessage('success', node.name + ': ' + MESSAGES[143]);
+        })
+        .fail(function (message) {
+          // Cannot configure
+          addMessage('danger', node.name + ': ' + message);
+        });
+    });
+  } else {
+    $.when(getNodes(null))
+      .done(function (nodes) {
+        $.each(nodes, function (key, values) {
+          $.when(setNodeBoot(key, 1))
+            .done(function () {
+              // Node configured -> print a small green message
+              addMessage('success', values['name'] + ': ' + MESSAGES[143]);
+            })
             .fail(function (message) {
-              addMessage('danger', 'Start all: Error');
+              // Cannot configure
+              addMessage('danger', values['name'] + ': ' + message);
             });
-          /*
+        });
+      })
+      .fail(function (message) {
+        addModalError(message);
+      });
+  }
+});
+
+// Export a config
+$(document).on('click', '.action-nodeexport, .action-nodesexport, .action-nodeexport-group', function (e) {
+  $('#context-menu').remove();
+
+  var node_id,
+    isFreeSelectMode = $('#lab-viewport').hasClass('freeSelectMode'),
+    exportAll = false,
+    nodesLength;
+
+  if ($(this).hasClass('action-nodeexport')) {
+    logger(1, 'DEBUG: action = nodeexport');
+    node_id = $(this).attr('data-path');
+  } else {
+    logger(1, 'DEBUG: action = nodesexport');
+    exportAll = true;
+  }
+
+  $.when(getNodes(null))
+    .done(function (nodes) {
+      if (isFreeSelectMode) {
+        nodesLenght = window.freeSelectedNodes.length;
+        addMessage('info', 'Export Selected:  Starting');
+        $.when(recursive_cfg_export(window.freeSelectedNodes, nodesLenght))
+          .done(function () {})
+          .fail(function (message) {
+            addMessage('danger', 'Export Selected: Error');
+          });
+      } else if (node_id) {
+        addMessage('info', nodes[node_id]['name'] + ': ' + MESSAGES[138]);
+        $.when(cfg_export(node_id))
+          .done(function () {
+            // Node exported -> print a small green message
+            setNodeBoot(node_id, '1');
+            addMessage('success', nodes[node_id]['name'] + ': ' + MESSAGES[79]);
+          })
+          .fail(function (message) {
+            // Cannot export
+            addMessage('danger', nodes[node_id]['name'] + ': ' + message);
+          });
+      } else if (exportAll) {
+        /*
+         * Parallel call for each node
+         */
+        nodesLenght = Object.keys(nodes).length;
+        addMessage('info', 'Export all:  Starting');
+        $.when(recursive_cfg_export(nodes, nodesLenght))
+          .done(function () {})
+          .fail(function (message) {
+            addMessage('danger', 'Export all: Error');
+          });
+      }
+    })
+    .fail(function (message) {
+      addModalError(message);
+    });
+});
+
+// Start a node
+$(document).on('click', '.action-nodestart, .action-nodesstart, .action-nodestart-group', function (e) {
+  $('#context-menu').remove();
+  var node_id,
+    startAll,
+    isFreeSelectMode = $('#lab-viewport').hasClass('freeSelectMode'),
+    nodeLenght;
+
+  if ($(this).hasClass('action-nodestart')) {
+    logger(1, 'DEBUG: action = nodestart');
+    node_id = $(this).attr('data-path');
+  } else {
+    logger(1, 'DEBUG: action = nodesstart');
+    startAll = true;
+  }
+
+  $.when(getNodes(null))
+    .done(function (nodes) {
+      if (isFreeSelectMode) {
+        nodeLenght = window.freeSelectedNodes.length;
+        addMessage('info', 'Start selected nodes...');
+        $.when(recursive_start(window.freeSelectedNodes, nodeLenght))
+          .done(function () {})
+          .fail(function (message) {
+            addMessage('danger', 'Start all: Error');
+          });
+      } else if (node_id != null) {
+        $.when(start(node_id))
+          .done(function () {
+            // Node started -> print a small green message
+            addMessage('success', nodes[node_id]['name'] + ': ' + MESSAGES[76]);
+            printLabStatus();
+          })
+          .fail(function (message) {
+            // Cannot start
+            addMessage('danger', nodes[node_id]['name'] + ': ' + message);
+          });
+      } else if (startAll) {
+        nodesLenght = Object.keys(nodes).length;
+        addMessage('info', 'Start all...');
+        $.when(recursive_start(nodes, nodesLenght))
+          .done(function () {})
+          .fail(function (message) {
+            addMessage('danger', 'Start all: Error');
+          });
+        /*
              $.each(nodes, function(key, values) {
              $.when(start(key)).done(function() {
              // Node started -> print a small green message
@@ -2393,176 +2314,161 @@ $(document).on(
              });
              });
              */
-        }
-      })
-      .fail(function (message) {
-        addModalError(message);
-      });
-  }
-);
+      }
+    })
+    .fail(function (message) {
+      addModalError(message);
+    });
+});
 
 // Stop a node
-$(document).on(
-  'click',
-  '.action-nodestop, .action-nodesstop, .action-nodestop-group',
-  function (e) {
-    $('#context-menu').remove();
+$(document).on('click', '.action-nodestop, .action-nodesstop, .action-nodestop-group', function (e) {
+  $('#context-menu').remove();
 
-    var node_id,
-      nodeLenght,
-      isFreeSelectMode = $('#lab-viewport').hasClass('freeSelectMode'),
-      stopAll;
+  var node_id,
+    nodeLenght,
+    isFreeSelectMode = $('#lab-viewport').hasClass('freeSelectMode'),
+    stopAll;
 
-    if ($(this).hasClass('action-nodestop')) {
-      logger(1, 'DEBUG: action = nodestop');
-      node_id = $(this).attr('data-path');
-    } else {
-      logger(1, 'DEBUG: action = nodesstop');
-      stopAll = true;
-    }
+  if ($(this).hasClass('action-nodestop')) {
+    logger(1, 'DEBUG: action = nodestop');
+    node_id = $(this).attr('data-path');
+  } else {
+    logger(1, 'DEBUG: action = nodesstop');
+    stopAll = true;
+  }
 
-    $.when(getNodes(null))
-      .done(function (nodes) {
-        if (isFreeSelectMode) {
-          nodeLenght = window.freeSelectedNodes.length;
-          $.each(window.freeSelectedNodes, function (i, node) {
-            $.when(stop(node.path))
-              .done(function () {
-                // Node stopped -> print a small green message
-                addMessage('success', node.name + ': ' + MESSAGES[77]);
-                nodeLenght--;
-                if (nodeLenght < 1) {
-                  setTimeout(printLabStatus, 3000);
-                }
-              })
-              .fail(function (message) {
-                // Cannot stopped
-                addMessage('danger', node.name + ': ' + message);
-                nodeLenght--;
-                if (nodeLenght < 1) {
-                  setTimeout(printLabStatus, 3000);
-                }
-              });
-          });
-        } else if (node_id != null) {
-          $.when(stop(node_id))
+  $.when(getNodes(null))
+    .done(function (nodes) {
+      if (isFreeSelectMode) {
+        nodeLenght = window.freeSelectedNodes.length;
+        $.each(window.freeSelectedNodes, function (i, node) {
+          $.when(stop(node.path))
             .done(function () {
               // Node stopped -> print a small green message
-              addMessage(
-                'success',
-                nodes[node_id]['name'] + ': ' + MESSAGES[77]
-              );
-              $('#node' + node_id + ' img').addClass('grayscale');
-              printLabStatus();
+              addMessage('success', node.name + ': ' + MESSAGES[77]);
+              nodeLenght--;
+              if (nodeLenght < 1) {
+                setTimeout(printLabStatus, 3000);
+              }
             })
             .fail(function (message) {
-              // Cannot stop
-              addMessage('danger', nodes[node_id]['name'] + ': ' + message);
+              // Cannot stopped
+              addMessage('danger', node.name + ': ' + message);
+              nodeLenght--;
+              if (nodeLenght < 1) {
+                setTimeout(printLabStatus, 3000);
+              }
             });
-        } else if (stopAll) {
-          nodeLenght = Object.keys(nodes).length;
-          $.each(nodes, function (key, values) {
-            $.when(stop(key))
-              .done(function () {
-                // Node stopped -> print a small green message
-                addMessage('success', values['name'] + ': ' + MESSAGES[77]);
-                nodeLenght--;
-                if (nodeLenght < 1) {
-                  setTimeout(printLabStatus, 3000);
-                }
-
-                $('#node' + values['id']).attr('data-status', 0);
-              })
-              .fail(function (message) {
-                // Cannot stopped
-                addMessage('danger', values['name'] + ': ' + message);
-                nodeLenght--;
-                if (nodeLenght < 1) {
-                  setTimeout(printLabStatus, 3000);
-                }
-              });
+        });
+      } else if (node_id != null) {
+        $.when(stop(node_id))
+          .done(function () {
+            // Node stopped -> print a small green message
+            addMessage('success', nodes[node_id]['name'] + ': ' + MESSAGES[77]);
+            $('#node' + node_id + ' img').addClass('grayscale');
+            printLabStatus();
+          })
+          .fail(function (message) {
+            // Cannot stop
+            addMessage('danger', nodes[node_id]['name'] + ': ' + message);
           });
-        }
-      })
-      .fail(function (message) {
-        addModalError(message);
-      });
-  }
-);
+      } else if (stopAll) {
+        nodeLenght = Object.keys(nodes).length;
+        $.each(nodes, function (key, values) {
+          $.when(stop(key))
+            .done(function () {
+              // Node stopped -> print a small green message
+              addMessage('success', values['name'] + ': ' + MESSAGES[77]);
+              nodeLenght--;
+              if (nodeLenght < 1) {
+                setTimeout(printLabStatus, 3000);
+              }
+
+              $('#node' + values['id']).attr('data-status', 0);
+            })
+            .fail(function (message) {
+              // Cannot stopped
+              addMessage('danger', values['name'] + ': ' + message);
+              nodeLenght--;
+              if (nodeLenght < 1) {
+                setTimeout(printLabStatus, 3000);
+              }
+            });
+        });
+      }
+    })
+    .fail(function (message) {
+      addModalError(message);
+    });
+});
 
 // Wipe a node
-$(document).on(
-  'click',
-  '.action-nodewipe, .action-nodeswipe, .action-nodewipe-group',
-  function (e) {
-    $('#context-menu').remove();
+$(document).on('click', '.action-nodewipe, .action-nodeswipe, .action-nodewipe-group', function (e) {
+  $('#context-menu').remove();
 
-    var node_id,
-      isFreeSelectMode = $('#lab-viewport').hasClass('freeSelectMode'),
-      wipeAll;
+  var node_id,
+    isFreeSelectMode = $('#lab-viewport').hasClass('freeSelectMode'),
+    wipeAll;
 
-    if ($(this).hasClass('action-nodewipe')) {
-      logger(1, 'DEBUG: action = nodewipe');
-      node_id = $(this).attr('data-path');
-    } else {
-      logger(1, 'DEBUG: action = nodeswipe');
-      wipeAll = true;
-    }
+  if ($(this).hasClass('action-nodewipe')) {
+    logger(1, 'DEBUG: action = nodewipe');
+    node_id = $(this).attr('data-path');
+  } else {
+    logger(1, 'DEBUG: action = nodeswipe');
+    wipeAll = true;
+  }
 
-    $.when(getNodes(null))
-      .done(function (nodes) {
-        if (isFreeSelectMode) {
-          $.each(window.freeSelectedNodes, function (i, node) {
-            $.when(
-              setTimeout(function () {
-                wipe(node.path);
-              }, nodes[node.path]['delay'] * 10)
-            )
-              .done(function (res) {
-                // Node wiped -> print a small green message
-                addMessage('success', node.name + ': ' + MESSAGES[78]);
-              })
-              .fail(function (message) {
-                // Cannot wiped
-                addMessage('danger', node.name + ': ' + message);
-              });
-          });
-        } else if (node_id != null) {
-          $.when(wipe(node_id))
-            .done(function () {
+  $.when(getNodes(null))
+    .done(function (nodes) {
+      if (isFreeSelectMode) {
+        $.each(window.freeSelectedNodes, function (i, node) {
+          $.when(
+            setTimeout(function () {
+              wipe(node.path);
+            }, nodes[node.path]['delay'] * 10)
+          )
+            .done(function (res) {
               // Node wiped -> print a small green message
-              addMessage(
-                'success',
-                nodes[node_id]['name'] + ': ' + MESSAGES[78]
-              );
+              addMessage('success', node.name + ': ' + MESSAGES[78]);
             })
             .fail(function (message) {
-              // Cannot wipe
-              addMessage('danger', nodes[node_id]['name'] + ': ' + message);
+              // Cannot wiped
+              addMessage('danger', node.name + ': ' + message);
             });
-        } else if (wipeAll) {
-          $.each(nodes, function (key, values) {
-            $.when(
-              setTimeout(function () {
-                wipe(key);
-              }, values['delay'] * 10)
-            )
-              .done(function () {
-                // Node wiped -> print a small green message
-                addMessage('success', values['name'] + ': ' + MESSAGES[78]);
-              })
-              .fail(function (message) {
-                // Cannot wiped
-                addMessage('danger', values['name'] + ': ' + message);
-              });
+        });
+      } else if (node_id != null) {
+        $.when(wipe(node_id))
+          .done(function () {
+            // Node wiped -> print a small green message
+            addMessage('success', nodes[node_id]['name'] + ': ' + MESSAGES[78]);
+          })
+          .fail(function (message) {
+            // Cannot wipe
+            addMessage('danger', nodes[node_id]['name'] + ': ' + message);
           });
-        }
-      })
-      .fail(function (message) {
-        addModalError(message);
-      });
-  }
-);
+      } else if (wipeAll) {
+        $.each(nodes, function (key, values) {
+          $.when(
+            setTimeout(function () {
+              wipe(key);
+            }, values['delay'] * 10)
+          )
+            .done(function () {
+              // Node wiped -> print a small green message
+              addMessage('success', values['name'] + ': ' + MESSAGES[78]);
+            })
+            .fail(function (message) {
+              // Cannot wiped
+              addMessage('danger', values['name'] + ': ' + message);
+            });
+        });
+      }
+    })
+    .fail(function (message) {
+      addModalError(message);
+    });
+});
 
 // Stop all nodes
 $(document).on('click', '.action-stopall', function (e) {
@@ -2736,9 +2642,7 @@ $(document).on('submit', '#form-folder-add, #form-folder-rename', function (e) {
   } else {
     logger(1, 'DEBUG: posting form-folder-rename form.');
     form_data['path'] =
-      form_data['path'] == '/'
-        ? '/' + form_data['name']
-        : form_data['path'] + '/' + form_data['name'];
+      form_data['path'] == '/' ? '/' + form_data['name'] : form_data['path'] + '/' + form_data['name'];
     var url = '/api/folders' + form_data['original'];
     var type = 'PUT';
   }
@@ -2760,15 +2664,7 @@ $(document).on('submit', '#form-folder-add, #form-folder-rename', function (e) {
         // Application error
         logger(
           1,
-          'DEBUG: application error (' +
-            data['status'] +
-            ') on ' +
-            type +
-            ' ' +
-            url +
-            ' (' +
-            data['message'] +
-            ').'
+          'DEBUG: application error (' + data['status'] + ') on ' + type + ' ' + url + ' (' + data['message'] + ').'
         );
         addModal(
           'ERROR',
@@ -2780,23 +2676,14 @@ $(document).on('submit', '#form-folder-add, #form-folder-rename', function (e) {
     error: function (data) {
       // Server error
       var message = getJsonMessage(data['responseText']);
-      logger(
-        1,
-        'DEBUG: server error (' +
-          data['status'] +
-          ') on ' +
-          type +
-          ' ' +
-          url +
-          '.'
-      );
+      logger(1, 'DEBUG: server error (' + data['status'] + ') on ' + type + ' ' + url + '.');
       logger(1, 'DEBUG: ' + message);
       addModal(
         'ERROR',
         '<p>' + message + '</p>',
         '<button type="button" class="btn btn-aqua" data-dismiss="modal">Close</button>'
       );
-    },
+    }
   });
   return false; // Stop to avoid POST
 });
@@ -2814,10 +2701,7 @@ $(document).on('submit', '#form-import', function (e) {
     form_data.append(
       $(this)
         .attr('name')
-        .substr(
-          form_name.length + 1,
-          $(this).attr('name').length - form_name.length - 2
-        ),
+        .substr(form_name.length + 1, $(this).attr('name').length - form_name.length - 2),
       $(this).val()
     );
   });
@@ -2845,15 +2729,7 @@ $(document).on('submit', '#form-import', function (e) {
         // Application error
         logger(
           1,
-          'DEBUG: application error (' +
-            data['status'] +
-            ') on ' +
-            type +
-            ' ' +
-            url +
-            ' (' +
-            data['message'] +
-            ').'
+          'DEBUG: application error (' + data['status'] + ') on ' + type + ' ' + url + ' (' + data['message'] + ').'
         );
         addModal(
           'ERROR',
@@ -2865,23 +2741,14 @@ $(document).on('submit', '#form-import', function (e) {
     error: function (data) {
       // Server error
       var message = getJsonMessage(data['responseText']);
-      logger(
-        1,
-        'DEBUG: server error (' +
-          data['status'] +
-          ') on ' +
-          type +
-          ' ' +
-          url +
-          '.'
-      );
+      logger(1, 'DEBUG: server error (' + data['status'] + ') on ' + type + ' ' + url + '.');
       logger(1, 'DEBUG: ' + message);
       addModal(
         'ERROR',
         '<p>' + message + '</p>',
         '<button type="button" class="btn btn-aqua" data-dismiss="modal">Close</button>'
       );
-    },
+    }
   });
   return false; // Stop to avoid POST
 });
@@ -2935,17 +2802,14 @@ $(document).on('submit', '#form-lab-add, #form-lab-edit', function (e) {
           logger(1, 'DEBUG: lab "' + form_data['name'] + '" renamed.');
           if ($('#lab-viewport').length) {
             $('#lab-viewport').attr({
-              'data-path':
-                dirname(form_data['path']) + '/' + form_data['name'] + '.unl',
+              'data-path': dirname(form_data['path']) + '/' + form_data['name'] + '.unl'
             });
             printLabTopology();
           } else {
             $.when(closeLab())
               .done(function () {
                 postLogin();
-                printLabPreview(
-                  dirname(form_data['path']) + '/' + form_data['name'] + '.unl'
-                );
+                printLabPreview(dirname(form_data['path']) + '/' + form_data['name'] + '.unl');
               })
               .fail(function (message) {
                 addModalError(message);
@@ -2958,15 +2822,7 @@ $(document).on('submit', '#form-lab-add, #form-lab-edit', function (e) {
         // Application error
         logger(
           1,
-          'DEBUG: application error (' +
-            data['status'] +
-            ') on ' +
-            type +
-            ' ' +
-            url +
-            ' (' +
-            data['message'] +
-            ').'
+          'DEBUG: application error (' + data['status'] + ') on ' + type + ' ' + url + ' (' + data['message'] + ').'
         );
         addModal(
           'ERROR',
@@ -2978,23 +2834,14 @@ $(document).on('submit', '#form-lab-add, #form-lab-edit', function (e) {
     error: function (data) {
       // Server error
       var message = getJsonMessage(data['responseText']);
-      logger(
-        1,
-        'DEBUG: server error (' +
-          data['status'] +
-          ') on ' +
-          type +
-          ' ' +
-          url +
-          '.'
-      );
+      logger(1, 'DEBUG: server error (' + data['status'] + ') on ' + type + ' ' + url + '.');
       logger(1, 'DEBUG: ' + message);
       addModal(
         'ERROR',
         '<p>' + message + '</p>',
         '<button type="button" class="btn btn-aqua" data-dismiss="modal">Close</button>'
       );
-    },
+    }
   });
   return false; // Stop to avoid POST
 });
@@ -3040,12 +2887,8 @@ $(document).on('submit', '#form-network-add, #form-network-edit', function (e) {
       success: function (data) {
         if (data['status'] == 'success') {
           logger(1, 'DEBUG: network "' + form_data['name'] + '" saved.');
-          $('.network' + form_data['id'] + ' td:nth-child(2)').text(
-            form_data['name']
-          );
-          $('.network' + form_data['id'] + ' td:nth-child(3)').text(
-            form_data['type']
-          );
+          $('.network' + form_data['id'] + ' td:nth-child(2)').text(form_data['name']);
+          $('.network' + form_data['id'] + ' td:nth-child(3)').text(form_data['type']);
 
           // Close the modal
           $('body').children('.modal').attr('skipRedraw', true);
@@ -3056,15 +2899,7 @@ $(document).on('submit', '#form-network-add, #form-network-edit', function (e) {
           // Application error
           logger(
             1,
-            'DEBUG: application error (' +
-              data['status'] +
-              ') on ' +
-              type +
-              ' ' +
-              url +
-              ' (' +
-              data['message'] +
-              ').'
+            'DEBUG: application error (' + data['status'] + ') on ' + type + ' ' + url + ' (' + data['message'] + ').'
           );
           addModal(
             'ERROR',
@@ -3076,23 +2911,14 @@ $(document).on('submit', '#form-network-add, #form-network-edit', function (e) {
       error: function (data) {
         // Server error
         var message = getJsonMessage(data['responseText']);
-        logger(
-          1,
-          'DEBUG: server error (' +
-            data['status'] +
-            ') on ' +
-            type +
-            ' ' +
-            url +
-            '.'
-        );
+        logger(1, 'DEBUG: server error (' + data['status'] + ') on ' + type + ' ' + url + '.');
         logger(1, 'DEBUG: ' + message);
         addModal(
           'ERROR',
           '<p>' + message + '</p>',
           '<button type="button" class="btn btn-aqua" data-dismiss="modal">Close</button>'
         );
-      },
+      }
     });
     promises.push(request);
   }
@@ -3130,15 +2956,7 @@ $(document).on('submit', '#form-node-connect', function (e) {
         // Application error
         logger(
           1,
-          'DEBUG: application error (' +
-            data['status'] +
-            ') on ' +
-            type +
-            ' ' +
-            url +
-            ' (' +
-            data['message'] +
-            ').'
+          'DEBUG: application error (' + data['status'] + ') on ' + type + ' ' + url + ' (' + data['message'] + ').'
         );
         addModal(
           'ERROR',
@@ -3150,23 +2968,14 @@ $(document).on('submit', '#form-node-connect', function (e) {
     error: function (data) {
       // Server error
       var message = getJsonMessage(data['responseText']);
-      logger(
-        1,
-        'DEBUG: server error (' +
-          data['status'] +
-          ') on ' +
-          type +
-          ' ' +
-          url +
-          '.'
-      );
+      logger(1, 'DEBUG: server error (' + data['status'] + ') on ' + type + ' ' + url + '.');
       logger(1, 'DEBUG: ' + message);
       addModal(
         'ERROR',
         '<p>' + message + '</p>',
         '<button type="button" class="btn btn-aqua" data-dismiss="modal">Close</button>'
       );
-    },
+    }
   });
 });
 
@@ -3217,98 +3026,48 @@ $(document).on('submit', '#form-node-add, #form-node-edit', function (e) {
           $('body').children('.modal.second-win').modal('hide');
           $('body').children('.modal.fade.in').focus();
           addMessage(data['status'], data['message']);
-          $('.modal .node' + form_data['id'] + ' td:nth-child(2)').text(
-            form_data['name']
-          );
-          $('.modal .node' + form_data['id'] + ' td:nth-child(3)').text(
-            form_data['template']
-          );
-          $('.modal .node' + form_data['id'] + ' td:nth-child(4)').text(
-            form_data['image']
-          );
-          $('.modal .node' + form_data['id'] + ' td:nth-child(5)').text(
-            form_data['cpu']
-          );
-          $('.modal .node' + form_data['id'] + ' td:nth-child(7)').text(
-            form_data['nvram']
-          );
-          $('.modal .node' + form_data['id'] + ' td:nth-child(8)').text(
-            form_data['ram']
-          );
-          $('.modal .node' + form_data['id'] + ' td:nth-child(9)').text(
-            form_data['ethernet']
-          );
-          $('.modal .node' + form_data['id'] + ' td:nth-child(10)').text(
-            form_data['serial']
-          );
-          $('.modal .node' + form_data['id'] + ' td:nth-child(11)').text(
-            form_data['console']
-          );
+          $('.modal .node' + form_data['id'] + ' td:nth-child(2)').text(form_data['name']);
+          $('.modal .node' + form_data['id'] + ' td:nth-child(3)').text(form_data['template']);
+          $('.modal .node' + form_data['id'] + ' td:nth-child(4)').text(form_data['image']);
+          $('.modal .node' + form_data['id'] + ' td:nth-child(5)').text(form_data['cpu']);
+          $('.modal .node' + form_data['id'] + ' td:nth-child(7)').text(form_data['nvram']);
+          $('.modal .node' + form_data['id'] + ' td:nth-child(8)').text(form_data['ram']);
+          $('.modal .node' + form_data['id'] + ' td:nth-child(9)').text(form_data['ethernet']);
+          $('.modal .node' + form_data['id'] + ' td:nth-child(10)').text(form_data['serial']);
+          $('.modal .node' + form_data['id'] + ' td:nth-child(11)').text(form_data['console']);
 
           $('#node' + form_data['id'] + ' .node_name').html(
-            '<i class="node' +
-              form_data['id'] +
-              '_status glyphicon glyphicon-stop"></i>' +
-              form_data['name']
+            '<i class="node' + form_data['id'] + '_status glyphicon glyphicon-stop"></i>' + form_data['name']
           );
-          $('#node' + form_data['id'] + ' a img').attr(
-            'src',
-            '/images/icons/' + form_data['icon']
-          );
+          $('#node' + form_data['id'] + ' a img').attr('src', '/images/icons/' + form_data['icon']);
 
-          $(
-            "#form-node-edit-table input[name='node[name]'][data-path='" +
-              form_data['id'] +
-              "']"
-          ).val(form_data['name']);
-          $(
-            "#form-node-edit-table select[name='node[image]'][data-path='" +
-              form_data['id'] +
-              "']"
-          ).val(form_data['image']);
-          $(
-            "#form-node-edit-table input[name='node[cpu]'][data-path='" +
-              form_data['id'] +
-              "']"
-          ).val(form_data['cpu']);
-          $(
-            "#form-node-edit-table input[name='node[nvram]'][data-path='" +
-              form_data['id'] +
-              "']"
-          ).val(form_data['nvram']);
-          $(
-            "#form-node-edit-table input[name='node[serial]'][data-path='" +
-              form_data['id'] +
-              "']"
-          ).val(form_data['serial']);
-          $(
-            "#form-node-edit-table input[name='node[ethernet]'][data-path='" +
-              form_data['id'] +
-              "']"
-          ).val(form_data['ethernet']);
-          $(
-            "#form-node-edit-table select[name='node[console]'][data-path='" +
-              form_data['id'] +
-              "']"
-          ).val(form_data['console']);
-          $(
-            "#form-node-edit-table select[name='node[icon]'][data-path='" +
-              form_data['id'] +
-              "']"
-          ).val(form_data['icon']);
+          $("#form-node-edit-table input[name='node[name]'][data-path='" + form_data['id'] + "']").val(
+            form_data['name']
+          );
+          $("#form-node-edit-table select[name='node[image]'][data-path='" + form_data['id'] + "']").val(
+            form_data['image']
+          );
+          $("#form-node-edit-table input[name='node[cpu]'][data-path='" + form_data['id'] + "']").val(form_data['cpu']);
+          $("#form-node-edit-table input[name='node[nvram]'][data-path='" + form_data['id'] + "']").val(
+            form_data['nvram']
+          );
+          $("#form-node-edit-table input[name='node[serial]'][data-path='" + form_data['id'] + "']").val(
+            form_data['serial']
+          );
+          $("#form-node-edit-table input[name='node[ethernet]'][data-path='" + form_data['id'] + "']").val(
+            form_data['ethernet']
+          );
+          $("#form-node-edit-table select[name='node[console]'][data-path='" + form_data['id'] + "']").val(
+            form_data['console']
+          );
+          $("#form-node-edit-table select[name='node[icon]'][data-path='" + form_data['id'] + "']").val(
+            form_data['icon']
+          );
         } else {
           // Application error
           logger(
             1,
-            'DEBUG: application error (' +
-              data['status'] +
-              ') on ' +
-              type +
-              ' ' +
-              url +
-              ' (' +
-              data['message'] +
-              ').'
+            'DEBUG: application error (' + data['status'] + ') on ' + type + ' ' + url + ' (' + data['message'] + ').'
           );
           addModal(
             'ERROR',
@@ -3320,23 +3079,14 @@ $(document).on('submit', '#form-node-add, #form-node-edit', function (e) {
       error: function (data) {
         // Server error
         var message = getJsonMessage(data['responseText']);
-        logger(
-          1,
-          'DEBUG: server error (' +
-            data['status'] +
-            ') on ' +
-            type +
-            ' ' +
-            url +
-            '.'
-        );
+        logger(1, 'DEBUG: server error (' + data['status'] + ') on ' + type + ' ' + url + '.');
         logger(1, 'DEBUG: ' + message);
         addModal(
           'ERROR',
           '<p>' + message + '</p>',
           '<button type="button" class="btn btn-aqua" data-dismiss="modal">Close</button>'
         );
-      },
+      }
     });
     promises.push(request);
   }
@@ -3404,15 +3154,7 @@ $(document).on('submit', '#form-login', function (e) {
         // Application error
         logger(
           1,
-          'DEBUG: application error (' +
-            data['status'] +
-            ') on ' +
-            type +
-            ' ' +
-            url +
-            ' (' +
-            data['message'] +
-            ').'
+          'DEBUG: application error (' + data['status'] + ') on ' + type + ' ' + url + ' (' + data['message'] + ').'
         );
         addModal(
           'ERROR',
@@ -3424,23 +3166,14 @@ $(document).on('submit', '#form-login', function (e) {
     error: function (data) {
       // Server error
       var message = getJsonMessage(data['responseText']);
-      logger(
-        1,
-        'DEBUG: server error (' +
-          data['status'] +
-          ') on ' +
-          type +
-          ' ' +
-          url +
-          '.'
-      );
+      logger(1, 'DEBUG: server error (' + data['status'] + ') on ' + type + ' ' + url + '.');
       logger(1, 'DEBUG: ' + message);
       addModal(
         'ERROR',
         '<p>' + message + '</p>',
         '<button type="button" class="btn btn-aqua" data-dismiss="modal">Close</button>'
       );
-    },
+    }
   });
   return false; // Stop to avoid POST
 });
@@ -3453,16 +3186,12 @@ $(document).on('submit', '#form-user-add, #form-user-edit', function (e) {
   if (form_data['expiration'] == '') {
     form_data['expiration'] = -1;
   } else {
-    form_data['expiration'] = Math.floor(
-      $.datepicker.formatDate('@', new Date(form_data['expiration'])) / 1000
-    );
+    form_data['expiration'] = Math.floor($.datepicker.formatDate('@', new Date(form_data['expiration'])) / 1000);
   }
   if (form_data['pexpiration'] == '') {
     form_data['pexpiration'] = -1;
   } else {
-    form_data['pexpiration'] = Math.floor(
-      $.datepicker.formatDate('@', new Date(form_data['pexpiration'])) / 1000
-    );
+    form_data['pexpiration'] = Math.floor($.datepicker.formatDate('@', new Date(form_data['pexpiration'])) / 1000);
   }
   if (form_data['pod'] == '') {
     form_data['pod'] = -1;
@@ -3496,15 +3225,7 @@ $(document).on('submit', '#form-user-add, #form-user-edit', function (e) {
         // Application error
         logger(
           1,
-          'DEBUG: application error (' +
-            data['status'] +
-            ') on ' +
-            type +
-            ' ' +
-            url +
-            ' (' +
-            data['message'] +
-            ').'
+          'DEBUG: application error (' + data['status'] + ') on ' + type + ' ' + url + ' (' + data['message'] + ').'
         );
         addModal(
           'ERROR',
@@ -3516,23 +3237,14 @@ $(document).on('submit', '#form-user-add, #form-user-edit', function (e) {
     error: function (data) {
       // Server error
       var message = getJsonMessage(data['responseText']);
-      logger(
-        1,
-        'DEBUG: server error (' +
-          data['status'] +
-          ') on ' +
-          type +
-          ' ' +
-          url +
-          '.'
-      );
+      logger(1, 'DEBUG: server error (' + data['status'] + ') on ' + type + ' ' + url + '.');
       logger(1, 'DEBUG: ' + message);
       addModal(
         'ERROR',
         '<p>' + message + '</p>',
         '<button type="button" class="btn btn-aqua" data-dismiss="modal">Close</button>'
       );
-    },
+    }
   });
   return false; // Stop to avoid POST
 });
@@ -3566,13 +3278,8 @@ $('body').on('submit', '#form-picture-edit', function (e) {
         // Fetching ok
         addMessage('SUCCESS', 'Picture "' + form_data['name'] + '" saved.');
         printPictureInForm(picture_id);
-        $('ul.map a.action-pictureget[data-path="' + picture_id + '"]').attr(
-          'title',
-          form_data['name']
-        );
-        $('ul.map a.action-pictureget[data-path="' + picture_id + '"]').text(
-          form_data['name'].split(' ')[0]
-        );
+        $('ul.map a.action-pictureget[data-path="' + picture_id + '"]').attr('title', form_data['name']);
+        $('ul.map a.action-pictureget[data-path="' + picture_id + '"]').text(form_data['name'].split(' ')[0]);
         $('body').children('.modal.second-win').modal('hide');
         // Picture saved  -> reopen this page (not reload, or will be posted twice)
         // window.location.href = '/lab_edit.php' + window.location.search;
@@ -3583,7 +3290,7 @@ $('body').on('submit', '#form-picture-edit', function (e) {
     },
     error: function (data) {
       addMessage('DANGER', getJsonMessage(data['responseText']));
-    },
+    }
   });
 
   // Hide and delete the modal (or will be posted twice)
@@ -3635,36 +3342,21 @@ $('body').on('submit', '.custom-shape-form', function (e) {
     customShape_id = '',
     generateName = false;
   shape_options['id'] = new Date().getTime();
-  shape_options['shape_type'] = $(
-    '.custom-shape-form .shape-type-select'
-  ).val();
+  shape_options['shape_type'] = $('.custom-shape-form .shape-type-select').val();
   // shape_options['shape_name'] = $('.custom-shape-form .shape_name').val();
   if (!$('.custom-shape-form .shape_name').val()) {
     generateName = true;
-    shape_options['shape_name'] =
-      $('.custom-shape-form .shape-type-select').val() + customShape_id;
+    shape_options['shape_name'] = $('.custom-shape-form .shape-type-select').val() + customShape_id;
   } else {
     shape_options['shape_name'] = $('.custom-shape-form .shape_name').val();
   }
-  shape_options['shape_border_type'] = $(
-    '.custom-shape-form .border-type-select'
-  ).val();
-  shape_options['shape_border_color'] = $(
-    '.custom-shape-form .shape_border_color'
-  ).val();
-  shape_options['shape_background_color'] = $(
-    '.custom-shape-form .shape_background_color'
-  ).val();
+  shape_options['shape_border_type'] = $('.custom-shape-form .border-type-select').val();
+  shape_options['shape_border_color'] = $('.custom-shape-form .shape_border_color').val();
+  shape_options['shape_background_color'] = $('.custom-shape-form .shape_background_color').val();
   shape_options['shape_width/height'] = 120;
-  shape_options['shape_border_width'] = $(
-    '.custom-shape-form .shape_border_width'
-  ).val();
-  shape_options['shape_left_coordinate'] = $(
-    '.custom-shape-form .left-coordinate'
-  ).val();
-  shape_options['shape_top_coordinate'] = $(
-    '.custom-shape-form .top-coordinate'
-  ).val();
+  shape_options['shape_border_width'] = $('.custom-shape-form .shape_border_width').val();
+  shape_options['shape_left_coordinate'] = $('.custom-shape-form .left-coordinate').val();
+  shape_options['shape_top_coordinate'] = $('.custom-shape-form .top-coordinate').val();
 
   coordinates =
     'position:absolute;left:' +
@@ -3674,12 +3366,7 @@ $('body').on('submit', '.custom-shape-form', function (e) {
     'px;';
 
   if (shape_options['shape_border_type'] == 'dashed') {
-    dashed =
-      ' stroke-dasharray = "' +
-      dash_line_length +
-      ',' +
-      dash_spase_length +
-      '" ';
+    dashed = ' stroke-dasharray = "' + dash_line_length + ',' + dash_spase_length + '" ';
   } else {
     dashed = '';
   }
@@ -3727,9 +3414,7 @@ $('body').on('submit', '.custom-shape-form', function (e) {
       '</svg>' +
       '</div>';
   } else if (shape_options['shape_type'] == 'circle') {
-    radius =
-      shape_options['shape_width/height'] / 2 -
-      shape_options['shape_border_width'] / 2;
+    radius = shape_options['shape_width/height'] / 2 - shape_options['shape_border_width'] / 2;
 
     shape_html =
       '<div id="customShape' +
@@ -3797,14 +3482,14 @@ $('body').on('submit', '.custom-shape-form', function (e) {
       var $added_shape = $('#customShape' + shape_options['id']);
       $added_shape
         .draggable({
-          stop: textObjectDragStop,
+          stop: textObjectDragStop
         })
         .resizable({
           autoHide: true,
           resize: function (event, ui) {
             textObjectResize(event, ui, shape_options);
           },
-          stop: textObjectDragStop,
+          stop: textObjectDragStop
         });
 
       getTextObjects()
@@ -3816,9 +3501,7 @@ $('body').on('submit', '.custom-shape-form', function (e) {
             : shape_options['shape_name'];
           $added_shape.attr('name', nameObj);
           $added_shape.attr('data-path', textObjData.id);
-          var new_data = document.getElementById(
-            $added_shape.attr('id')
-          ).outerHTML;
+          var new_data = document.getElementById($added_shape.attr('id')).outerHTML;
 
           editTextObject(textObjData.id, { data: new_data, name: nameObj })
             .done(function () {
@@ -3858,25 +3541,15 @@ $('body').on('submit', '.add-text-form', function (e) {
     customShape_id = '',
     form_data = {};
   text_options['id'] = new Date().getTime();
-  text_options['text_left_coordinate'] = $(
-    '.add-text-form .left-coordinate'
-  ).val();
-  text_options['text_top_coordinate'] = $(
-    '.add-text-form .top-coordinate'
-  ).val();
-  text_options['text'] = $('.add-text-form .main-text')
-    .val()
-    .replace(/\n/g, '<br>');
+  text_options['text_left_coordinate'] = $('.add-text-form .left-coordinate').val();
+  text_options['text_top_coordinate'] = $('.add-text-form .top-coordinate').val();
+  text_options['text'] = $('.add-text-form .main-text').val().replace(/\n/g, '<br>');
   text_options['alignment'] = 'center';
   text_options['vertical-alignment'] = 'top';
   text_options['color'] = $('.add-text-form .text_font_color').val();
-  text_options['background-color'] = $(
-    '.add-text-form .text_background_color'
-  ).val();
+  text_options['background-color'] = $('.add-text-form .text_background_color').val();
   text_options['text-size'] = $('.add-text-form .text_font_size').val();
-  text_options['text-style'] = $(
-    '.add-text-form .text-font-style-select'
-  ).val();
+  text_options['text-style'] = $('.add-text-form .text-font-style-select').val();
 
   if (text_options['text-style'] == 'normal') {
     text_style = 'font-weight: normal;';
@@ -3938,14 +3611,14 @@ $('body').on('submit', '.add-text-form', function (e) {
       var $added_shape = $('#customText' + text_options['id']);
       $added_shape
         .draggable({
-          stop: textObjectDragStop,
+          stop: textObjectDragStop
         })
         .resizable({
           autoHide: true,
           resize: function (event, ui) {
             textObjectResize(event, ui, text_options);
           },
-          stop: textObjectDragStop,
+          stop: textObjectDragStop
         });
 
       getTextObjects()
@@ -4011,16 +3684,16 @@ $('body').on('click', '.action-textobjectduplicate', function (e) {
 
     $selected_shape
       .draggable({
-        stop: textObjectDragStop,
+        stop: textObjectDragStop
       })
       .resizable({
         autoHide: true,
         resize: function (event, ui) {
           textObjectResize(event, ui, {
-            shape_border_width: shape_border_width,
+            shape_border_width: shape_border_width
           });
         },
-        stop: textObjectDragStop,
+        stop: textObjectDragStop
       });
 
     getTextObjects()
@@ -4037,15 +3710,10 @@ $('body').on('click', '.action-textobjectduplicate', function (e) {
           }
         }
 
-        $duplicated_shape.css(
-          'top',
-          parseInt($selected_shape.css('top')) +
-            parseInt($selected_shape.css('width')) / 2
-        );
+        $duplicated_shape.css('top', parseInt($selected_shape.css('top')) + parseInt($selected_shape.css('width')) / 2);
         $duplicated_shape.css(
           'left',
-          parseInt($selected_shape.css('left')) +
-            parseInt($selected_shape.css('height')) / 2
+          parseInt($selected_shape.css('left')) + parseInt($selected_shape.css('height')) / 2
         );
         $duplicated_shape.attr('id', 'customShape' + new_id);
         $duplicated_shape.attr('data-path', new_id);
@@ -4061,16 +3729,16 @@ $('body').on('click', '.action-textobjectduplicate', function (e) {
 
             $('#customShape' + new_id)
               .draggable({
-                stop: textObjectDragStop,
+                stop: textObjectDragStop
               })
               .resizable({
                 autoHide: true,
                 resize: function (event, ui) {
                   textObjectResize(event, ui, {
-                    shape_border_width: shape_border_width,
+                    shape_border_width: shape_border_width
                   });
                 },
-                stop: textObjectDragStop,
+                stop: textObjectDragStop
               });
             addMessage('SUCCESS', 'Lab has been saved (60023).');
           })
@@ -4089,16 +3757,16 @@ $('body').on('click', '.action-textobjectduplicate', function (e) {
 
     $selected_shape
       .draggable({
-        stop: textObjectDragStop,
+        stop: textObjectDragStop
       })
       .resizable({
         autoHide: true,
         resize: function (event, ui) {
           textObjectResize(event, ui, {
-            shape_border_width: shape_border_width,
+            shape_border_width: shape_border_width
           });
         },
-        stop: textObjectDragStop,
+        stop: textObjectDragStop
       });
 
     getTextObjects()
@@ -4115,15 +3783,10 @@ $('body').on('click', '.action-textobjectduplicate', function (e) {
           }
         }
 
-        $duplicated_shape.css(
-          'top',
-          parseInt($selected_shape.css('top')) +
-            parseInt($selected_shape.css('width')) / 2
-        );
+        $duplicated_shape.css('top', parseInt($selected_shape.css('top')) + parseInt($selected_shape.css('width')) / 2);
         $duplicated_shape.css(
           'left',
-          parseInt($selected_shape.css('left')) +
-            parseInt($selected_shape.css('height')) / 2
+          parseInt($selected_shape.css('left')) + parseInt($selected_shape.css('height')) / 2
         );
         $duplicated_shape.attr('id', 'customText' + new_id);
         $duplicated_shape.attr('data-path', new_id);
@@ -4139,16 +3802,16 @@ $('body').on('click', '.action-textobjectduplicate', function (e) {
 
             $('#customText' + new_id)
               .draggable({
-                stop: textObjectDragStop,
+                stop: textObjectDragStop
               })
               .resizable({
                 autoHide: true,
                 resize: function (event, ui) {
                   textObjectResize(event, ui, {
-                    shape_border_width: shape_border_width,
+                    shape_border_width: shape_border_width
                   });
                 },
-                stop: textObjectDragStop,
+                stop: textObjectDragStop
               });
             addMessage('SUCCESS', 'Lab has been saved (60023).');
           })
@@ -4185,7 +3848,7 @@ $('body').on('click', '.action-textobjecttoback', function (e) {
       resize: function (event, ui) {
         textObjectResize(event, ui, { shape_border_width: shape_border_width });
       },
-      stop: textObjectDragStop,
+      stop: textObjectDragStop
     });
   } else if ($('#customText' + id).length) {
     $selected_shape = $('#customText' + id);
@@ -4198,7 +3861,7 @@ $('body').on('click', '.action-textobjecttoback', function (e) {
       resize: function (event, ui) {
         textObjectResize(event, ui, { shape_border_width: 5 });
       },
-      stop: textObjectDragStop,
+      stop: textObjectDragStop
     });
   }
   editTextObject(id, { data: new_data })
@@ -4232,7 +3895,7 @@ $('body').on('click', '.action-textobjecttofront', function (e) {
       resize: function (event, ui) {
         textObjectResize(event, ui, { shape_border_width: shape_border_width });
       },
-      stop: textObjectDragStop,
+      stop: textObjectDragStop
     });
   } else if ($('#customText' + id).length) {
     $selected_shape = $('#customText' + id);
@@ -4245,7 +3908,7 @@ $('body').on('click', '.action-textobjecttofront', function (e) {
       resize: function (event, ui) {
         textObjectResize(event, ui, { shape_border_width: 5 });
       },
-      stop: textObjectDragStop,
+      stop: textObjectDragStop
     });
     $('#context-menu').remove();
   }
@@ -4292,14 +3955,10 @@ $('body').on('click', '.action-textobjectdelete', function (e) {
     });
 });
 
-$('body').on(
-  'contextmenu',
-  '.edit-custom-shape-form, .edit-custom-text-form, #context-menu',
-  function (e) {
-    e.preventDefault();
-    e.stopPropagation();
-  }
-);
+$('body').on('contextmenu', '.edit-custom-shape-form, .edit-custom-text-form, #context-menu', function (e) {
+  e.preventDefault();
+  e.stopPropagation();
+});
 
 /*******************************************************************************
  * Text Edit Form
@@ -4377,88 +4036,50 @@ $('body').on('click', '.edit-custom-text-form .btn-text-bold', function (e) {
   }
 });
 
-$('body').on(
-  'change',
-  '.edit-custom-text-form .text-z_index-input',
-  function (e) {
-    logger(1, 'DEBUG: action = action-change text z-index');
-    var id = $(this).attr('data-path');
-    $('#customText' + id).css(
-      'z-index',
-      parseInt($('.edit-custom-text-form .text-z_index-input').val()) + 1000
-    );
-  }
-);
+$('body').on('change', '.edit-custom-text-form .text-z_index-input', function (e) {
+  logger(1, 'DEBUG: action = action-change text z-index');
+  var id = $(this).attr('data-path');
+  $('#customText' + id).css('z-index', parseInt($('.edit-custom-text-form .text-z_index-input').val()) + 1000);
+});
 
-$('body').on(
-  'change',
-  '.edit-custom-text-form .text_background_color',
-  function (e) {
-    logger(1, 'DEBUG: action = action-change text background color');
-    var id = $(this).attr('data-path');
-    $('.edit-custom-text-form .text_background_transparent')
-      .removeClass('active  btn-success')
-      .text('Off');
+$('body').on('change', '.edit-custom-text-form .text_background_color', function (e) {
+  logger(1, 'DEBUG: action = action-change text background color');
+  var id = $(this).attr('data-path');
+  $('.edit-custom-text-form .text_background_transparent').removeClass('active  btn-success').text('Off');
+  $('#customText' + id + ' p').css('background-color', $('.edit-custom-text-form .text_background_color').val());
+});
+
+$('body').on('click', '.edit-custom-text-form .text_background_transparent', function (e) {
+  logger(1, 'DEBUG: action = action-change text background color');
+  var id = $(this).attr('data-path');
+
+  if ($('.edit-custom-text-form .text_background_transparent').hasClass('active')) {
+    $('.edit-custom-text-form .text_background_transparent').removeClass('active  btn-success').text('Off');
+    $('#customText' + id + ' p').css('background-color', $('.edit-custom-text-form .text_background_color').val());
+  } else {
+    $('.edit-custom-text-form .text_background_transparent').addClass('active  btn-success').text('On');
     $('#customText' + id + ' p').css(
       'background-color',
-      $('.edit-custom-text-form .text_background_color').val()
+      hex2rgb($('.edit-custom-text-form .text_background_color').val(), 0)
     );
   }
-);
-
-$('body').on(
-  'click',
-  '.edit-custom-text-form .text_background_transparent',
-  function (e) {
-    logger(1, 'DEBUG: action = action-change text background color');
-    var id = $(this).attr('data-path');
-
-    if (
-      $('.edit-custom-text-form .text_background_transparent').hasClass(
-        'active'
-      )
-    ) {
-      $('.edit-custom-text-form .text_background_transparent')
-        .removeClass('active  btn-success')
-        .text('Off');
-      $('#customText' + id + ' p').css(
-        'background-color',
-        $('.edit-custom-text-form .text_background_color').val()
-      );
-    } else {
-      $('.edit-custom-text-form .text_background_transparent')
-        .addClass('active  btn-success')
-        .text('On');
-      $('#customText' + id + ' p').css(
-        'background-color',
-        hex2rgb($('.edit-custom-text-form .text_background_color').val(), 0)
-      );
-    }
-  }
-);
+});
 
 $('body').on('change', '.edit-custom-text-form .text_color', function (e) {
   logger(1, 'DEBUG: action = action-change text color');
   var id = $(this).attr('data-path');
-  $('#customText' + id + ' p').css(
-    'color',
-    $('.edit-custom-text-form .text_color').val()
-  );
+  $('#customText' + id + ' p').css('color', $('.edit-custom-text-form .text_color').val());
 });
 
-$('body').on(
-  'change',
-  '.edit-custom-text-form .text-rotation-input',
-  function (e) {
-    logger(1, 'DEBUG: action = action-rotate shape');
-    var id = $(this).attr('data-path'),
-      angle = parseInt(this.value);
+$('body').on('change', '.edit-custom-text-form .text-rotation-input', function (e) {
+  logger(1, 'DEBUG: action = action-rotate shape');
+  var id = $(this).attr('data-path'),
+    angle = parseInt(this.value);
 
-    $('#customText' + id).css('-ms-transform', 'rotate(' + angle + 'deg)');
-    $('#customText' + id).css('-webkit-transform', 'rotate(' + angle + 'deg)');
-    $('#customText' + id).css('transform', 'rotate(' + angle + 'deg)');
-  }
-);
+  $('#customText' + id).css('-ms-transform', 'rotate(' + angle + 'deg)');
+  $('#customText' + id).css('-webkit-transform', 'rotate(' + angle + 'deg)');
+  $('#customText' + id).css('transform', 'rotate(' + angle + 'deg)');
+});
 
 $('body').on('click', '.edit-custom-text-form .cancelForm', function (e) {
   logger(1, 'DEBUG: action = action-return old text values');
@@ -4466,10 +4087,7 @@ $('body').on('click', '.edit-custom-text-form .cancelForm', function (e) {
     angle = $('.edit-custom-text-form .firstTextValues-rotation').val();
 
   //Return z-index value
-  $('#customText' + id).css(
-    'z-index',
-    parseInt($('.edit-custom-text-form .firstTextValues-z_index').val())
-  );
+  $('#customText' + id).css('z-index', parseInt($('.edit-custom-text-form .firstTextValues-z_index').val()));
 
   // Return alignment value
   $('.edit-custom-text-form .btn-align-left').removeClass('active');
@@ -4478,13 +4096,9 @@ $('body').on('click', '.edit-custom-text-form .cancelForm', function (e) {
 
   if ($('.edit-custom-text-form .firstTextValues-align').val() == 'left') {
     $('#customText' + id + ' p').attr('align', 'left');
-  } else if (
-    $('.edit-custom-text-form .firstTextValues-align').val() == 'center'
-  ) {
+  } else if ($('.edit-custom-text-form .firstTextValues-align').val() == 'center') {
     $('#customText' + id + ' p').attr('align', 'center');
-  } else if (
-    $('.edit-custom-text-form .firstTextValues-align').val() == 'right'
-  ) {
+  } else if ($('.edit-custom-text-form .firstTextValues-align').val() == 'right') {
     $('#customText' + id + ' p').attr('align', 'right');
   }
 
@@ -4499,10 +4113,7 @@ $('body').on('click', '.edit-custom-text-form .cancelForm', function (e) {
   }
 
   // Return text color value
-  $('#customText' + id + ' p').css(
-    'color',
-    $('.edit-custom-text-form .firstTextValues-color').val()
-  );
+  $('#customText' + id + ' p').css('color', $('.edit-custom-text-form .firstTextValues-color').val());
 
   // Return background color value
   $('#customText' + id + ' p').css(
@@ -4535,7 +4146,7 @@ $('body').on('click', '.edit-custom-text-form-save', function (e) {
     resize: function (event, ui) {
       textObjectResize(event, ui, { shape_border_width: 5 });
     },
-    stop: textObjectDragStop,
+    stop: textObjectDragStop
   });
 
   editTextObject(id, { data: new_data })
@@ -4559,18 +4170,13 @@ $(document).on('dblclick', '.customText', function (e) {
     console.warn(e);
   }
 
-  $selectedCustomText
-    .attr('contenteditable', 'true')
-    .focus()
-    .addClass('editable');
+  $selectedCustomText.attr('contenteditable', 'true').focus().addClass('editable');
 });
 
 $(document).on('paste', '[contenteditable="true"]', function (e) {
   e.preventDefault();
   var text = null;
-  text =
-    (e.originalEvent || e).clipboardData.getData('text/plain') ||
-    prompt('Paste Your Text Here');
+  text = (e.originalEvent || e).clipboardData.getData('text/plain') || prompt('Paste Your Text Here');
   document.execCommand('insertText', false, text);
 });
 
@@ -4598,18 +4204,10 @@ $(document).on('focusout', '.editable', function (e) {
   textLines = $('br', $selected_shape).size();
   if (textLines) {
     // multilines text
-    $selected_shape.css(
-      'height',
-      parseFloat($('p', $selected_shape).css('font-size')) *
-        (textLines * 1.5 + 1) +
-        'px'
-    );
+    $selected_shape.css('height', parseFloat($('p', $selected_shape).css('font-size')) * (textLines * 1.5 + 1) + 'px');
   } else {
     // 1 line text
-    $selected_shape.css(
-      'height',
-      parseFloat($('p', $selected_shape).css('font-size')) * 2 + 'px'
-    );
+    $selected_shape.css('height', parseFloat($('p', $selected_shape).css('font-size')) * 2 + 'px');
   }
   $selected_shape.css('width', 'auto');
 
@@ -4624,14 +4222,14 @@ $(document).on('focusout', '.editable', function (e) {
 
   $selected_shape
     .draggable({
-      stop: textObjectDragStop,
+      stop: textObjectDragStop
     })
     .resizable({
       autoHide: true,
       resize: function (event, ui) {
         textObjectResize(event, ui, { shape_border_width: 5 });
       },
-      stop: textObjectDragStop,
+      stop: textObjectDragStop
     });
 });
 
@@ -4642,10 +4240,7 @@ $(document).on('keydown', '.editable', function (e) {
     function brQuantity() {
       if (
         parseInt(editableText.text().length) <=
-        getCharacterOffsetWithin(
-          window.getSelection().getRangeAt(0),
-          document.getElementsByClassName('editable')[0]
-        )
+        getCharacterOffsetWithin(window.getSelection().getRangeAt(0), document.getElementsByClassName('editable')[0])
       ) {
         return '<br><br>';
       } else {
@@ -4693,10 +4288,7 @@ $('body').on('click', '.edit-custom-shape-form .cancelForm', function (e) {
     angle = $('.edit-custom-shape-form .firstShapeValues-rotation').val();
 
   //Return z-index value
-  $('#customShape' + id).css(
-    'z-index',
-    parseInt($('.edit-custom-shape-form .firstShapeValues-z_index').val())
-  );
+  $('#customShape' + id).css('z-index', parseInt($('.edit-custom-shape-form .firstShapeValues-z_index').val()));
 
   //Return border width value
   if (
@@ -4706,29 +4298,19 @@ $('body').on('click', '.edit-custom-shape-form .cancelForm', function (e) {
   ) {
     $('#customShape' + id + ' svg')
       .children()
-      .attr(
-        'stroke-width',
-        $('.edit-custom-shape-form .firstShapeValues-border-width').val() / 2
-      );
+      .attr('stroke-width', $('.edit-custom-shape-form .firstShapeValues-border-width').val() / 2);
   } else {
     $('#customShape' + id + ' svg')
       .children()
-      .attr(
-        'stroke-width',
-        $('.edit-custom-shape-form .firstShapeValues-border-width').val()
-      );
+      .attr('stroke-width', $('.edit-custom-shape-form .firstShapeValues-border-width').val());
   }
 
   //Return border type value
-  if (
-    $('.edit-custom-shape-form .firstShapeValues-border-type').val() == 'solid'
-  ) {
+  if ($('.edit-custom-shape-form .firstShapeValues-border-type').val() == 'solid') {
     $('#customShape' + id + ' svg')
       .children()
       .removeAttr('stroke-dasharray');
-  } else if (
-    $('.edit-custom-shape-form .firstShapeValues-border-type').val() == 'dashed'
-  ) {
+  } else if ($('.edit-custom-shape-form .firstShapeValues-border-type').val() == 'dashed') {
     if (
       !$('#customShape' + id + ' svg')
         .children()
@@ -4743,18 +4325,12 @@ $('body').on('click', '.edit-custom-shape-form .cancelForm', function (e) {
   //Return border color value
   $('#customShape' + id + ' svg')
     .children()
-    .attr(
-      'stroke',
-      $('.edit-custom-shape-form .firstShapeValues-border-color').val()
-    );
+    .attr('stroke', $('.edit-custom-shape-form .firstShapeValues-border-color').val());
 
   //Return background color value
   $('#customShape' + id + ' svg')
     .children()
-    .attr(
-      'fill',
-      $('.edit-custom-shape-form .firstShapeValues-background-color').val()
-    );
+    .attr('fill', $('.edit-custom-shape-form .firstShapeValues-background-color').val());
 
   //Return rotation angle
   $('#customShape' + id).css('-ms-transform', 'rotate(' + angle + 'deg)');
@@ -4766,156 +4342,101 @@ $('body').on('click', '.edit-custom-shape-form .cancelForm', function (e) {
   $('.edit-custom-shape-form').remove();
 });
 
-$('body').on(
-  'change',
-  '.edit-custom-shape-form .shape-z_index-input',
-  function (e) {
-    logger(1, 'DEBUG: action = action-change shape z-index');
-    var id = $(this).attr('data-path');
-    $('#customShape' + id).css(
-      'z-index',
-      parseInt($('.edit-custom-shape-form .shape-z_index-input').val()) + 1000
-    );
+$('body').on('change', '.edit-custom-shape-form .shape-z_index-input', function (e) {
+  logger(1, 'DEBUG: action = action-change shape z-index');
+  var id = $(this).attr('data-path');
+  $('#customShape' + id).css('z-index', parseInt($('.edit-custom-shape-form .shape-z_index-input').val()) + 1000);
+});
+
+$('body').on('change', '.edit-custom-shape-form .shape_border_width', function (e) {
+  logger(1, 'DEBUG: action = action-change shape border width');
+  var id = $(this).attr('data-path');
+
+  if (
+    $('#customShape' + id + ' svg')
+      .children()
+      .attr('cx')
+  ) {
+    $('#customShape' + id + ' svg')
+      .children()
+      .attr('stroke-width', $('.edit-custom-shape-form .shape_border_width').val() / 2);
+  } else {
+    $('#customShape' + id + ' svg')
+      .children()
+      .attr('stroke-width', $('.edit-custom-shape-form .shape_border_width').val());
   }
-);
+});
 
-$('body').on(
-  'change',
-  '.edit-custom-shape-form .shape_border_width',
-  function (e) {
-    logger(1, 'DEBUG: action = action-change shape border width');
-    var id = $(this).attr('data-path');
+$('body').on('change', '.edit-custom-shape-form .border-type-select', function (e) {
+  logger(1, 'DEBUG: action = action-change shape border type');
+  var id = $(this).attr('data-path');
 
+  if ($('.edit-custom-shape-form .border-type-select').val() == 'solid') {
     if (
       $('#customShape' + id + ' svg')
         .children()
-        .attr('cx')
+        .attr('stroke-dasharray')
     ) {
       $('#customShape' + id + ' svg')
         .children()
-        .attr(
-          'stroke-width',
-          $('.edit-custom-shape-form .shape_border_width').val() / 2
-        );
-    } else {
+        .removeAttr('stroke-dasharray');
+    }
+  } else if ($('.edit-custom-shape-form .border-type-select').val() == 'dashed') {
+    if (
+      !$('#customShape' + id + ' svg')
+        .children()
+        .attr('stroke-dasharray')
+    ) {
       $('#customShape' + id + ' svg')
         .children()
-        .attr(
-          'stroke-width',
-          $('.edit-custom-shape-form .shape_border_width').val()
-        );
+        .attr('stroke-dasharray', '10,10');
     }
   }
-);
+});
 
-$('body').on(
-  'change',
-  '.edit-custom-shape-form .border-type-select',
-  function (e) {
-    logger(1, 'DEBUG: action = action-change shape border type');
-    var id = $(this).attr('data-path');
+$('body').on('change', '.edit-custom-shape-form .shape_background_color', function (e) {
+  logger(1, 'DEBUG: action = action-change shape background color');
+  var id = $(this).attr('data-path');
+  $('#customShape' + id + ' svg')
+    .children()
+    .attr('fill', $('.edit-custom-shape-form .shape_background_color').val());
+  $('.edit-custom-shape-form .shape_background_transparent').removeClass('active  btn-success').text('Off');
+});
 
-    if ($('.edit-custom-shape-form .border-type-select').val() == 'solid') {
-      if (
-        $('#customShape' + id + ' svg')
-          .children()
-          .attr('stroke-dasharray')
-      ) {
-        $('#customShape' + id + ' svg')
-          .children()
-          .removeAttr('stroke-dasharray');
-      }
-    } else if (
-      $('.edit-custom-shape-form .border-type-select').val() == 'dashed'
-    ) {
-      if (
-        !$('#customShape' + id + ' svg')
-          .children()
-          .attr('stroke-dasharray')
-      ) {
-        $('#customShape' + id + ' svg')
-          .children()
-          .attr('stroke-dasharray', '10,10');
-      }
-    }
-  }
-);
+$('body').on('click', '.edit-custom-shape-form .shape_background_transparent', function (e) {
+  logger(1, 'DEBUG: action = action-change shape background color');
+  var id = $(this).closest('form').attr('data-path');
 
-$('body').on(
-  'change',
-  '.edit-custom-shape-form .shape_background_color',
-  function (e) {
-    logger(1, 'DEBUG: action = action-change shape background color');
-    var id = $(this).attr('data-path');
+  if ($('.edit-custom-shape-form .shape_background_transparent').hasClass('active')) {
+    $('.edit-custom-shape-form .shape_background_transparent').removeClass('active  btn-success').text('Off');
     $('#customShape' + id + ' svg')
       .children()
       .attr('fill', $('.edit-custom-shape-form .shape_background_color').val());
-    $('.edit-custom-shape-form .shape_background_transparent')
-      .removeClass('active  btn-success')
-      .text('Off');
-  }
-);
-
-$('body').on(
-  'click',
-  '.edit-custom-shape-form .shape_background_transparent',
-  function (e) {
-    logger(1, 'DEBUG: action = action-change shape background color');
-    var id = $(this).closest('form').attr('data-path');
-
-    if (
-      $('.edit-custom-shape-form .shape_background_transparent').hasClass(
-        'active'
-      )
-    ) {
-      $('.edit-custom-shape-form .shape_background_transparent')
-        .removeClass('active  btn-success')
-        .text('Off');
-      $('#customShape' + id + ' svg')
-        .children()
-        .attr(
-          'fill',
-          $('.edit-custom-shape-form .shape_background_color').val()
-        );
-    } else {
-      $('.edit-custom-shape-form .shape_background_transparent')
-        .addClass('active  btn-success')
-        .text('On');
-      $('#customShape' + id + ' svg')
-        .children()
-        .attr(
-          'fill',
-          hex2rgb($('.edit-custom-shape-form .shape_background_color').val(), 0)
-        );
-    }
-  }
-);
-
-$('body').on(
-  'change',
-  '.edit-custom-shape-form .shape_border_color',
-  function (e) {
-    logger(1, 'DEBUG: action = action-change shape border color');
-    var id = $(this).attr('data-path');
+  } else {
+    $('.edit-custom-shape-form .shape_background_transparent').addClass('active  btn-success').text('On');
     $('#customShape' + id + ' svg')
       .children()
-      .attr('stroke', $('.edit-custom-shape-form .shape_border_color').val());
+      .attr('fill', hex2rgb($('.edit-custom-shape-form .shape_background_color').val(), 0));
   }
-);
+});
 
-$('body').on(
-  'change',
-  '.edit-custom-shape-form .shape-rotation-input',
-  function (e) {
-    logger(1, 'DEBUG: action = action-rotate shape');
-    var id = $(this).attr('data-path'),
-      angle = parseInt(this.value);
+$('body').on('change', '.edit-custom-shape-form .shape_border_color', function (e) {
+  logger(1, 'DEBUG: action = action-change shape border color');
+  var id = $(this).attr('data-path');
+  $('#customShape' + id + ' svg')
+    .children()
+    .attr('stroke', $('.edit-custom-shape-form .shape_border_color').val());
+});
 
-    $('#customShape' + id).css('-ms-transform', 'rotate(' + angle + 'deg)');
-    $('#customShape' + id).css('-webkit-transform', 'rotate(' + angle + 'deg)');
-    $('#customShape' + id).css('transform', 'rotate(' + angle + 'deg)');
-  }
-);
+$('body').on('change', '.edit-custom-shape-form .shape-rotation-input', function (e) {
+  logger(1, 'DEBUG: action = action-rotate shape');
+  var id = $(this).attr('data-path'),
+    angle = parseInt(this.value);
+
+  $('#customShape' + id).css('-ms-transform', 'rotate(' + angle + 'deg)');
+  $('#customShape' + id).css('-webkit-transform', 'rotate(' + angle + 'deg)');
+  $('#customShape' + id).css('transform', 'rotate(' + angle + 'deg)');
+});
 
 $('body').on('click', '.edit-custom-shape-form-save', function (e) {
   logger(1, 'DEBUG: action = action-save new shape values');
@@ -4939,7 +4460,7 @@ $('body').on('click', '.edit-custom-shape-form-save', function (e) {
     resize: function (event, ui) {
       textObjectResize(event, ui, { shape_border_width: shape_border_width });
     },
-    stop: textObjectDragStop,
+    stop: textObjectDragStop
   });
 
   editTextObject(id, { data: new_data, name: shape_name })
@@ -4987,35 +4508,29 @@ $(document).on('click', '.action-freeselect', function (event) {
   $('.action-nodelink.active').trigger('click');
 });
 
-$(document).on(
-  'click',
-  '#lab-viewport.freeSelectMode .node_frame',
-  function (event) {
-    event.preventDefault();
-    event.stopPropagation();
+$(document).on('click', '#lab-viewport.freeSelectMode .node_frame', function (event) {
+  event.preventDefault();
+  event.stopPropagation();
 
-    var self = this,
-      isFreeSelected = $(self).hasClass('free-selected'),
-      name = $(self).data('name'),
-      path = $(self).data('path');
-    if (isFreeSelected) {
-      // already present window.freeSelectedNodes = [];
-      window.freeSelectedNodes = window.freeSelectedNodes.filter(function (
-        node
-      ) {
-        return node.name !== name && node.path !== path;
-      });
-    } else {
-      // add to window.freeSelectedNodes = [];
-      window.freeSelectedNodes.push({
-        name: name,
-        path: path,
-      });
-    }
-
-    $(self).toggleClass('free-selected', !isFreeSelected);
+  var self = this,
+    isFreeSelected = $(self).hasClass('free-selected'),
+    name = $(self).data('name'),
+    path = $(self).data('path');
+  if (isFreeSelected) {
+    // already present window.freeSelectedNodes = [];
+    window.freeSelectedNodes = window.freeSelectedNodes.filter(function (node) {
+      return node.name !== name && node.path !== path;
+    });
+  } else {
+    // add to window.freeSelectedNodes = [];
+    window.freeSelectedNodes.push({
+      name: name,
+      path: path
+    });
   }
-);
+
+  $(self).toggleClass('free-selected', !isFreeSelected);
+});
 
 $(document).on('click', '.user-settings', function () {
   var user = $(this).attr('user');
@@ -5209,7 +4724,7 @@ function networkClicked(title, node_id, e) {
       networkId: network_id,
       interfaceId: 0,
       nodeId: 0,
-      created: 0,
+      created: 0
     };
 
     selected_active($('#network' + network_id));
@@ -5243,9 +4758,7 @@ function networkClicked(title, node_id, e) {
           $.each(interfaces, function (id, nodeInterface) {
             $.each(nodeInterface['ethernet'], function (id, object) {
               if (object.network_id == start_network_id) {
-                network.push(
-                  setNodeInterface(nodeInterface.id, network_id, id)
-                );
+                network.push(setNodeInterface(nodeInterface.id, network_id, id));
               }
             });
           });
@@ -5306,14 +4819,12 @@ function selected_active(element) {
   jsPlumb.ready(function () {
     var offset = $(element).offset();
 
-    var destination = $('<div/>', { id: 'inner' })
-      .draggable()
-      .appendTo('#lab-viewport');
+    var destination = $('<div/>', { id: 'inner' }).draggable().appendTo('#lab-viewport');
     destination.css({
       position: 'absolute',
       top: offset.top,
       left: offset.left,
-      opacity: 1,
+      opacity: 1
     });
     destination.html('<img class="selector" src="/images/link_selector.png">');
 
@@ -5327,14 +4838,14 @@ function selected_active(element) {
       Connector: ['Straight'],
       Endpoint: 'Blank',
       PaintStyle: { lineWidth: 2, strokeStyle: '#C00001' },
-      cssClass: 'link',
+      cssClass: 'link'
     });
 
     var conn = lab_topology.connect({
       source: source, // Must attach to the IMG's parent or not printed correctly
       target: $(destination).attr('id'), // Must attach to the IMG's parent or not printed correctly
       cssClass: source + ' ' + destination + ' frame_ethernet new_network',
-      isSource: true,
+      isSource: true
     });
 
     window.conn = conn;
@@ -5344,7 +4855,7 @@ function selected_active(element) {
         destination,
         {
           left: e.pageX - $('.selector').width() / 2 - 25,
-          top: e.pageY - $('.selector').height() / 2,
+          top: e.pageY - $('.selector').height() / 2
         },
         { duration: 0 }
       );
@@ -5381,10 +4892,7 @@ $(document).on('click', 'a.interfaces', function (e) {
   var interface_id = $(this).attr('interface-id');
   var interface_name = $(this).attr('interface-name');
   var isStartNode = typeof window.startNode !== 'undefined';
-  var isNetworkId =
-    typeof $(this).attr('network-id') !== 'undefined'
-      ? $(this).attr('network-id')
-      : 0;
+  var isNetworkId = typeof $(this).attr('network-id') !== 'undefined' ? $(this).attr('network-id') : 0;
 
   //the node is clicked
   if (isStartNode) {
@@ -5408,18 +4916,10 @@ $(document).on('click', 'a.interfaces', function (e) {
 
           //if end note has network attached, and start network is created
           if (hasNetwork && window.startNode.created) {
-            return setNodeInterface(
-              window.startNode.nodeId,
-              isNetworkId,
-              interface_id
-            );
+            return setNodeInterface(window.startNode.nodeId, isNetworkId, interface_id);
           } else {
             //connect to clicked network
-            return setNodeInterface(
-              end_node,
-              window.startNode.networkId,
-              interface_id
-            );
+            return setNodeInterface(end_node, window.startNode.networkId, interface_id);
           }
         })
         .done(function (response) {
@@ -5436,8 +4936,7 @@ $(document).on('click', 'a.interfaces', function (e) {
     //add new network
     window.startNode = {};
     var start_node = $(this).attr('node-id');
-    var node_name =
-      $('.node' + start_node).attr('data-name') + '-' + interface_name;
+    var node_name = $('.node' + start_node).attr('data-name') + '-' + interface_name;
     var offset = $('#node' + start_node).offset();
 
     $('.node' + start_node).addClass('startNode');
@@ -5454,7 +4953,7 @@ $(document).on('click', 'a.interfaces', function (e) {
             networkId: networkId,
             interfaceId: interface_id,
             nodeId: start_node,
-            created: 1,
+            created: 1
           };
 
           return setNodeInterface(start_node, networkId, interface_id);
@@ -5475,7 +4974,7 @@ $(document).on('click', 'a.interfaces', function (e) {
         networkId: isNetworkId,
         interfaceId: interface_id,
         nodeId: start_node,
-        created: 0,
+        created: 0
       };
 
       selected_active($('#node' + start_node));

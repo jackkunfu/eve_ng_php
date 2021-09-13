@@ -44,27 +44,14 @@ function hdlPages(cur, total) {
     return [1, '...', cur - 2, cur - 1, cur, cur + 1, cur + 2, '...', total];
   }
 }
-function mainnew1Controller(
-  $scope,
-  $http,
-  $location,
-  $window,
-  $uibModal,
-  $log,
-  $rootScope,
-  FileUploader,
-  focus
-) {
+function mainnew1Controller($scope, $http, $location, $window, $uibModal, $log, $rootScope, FileUploader, focus) {
   console.log('mainnew11');
   $.unblockUI();
   $rootScope.openLaba = false;
   // $scope.testAUTH("/main"); //TEST AUTH
   //Default variables ///START
   console.log('Current user position: ' + $rootScope.folder);
-  $scope.path =
-    $rootScope.folder === undefined || $rootScope.folder == ''
-      ? '/'
-      : $rootScope.folder;
+  $scope.path = $rootScope.folder === undefined || $rootScope.folder == '' ? '/' : $rootScope.folder;
   $scope.newElementName = '';
   $scope.newElementToggle = false;
   $scope.fileSelected = false;
@@ -78,7 +65,7 @@ function mainnew1Controller(
 
   $scope.platform = {
     content: '',
-    img: '',
+    img: ''
   };
 
   //Default variables ///END
@@ -90,7 +77,7 @@ function mainnew1Controller(
     { name: '常见问题', hf: 'nav22' },
     { name: '学生中心', hf: 'nav3' },
     { name: '资料下载', hf: 'nav4' },
-    { name: '通知中心', hf: 'nav5' },
+    { name: '通知中心', hf: 'nav5' }
   ];
   $scope.platformList = [];
   $scope.useDescList = [];
@@ -99,7 +86,7 @@ function mainnew1Controller(
     { name: 'CCNA', id: 1 },
     { name: 'CCNP ROUTER', id: 1 },
     { name: 'CCNP SWITCH', id: 1 },
-    { name: 'TEST 1', id: 1 },
+    { name: 'TEST 1', id: 1 }
   ];
   $scope.stuCenter = [];
   $scope.messageList = [];
@@ -120,18 +107,16 @@ function mainnew1Controller(
 
   $scope.lineBtnIdx = -1;
   $scope.showUseDescList = [];
-  $scope.lineBtnNum = $scope.useDescList.length
-    ? Math.ceil(scope.useDescList.length / 4)
-    : 0; // linebtn的个数
+  $scope.lineBtnNum = $scope.useDescList.length ? Math.ceil(scope.useDescList.length / 4) : 0; // linebtn的个数
   $scope.clickLine = function (idx) {
     if ($scope.lineBtnIdx == idx) return;
     $scope.lineBtnIdx = idx;
     $scope.showUseDescList = $scope.useDescList.slice(4 * idx, 4 * idx + 3);
     console.log('showUseDescList', $scope.showUseDescList);
   };
-  $scope.seeDtl = function (item) {
+  $scope.seeDtl = function (item, pstr) {
     // console.log(item);
-    window.open(location.origin + '/#/detail?id=' + item.id);
+    window.open(location.origin + '/#/detail?id=' + item.id + '&pstr=' + pstr);
     // location.href = '#/detail?id=' + item.id;
   };
 
@@ -141,7 +126,7 @@ function mainnew1Controller(
     2: '/api/lab/list', // '/api/lab/list'
     3: '/api/student/list', // '/api/lab/list'
     4: '/api/file/list',
-    5: '/api/article/list',
+    5: '/api/article/list'
   };
 
   $scope.curPage = 1;
@@ -153,7 +138,7 @@ function mainnew1Controller(
     2: { username: EVENEWUSERNAME, pageSize: 1000 },
     3: { username: EVENEWUSERNAME },
     4: { username: EVENEWUSERNAME },
-    5: { username: EVENEWUSERNAME, category: 'notify' },
+    5: { username: EVENEWUSERNAME, category: 'notify' }
   };
 
   $scope.pageOpt = {
@@ -162,7 +147,7 @@ function mainnew1Controller(
     2: { cur: 1, size: 1000, total: 0 }, // 配置1000size相当于全量获取
     3: { cur: 1, size: 20, total: 0 },
     4: { cur: 1, size: 15, total: 0 },
-    5: { cur: 1, size: 20, total: 0 },
+    5: { cur: 1, size: 20, total: 0 }
   };
 
   $scope.pageArr0 = [];
@@ -178,7 +163,7 @@ function mainnew1Controller(
     2: 'labList',
     3: 'stuCenter',
     4: 'docList',
-    5: 'tongzhiList',
+    5: 'tongzhiList'
   };
 
   $scope.clickPage = function (idx, page) {
@@ -198,7 +183,7 @@ function mainnew1Controller(
     var method = urlSplit[1] ? urlSplit[1].trim() : 'get';
     var obj = {
       method: method,
-      url: $scope.apiBase + urlSplit[0],
+      url: $scope.apiBase + urlSplit[0]
     };
 
     var idxPage = $scope.pageOpt[idx].cur;
@@ -218,10 +203,7 @@ function mainnew1Controller(
         if (response && response.data && response.data.data) {
           var res = response.data.data;
 
-          var list =
-            Object.prototype.toString.call(res) == '[object Array]'
-              ? res
-              : res.list || [];
+          var list = Object.prototype.toString.call(res) == '[object Array]' ? res : res.list || [];
           $scope[$scope.listKey[idx]] = list;
           // console.log($scope.listKey[idx], list);
 
@@ -230,20 +212,14 @@ function mainnew1Controller(
             $scope.platform.img = list[0].image;
           } else if (idx == 3 && list.length > 0) {
             for (var i = 0; i < list.length; i++) {
-              list[i].lab = (list[i].lab || '').replace(
-                /\/opt\/unetlab\/labs\//,
-                ''
-              );
+              list[i].lab = (list[i].lab || '').replace(/\/opt\/unetlab\/labs\//, '');
             }
             $scope[$scope.listKey[idx]] = list;
           }
           // else if (idx == 1) $scope.clickLine(0) // 使用说明展示
 
           var total = res.total || 0;
-          var totalP =
-            total % idxSize > 0
-              ? Math.floor(total / idxSize) + 1
-              : total / idxSize; // 总页码
+          var totalP = total % idxSize > 0 ? Math.floor(total / idxSize) + 1 : total / idxSize; // 总页码
 
           $scope.pageOpt[idx].total = totalP;
           $scope['pageArr' + idx] = hdlPages(idxPage, totalP);
@@ -274,8 +250,12 @@ function mainnew1Controller(
     location.href = '#/main';
   };
 
-  $scope.downExcel = function (url) {
+  $scope.downExcel = function (url, name) {
     // window.open(url);
-    location.href = url;
+    // location.href = url;
+    let a = document.createElement('a');
+    a.download = name; //设置下载的文件名
+    a.href = url; // 设置图片的下载地址
+    a.click(); //触发下载事件
   };
 }
