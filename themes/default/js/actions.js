@@ -1041,14 +1041,14 @@ function showPeizhiRc(list) {
     compareFixed = $(dom);
     $('body').append(compareFixed);
 
-    $('.rc_compare .left .ans').html((curRouter.command || '').replace(/↵/g, '<div></div>'));
+    $('.rc_compare .left .ans').html((curRouter.command || '').replace(/↵|\n/g, '<div></div>'));
     s_ajax('/api/labAnswer/get', { labId: urlPre + labId, nodeId: curRouter.id }, function (res) {
       if (res && res.code == 1 && res.data) {
         var list = res.data.list || [];
         var result = list.filter(function (el) {
           return el.nodeId == curRouter.id;
         })[0];
-        $('.rc_compare .right .ans').html((result.content || '').replace(/↵/g, '<div></div>'));
+        $('.rc_compare .right .ans').html((result.content || '').replace(/↵|\n/g, '<div></div>'));
       }
     });
 
