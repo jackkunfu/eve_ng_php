@@ -422,6 +422,7 @@ function mainnew1Controller($scope, $http, $location, $window, $uibModal, $log, 
   $scope.clickTab(3); // 学生列表
   $scope.clickTab(4);
   $scope.clickTab(5);
+  $scope.clickTab(6);
 
   $scope.navClick = function (item, idx) {
     $scope.curNav = idx;
