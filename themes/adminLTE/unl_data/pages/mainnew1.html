@@ -312,14 +312,14 @@
 					<div class="btn" data-ng-click="seeDtl(item, '实验预习')">查看详情</div>
 				</div>
 			</div>
-			<div class="line-btn-ctn">
+			<!-- <div class="line-btn-ctn">
 				<div
 					class="line-btn"
 					data-ng-repeat="item in lineBtnNum track by $index"
 					data-ng-class="{'cur': lineBtnIdx == $index}"
 					data-ng-click="clickLine($index)">
 				</div>
-			</div>
+			</div> -->
 			<div class="page">
 				<div class="page-list">
 					<div class="btn" data-ng-if="pageOpt[1].cur > 1" ng-click="clickPage(1, 'pre')">上一页</div>
@@ -338,29 +338,29 @@
 			<div class="list">
 				<div
 					class="item shuoming-item"
-					data-ng-repeat="item in useDescList track by $index">
+					data-ng-repeat="item in quesList track by $index">
 					<img ng-src="{{ item.image }}" alt="">
 					<div class="name">{{ item.title }}</div>
 					<div>{{ item.createtime }}</div>
 					<div class="btn" data-ng-click="seeDtl(item, '常见问题')">查看详情</div>
 				</div>
 			</div>
-			<div class="line-btn-ctn">
+			<!-- <div class="line-btn-ctn">
 				<div
 					class="line-btn"
 					data-ng-repeat="item in lineBtnNum track by $index"
 					data-ng-class="{'cur': lineBtnIdx == $index}"
 					data-ng-click="clickLine($index)">
 				</div>
-			</div>
+			</div> -->
 			<div class="page">
 				<div class="page-list">
-					<div class="btn" data-ng-if="pageOpt[1].cur > 1" ng-click="clickPage(1, 'pre')">上一页</div>
+					<div class="btn" data-ng-if="pageOpt[6].cur > 1" ng-click="clickPage(6, 'pre')">上一页</div>
 					<div
-						class="btn" data-ng-repeat="item in pageArr1 track by $index"
-						ng-click="clickPage(1, item)" data-ng-class="{'cur': pageOpt[1].cur == item}"
+						class="btn" data-ng-repeat="item in pageArr6 track by $index"
+						ng-click="clickPage(6, item)" data-ng-class="{'cur': pageOpt[6].cur == item}"
 					>{{ item }}</div>
-					<div class="btn" data-ng-if="pageOpt[1].cur < pageOpt[1].total" ng-click="clickPage(1, 'next')">下一页</div>
+					<div class="btn" data-ng-if="pageOpt[6].cur < pageOpt[6].total" ng-click="clickPage(6, 'next')">下一页</div>
 				</div>
 			</div>
 		</div>
