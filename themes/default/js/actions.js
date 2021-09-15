@@ -772,7 +772,7 @@ function showRoutersContent(list) {
   var ctn = $(
     '<div class="rc_zhidao" style="position:fixed;z-index:' +
       (fixedZindex + 1) +
-      ';right:0;top:0;width:500px;background:rgb(127,127,127);">' +
+      ';right:0;top:0;width:800px;background:rgb(127,127,127);">' +
       '<div class="top" style="text-align: center;background:rgb(32, 158, 145);color: #fff;height: 40px;line-height: 40px;">' +
       '<div class="scale" style="float:left;margin-left: 20px;cursor: pointer;font-size: 20px;">点击此处放大/缩小</div>' +
       '实验指导书' +
@@ -793,7 +793,8 @@ function showRoutersContent(list) {
 
   var style = document.createElement('style');
   style.type = 'text/css';
-  style.innerHTML = '.rc_zhidao .r_btn.cur{ background-color: rgb(32, 158, 145) !important; color: #fff; }';
+  style.innerHTML =
+    '.rc_zhidao .r_btn.cur{ background-color: rgb(32, 158, 145) !important; color: #fff; } .rc_zhidao .content p { max-width: 100%; }';
   document.getElementsByTagName('head').item(0).appendChild(style);
 
   $(document).on('click', '.rc_zhidao .r_btn', function (e) {
