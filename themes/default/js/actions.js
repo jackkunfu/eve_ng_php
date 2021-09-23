@@ -760,7 +760,7 @@ var fixedZindex = 500
 function showRoutersContent(list) {
   if (zhidaoshuFixed) zhidaoshuFixed.remove()
   list = list || []
-  var bthHeight = screen.availHeight - 590
+  var bthHeight = screen.availHeight - 130
   var btns = ''
   for (var i = 0; i < list.length; i++) {
     btns +=
@@ -779,10 +779,10 @@ function showRoutersContent(list) {
       '<div class="x" style="float: right;margin-right: 20px;cursor: pointer;font-size: 20px;">X</div>' +
       '</div>' +
       '<div>' +
-      '<div class="content" style="height:580px;overflow:auto;margin:10px;background: #fff;"></div>' +
-      '<div style="height:' +
+      '<div class="content" style="height:' +
       bthHeight +
-      'px;overflow: auto;margin:10px;">' +
+      'px;overflow:auto;margin:10px;background: #fff;"></div>' +
+      '<div style="height:130px;overflow: auto;margin:10px;">' +
       btns +
       '</div>' +
       '</div>' +
